@@ -6,16 +6,28 @@
 .warn-div{
   margin: 30px;
   position: absolute;
+  z-index: 2;
 }
 
-.warn-div > label{
+.forecast-div{
+  left: 250px;
+  margin: 30px;
+  position: absolute;
+  z-index: 2;
+}
+
+.suji > label{
   font-weight: lighter;
   font-size: 30px;
   color: white;
 }
 
-.warn-div > label > span{
+.suji > label > span{
   font-weight: bold;
   font-size: 32px;
   color: yellow;
+  font-family: "Microsoft Yahei";
+  width: 80px;
+  text-align: right;
+  display: inline-block;
 }
