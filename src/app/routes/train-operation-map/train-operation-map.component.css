@@ -1,0 +1,21 @@
+.train-operation-map-chart{
+  width: 100%;
+  height: 100%;
+}
+
+.warn-div{
+  margin: 30px;
+  position: absolute;
+}
+
+.warn-div > label{
+  font-weight: lighter;
+  font-size: 30px;
+  color: white;
+}
+
+.warn-div > label > span{
+  font-weight: bold;
+  font-size: 32px;
+  color: yellow;
+}
