@@ -1,0 +1,45 @@
+:host{
+  color: white;
+}
+
+.rolling-table-ul{
+  list-style: none;
+  font-size: 22px;
+  font-family: "Microsoft Yahei";
+  padding-left: 0;
+  margin-top: 5px;
+
+}
+
+.rolling-table-ul > li{
+  height: 80px;
+  position: relative;
+}
+
+.rolling-table-ul > li.title-li{
+  height: 50px;
+  color: #78d57b;
+  font-size: 24px;
+  z-index: 2;
+}
+
+.rolling-table-row-wrapper{
+  width: 100%;
+  display: inline-flex;
+  height: 100%;
+}
+
+.rolling-table-ul > li.data-li-odd, .title-li {
+  background-color: #0a2732;
+}
+
+.rolling-table-ul > li.data-li-even{
+  background-color: rgba(48,100,115,0.3);
+}
+
+.rolling-table-row-wrapper > div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  word-break: break-all;
+}

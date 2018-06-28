@@ -1,0 +1,15 @@
+.suji > label{
+  font-weight: lighter;
+  font-size: 30px;
+  color: white;
+}
+
+.suji > label > span{
+  font-weight: bold;
+  font-size: 32px;
+  color: yellow;
+  font-family: "Microsoft Yahei";
+  width: 80px;
+  text-align: right;
+  display: inline-block;
+}

@@ -1,0 +1,9 @@
+:host{
+
+  border-radius: 80px;
+  background-color: #78d57b;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+
+}

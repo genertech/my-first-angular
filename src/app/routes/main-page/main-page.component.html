@@ -1,0 +1,42 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div class="banner">
+  <div class="app-logo"></div>
+  <div class="app-title"></div>
+</div>
+<div class="main-datav-container" connerKazaro>
+
+  <!--车组实时运行图-->
+  <div [outerFrame]="frames.FRAME1" style="grid-row: 1 / 4;">
+    <app-train-operation-map></app-train-operation-map>
+  </div>
+
+  <!--监控信息-车型-->
+  <div [outerFrame]="frames.FRAME1" style="grid-row: 1 / 2;">
+    <app-monitor-info [labelText]="equipTypeLabel" [palette]="palettes.SP1" [data]="equipTypeMoniInfoData"></app-monitor-info>
+  </div>
+
+  <!--预警/预测信息-->
+  <div [outerFrame]="frames.FRAME1" style="grid-row: 1 / 3; padding-bottom: 20px">
+    <app-warn-forecast-info></app-warn-forecast-info>
+  </div>
+
+  <!--车组状态-->
+  <div [outerFrame]="frames.FRAME2" style="grid-row: 4 / 5; padding-top: 40px;">
+    <app-train-status></app-train-status>
+  </div>
+
+  <!--监控信息-系统-->
+  <div [outerFrame]="frames.FRAME1" style="grid-row: 2 / 4; padding-top: 40px;">
+    <app-monitor-info [labelText]="systemLabel" [palette]="palettes.SP2" [data]="systemMoniInfoData"></app-monitor-info>
+  </div>
+
+  <!--健康评估结果-->
+  <div [outerFrame]="frames.FRAME2" style="grid-row: 3 / 5; padding-top: 50px; padding-bottom: 20px">
+    <app-health-evaluation-info></app-health-evaluation-info>
+  </div>
+
+  <!--监控信息-部件-->
+  <div [outerFrame]="frames.FRAME2" style=" grid-row: 4 / 5; padding-top: 40px;">
+    <app-monitor-info [labelText]="componentLabel" [palette]="palettes.SP3" [data]="componentMoniInfoData"></app-monitor-info>
+  </div>
+</div>
