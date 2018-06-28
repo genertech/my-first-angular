@@ -1,0 +1,7 @@
+<!--预警-->
+<app-rolling-number [title]="warnLabel" [value]="warn" class="warn-div"></app-rolling-number>
+<!--预测-->
+<app-rolling-number [title]="forecastLabel" [value]="forecast" class="forecast-div"></app-rolling-number>
+<!--地图-->
+<div echarts [options]="options" [loading]="!mapLoaded" [merge]="updateOptions" [loadingOpts]="loadingOpts" class="train-operation-map-chart"></div>
+
