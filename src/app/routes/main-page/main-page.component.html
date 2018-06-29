@@ -12,7 +12,7 @@
 
   <!--监控信息-车型-->
   <div [outerFrame]="frames.FRAME1" style="grid-row: 1 / 2;">
-    <app-monitor-info [labelText]="equipTypeLabel" [palette]="palettes.SP1" [data]="equipTypeMoniInfoData"></app-monitor-info>
+    <app-monitor-info [labelText]="equipTypeLabel" [palette]="palettes.SP1" [data]="equipTypeMoniInfoData" [option]="equipTypeMoniOption"></app-monitor-info>
   </div>
 
   <!--预警/预测信息-->
@@ -26,8 +26,8 @@
   </div>
 
   <!--监控信息-系统-->
-  <div [outerFrame]="frames.FRAME1" style="grid-row: 2 / 4; padding-top: 40px;">
-    <app-monitor-info [labelText]="systemLabel" [palette]="palettes.SP2" [data]="systemMoniInfoData"></app-monitor-info>
+  <div [outerFrame]="frames.FRAME1" style="grid-row: 2 / 4;">
+    <app-monitor-info [labelText]="systemLabel" [palette]="palettes.SP2" [data]="systemMoniInfoData" [option]="systemMoniOption"></app-monitor-info>
   </div>
 
   <!--健康评估结果-->
@@ -37,6 +37,6 @@
 
   <!--监控信息-部件-->
   <div [outerFrame]="frames.FRAME2" style=" grid-row: 4 / 5; padding-top: 40px;">
-    <app-monitor-info [labelText]="componentLabel" [palette]="palettes.SP3" [data]="componentMoniInfoData"></app-monitor-info>
+    <app-monitor-info [labelText]="componentLabel" [palette]="palettes.SP3" [data]="componentMoniInfoData" [option]="componentMoniOption"></app-monitor-info>
   </div>
 </div>

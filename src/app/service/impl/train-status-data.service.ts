@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import {IDataService} from "../interface/idata-service";
 import {Subject} from "rxjs/internal/Subject";
 import {Observable} from "rxjs/internal/Observable";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
-const TIME_INTERVAL = 5 * 1000;
+const FETCH_CYCLE = 5 * 1000;
 
 @Injectable({
   providedIn: 'root'
@@ -16,42 +17,47 @@ export class TrainStatusDataService implements IDataService{
 
   private _dataSubject: Subject<any> = new Subject<any>();
 
-  constructor() {}
+  constructor(private http: HttpClient) { }
 
-  fetchData(): any {
-
-    let builderJson = {
-      "all": 0 as any,
-      "status": {
-        "车组总数": 0 as any,
-        "上线": Math.floor(Math.random() * 100),
-        "未上线": Math.floor(Math.random() * 100),
-        "热备": Math.floor(Math.random() * 100),
-        "高级修": Math.floor(Math.random() * 100),
-        "扣修": Math.floor(Math.random() * 100),
-        "库停": Math.floor(Math.random() * 100),
-      }
+  getDataStructure(): any {
+    return {
+      total: {key: "equipType" },
+      dataColumns: [
+        {key: "warnCount", title: "预警"},
+        {key: "forecastCount", title: "预测"}
+      ]
     };
+  }
 
-    builderJson.status["车组总数"] = builderJson.all = Object.values(builderJson.status).reduce((p, c) => {
-      return p + c;
-    });
+  fetchData(): any{
 
-    return builderJson;
+    //设置超时，确保请求时间在interval周期内
+    this.http.get('/blueScreen/trainStatus', { headers: new HttpHeaders({ timeout: `${FETCH_CYCLE- 50}` })}).subscribe(
+      data => {
+        this.addData(data);
+      },
+      error1 => {
+        this._dataSubject.error(error1);
+      });
+
   }
 
   public startTimer(){
 
-    this.addData(this.fetchData());
+    this.fetchData();
 
     setInterval(()=>{
 
-      this.addData(this.fetchData());
+      this.fetchData();
 
-    }, TIME_INTERVAL);
+    }, FETCH_CYCLE);
   }
 
+
   private addData(subjectData: any): void {
+    //console.log("train status data");
+    //console.log(subjectData);
+
     this._dataSubject.next(subjectData);
 
   }

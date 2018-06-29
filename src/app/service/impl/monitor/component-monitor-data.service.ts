@@ -2,8 +2,9 @@ import {Injectable} from '@angular/core';
 import {IDataService} from "../../interface/idata-service";
 import {Subject} from "rxjs/internal/Subject";
 import {Observable} from "rxjs/internal/Observable";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
-const TIME_INTERVAL = 5 * 1000;
+const FETCH_CYCLE = 5 * 1000;
 
 
 @Injectable({
@@ -11,8 +12,7 @@ const TIME_INTERVAL = 5 * 1000;
 })
 export class ComponentMonitorDataService implements IDataService {
 
-  constructor() {
-  }
+  constructor(private http: HttpClient) { }
 
   private _idInterval: any;
 
@@ -20,47 +20,44 @@ export class ComponentMonitorDataService implements IDataService {
 
   private _dataSubject: Subject<any> = new Subject<any>();
 
-
-  fetchData() {
-    //TODO 通过外部请求定时获取数据
-
+  getDataStructure(): any {
     return {
-      "轮对":{
-        "预警": Math.floor(Math.random()*100),
-        "预测": Math.floor(Math.random()*100)
-      },
-      "齿轮箱":{
-        "预警": Math.floor(Math.random()*100),
-        "预测": Math.floor(Math.random()*100)
-      },
-      "轴承":{
-        "预警": Math.floor(Math.random()*100),
-        "预测": Math.floor(Math.random()*100)
-      },
-      "电机":{
-        "预警": Math.floor(Math.random()*100),
-        "预测": Math.floor(Math.random()*100)
-      },
-      "空调":{
-        "预警": Math.floor(Math.random()*100),
-        "预测": Math.floor(Math.random()*100)
-      }
+      title: {key: "component" },
+      dataColumns: [
+        {key: "warnCount", title: "预警"},
+        {key: "forecastCount", title: "预测"}
+      ]
     };
+  }
+
+  fetchData():any {
+
+    //设置超时，确保请求时间在interval周期内
+    this.http.get('/blueScreen/moniBase/component', { headers: new HttpHeaders({ timeout: `${FETCH_CYCLE- 50}` })}).subscribe(
+      data => {
+        this.addData(data);
+      },
+      error1 => {
+        this._dataSubject.error(error1);
+      });
 
   }
 
   public startTimer() {
 
-    this.addData(this.fetchData());
+    this.fetchData();
 
     this._idInterval = setInterval(() => {
 
-      this.addData(this.fetchData());
+      this.fetchData();
 
-    }, TIME_INTERVAL);
+    }, FETCH_CYCLE);
   }
 
   private addData(subjectData: any): void {
+    //console.log("component monitor data");
+    console.log(subjectData);
+
     this._dataSubject.next(subjectData);
 
   }

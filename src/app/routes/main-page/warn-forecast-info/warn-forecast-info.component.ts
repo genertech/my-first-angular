@@ -38,7 +38,7 @@ export class WarnForecastInfoComponent implements OnInit {
   constructor(private dataService: WarnForecastInfoDataService) {
     this.columnInfo = this.dataService.getDataStructure();
   }
-co
+
   ngOnInit() {
     this.subscribeDataService();
 

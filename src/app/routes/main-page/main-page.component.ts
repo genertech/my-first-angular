@@ -27,10 +27,17 @@ export class MainPageComponent implements OnInit {
   equipTypeMoniInfoData: any;
   systemMoniInfoData: any;
   componentMoniInfoData: any;
+  systemMoniOption: any;
+  private equipTypeMoniOption: any;
+  private componentMoniOption: any;
 
   constructor(private equipTypeMoniDataService: EquipTypeMonitorDataService,
               private systemMoniDataService: SystemMonitorDataService,
               private componentMoniDataService: ComponentMonitorDataService) {
+
+    this.equipTypeMoniOption = this.equipTypeMoniDataService.getDataStructure();
+    this.systemMoniOption = this.systemMoniDataService.getDataStructure();
+    this.componentMoniOption = this.componentMoniDataService.getDataStructure();
 
   }
   private equipTypeMoniSubscribe() {

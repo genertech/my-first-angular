@@ -39,6 +39,13 @@ export class MonitorBaseInfoComponent implements OnInit, OnChanges {
 
   @Input() labelText: string = "标题";
   @Input() palette: BAR_COLOR_PALETTE = BAR_COLOR_PALETTE.SP1;
+  @Input() option: any = {
+    title: {key: "title" },
+    dataColumns: [
+      {key: "data1", title: "数据1"},
+      {key: "data2", title: "数据2"}
+    ]
+  };
 
   @Input() data: any;
 
@@ -152,70 +159,71 @@ export class MonitorBaseInfoComponent implements OnInit, OnChanges {
   }
 
   //数据处理
-  dataProcess(rawData: any){
-    let y_axis_data = Object.keys(rawData);
-    let legend_data :Set<String> = new Set<String>();
-    let series = [];
+  dataProcess(rawData: Array<any>){
+    if(rawData && rawData.length > 0){
 
+      let y_axis_data = [], legend_data, series = [];
 
-    //获取所有legend
-    y_axis_data.forEach((ele)=>{
+      //获取配置legend
+      legend_data = this.option.dataColumns.map((columnSetting) =>{
 
-      Object.keys(rawData[ele]).map((serie)=>{
-        legend_data.add(serie);
+        let serie = {
+          name: columnSetting.title,
+          type: 'bar',
+          barGap: "40%",
+          barCategoryGap: "30%",
+          label: LABEL_OPTION,
+          data: []
+        };
+
+        series.push(serie);
+
+        return columnSetting.title;
       });
 
-    });
+      rawData.forEach((ele) => {
 
-    legend_data.forEach((value: string) => {
-      let serie = {
-        name: value,
-        type: 'bar',
-        barGap: "40%",
-        barCategoryGap: "30%",
-        label: LABEL_OPTION,
-        data: []
+        y_axis_data.push(ele[this.option.title.key]);
+
+        this.option.dataColumns.forEach((columnSetting: any, idx) => {
+
+          series[idx].data.push(ele[columnSetting.key] || 0);
+
+        });
+
+      });
+
+
+      this.updateOptions = {
+        legend: {
+          data:  Array.from(legend_data)
+        },
+        yAxis: {
+          data: y_axis_data
+        },
+        series: [
+          {
+            type: 'pictorialBar',
+            symbolRepeat: true,
+            symbolSize: ['150%', '100%'],
+            symbolOffset: ['-110%', 0],
+            barCategoryGap: '30%',
+            data: y_axis_data.map(()=>{
+              return {
+                value: 1,
+                symbol: PATH_SYMBOLS.collapseHouse
+              };
+            })
+          }
+          , ...series]
       };
 
+      // console.log(legend_data);
+      // console.log(y_axis_data);
+      // console.log(series);
 
-      y_axis_data.forEach((ele)=>{
+    }
 
-        serie.data.push(rawData[ele][value] || 0);
-
-      });
-
-      series.push(serie);
-
-    });
-
-    this.updateOptions = {
-      legend: {
-        data:  Array.from(legend_data)
-      },
-      yAxis: {
-        data: y_axis_data
-      },
-      series: [
-        {
-          type: 'pictorialBar',
-          symbolRepeat: true,
-          symbolSize: ['150%', '100%'],
-          symbolOffset: ['-110%', 0],
-          barCategoryGap: '30%',
-          data: y_axis_data.map(()=>{
-            return {
-              value: 1,
-              symbol: PATH_SYMBOLS.collapseHouse
-            };
-          })
-        }
-        , ...series]
-    };
-
-    // console.log(legend_data);
-    // console.log(y_axis_data);
-    // console.log(series);
-    // console.log("finished");
 
   }
 

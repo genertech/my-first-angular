@@ -2,12 +2,9 @@ import { Injectable } from '@angular/core';
 import {IDataService} from "../interface/idata-service";
 import {Subject} from "rxjs/internal/Subject";
 import {Observable} from "rxjs/internal/Observable";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
-const TIME_INTERVAL = 10 * 60 * 1000;
-
-const AREA_LOOK_UP = ['5001', '5002', '5003', '5004', '5005', '5006', '5007', '5008'];
-const ATTRIBUTE_LOOK_UP = ['E', 'D'];
-const XT_INFO_LOOK_UP = ['给排水及卫生系统', '网络系统', '主供电系统', '制动系统', '转向架', '牵引变流器', '空气过滤器', '紧急制动阀'];
+const FETCH_CYCLE = 10 * 60 * 1000;
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +13,10 @@ const XT_INFO_LOOK_UP = ['给排水及卫生系统', '网络系统', '主供电�
  * 首屏-健康评估数据供应商服务
  */
 export class HealthEvaluationInfoDataService implements IDataService{
+
+  private _dataSubject: Subject<any> = new Subject<any>();
+
+  constructor(private http: HttpClient) { }
 
   getDataStructure(): any {
 
@@ -28,46 +29,34 @@ export class HealthEvaluationInfoDataService implements IDataService{
 
   }
 
-  private _dataSubject: Subject<any> = new Subject<any>();
+  fetchData(): any{
 
-  constructor() { }
-
-  fetchData(): Array<any>{
-
-    return ['CR400BF', 'CRH3C', 'CRH5A', 'CRH380BL', 'CRH380B'].map((ele)=>{
-
-      let _amount = 5 + Math.floor(Math.random()*25);
-      let data = [];
-      while(_amount-- > 0){
-        data.push({
-          area: (AREA_LOOK_UP[Math.floor(Math.random() * AREA_LOOK_UP.length)]),
-          pv: (Math.ceil(1+ Math.random()*15)).toString().padStart(2, "0"),
-          attribute: (ATTRIBUTE_LOOK_UP[Math.floor(Math.random() * ATTRIBUTE_LOOK_UP.length)]),
-          xt: (XT_INFO_LOOK_UP[Math.floor(Math.random() * XT_INFO_LOOK_UP.length)]),
-        });
-      }
-
-      return {
-        equipType: ele,
-        data: data
-      }
-
-    });
+    //设置超时，确保请求时间在interval周期内
+    this.http.get('/blueScreen/healthEvaluationInfo', { headers: new HttpHeaders({ timeout: `${FETCH_CYCLE- 50}` })}).subscribe(
+      data => {
+        this.addData(data);
+      },
+      error1 => {
+        this._dataSubject.error(error1);
+      });
 
   }
 
   public startTimer(){
 
-    this.addData(this.fetchData());
+    this.fetchData();
 
     setInterval(()=>{
 
-      this.addData(this.fetchData());
+      this.fetchData();
 
-    }, TIME_INTERVAL);
+    }, FETCH_CYCLE);
   }
 
   private addData(subjectData: any): void {
+    //console.log("health evaluation info data");
+    //console.log(subjectData);
+
     this._dataSubject.next(subjectData);
 
   }

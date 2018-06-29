@@ -2,18 +2,9 @@ import { Injectable } from '@angular/core';
 import {IDataService} from "../interface/idata-service";
 import {Subject} from "rxjs/internal/Subject";
 import {Observable} from "rxjs/internal/Observable";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
-const TIME_INTERVAL = 10 * 60 * 1000;
-
-const AREA_LOOK_UP_TABLE = ['550301', '550702', '557201', '531402', '565708', '531808', '560408', '501509'];
-const PV_LOOK_UP_TABLE = ['转向架', '牵引电机', '制动'];
-const LX_LOOK_UP_TABLE = ['预警', '预测'];
-const INFO_LOOK_UP_TEMPLATE = [
-  '(n1,n2, n3, n4) => `轴承温度 超温${n1}℃≥${n2}℃;超差${n3}℃≥${n4}℃`',
-  '(n1,n2) => `定子温度 超温${n1}℃>${n2}℃`',
-  '(n1,n2, n3, n4, n5) => `转向架${n5}一轴右侧温度整体水平发生突变，平均水平由${n1}变成${n2}`',
-  '(n1,n2) => `轴承温度 超温${n1}℃≥${n2}℃`'
-];
+const FETCH_CYCLE = 10 * 60 * 1000;
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +17,7 @@ export class WarnForecastInfoDataService implements IDataService{
 
   private _dataSubject: Subject<any> = new Subject<any>();
 
-  constructor() {}
+  constructor(private http: HttpClient) { }
 
   getDataStructure(): any {
     return [
@@ -37,44 +28,34 @@ export class WarnForecastInfoDataService implements IDataService{
     ];
   }
 
-  fetchData(): Array<any>{
+  fetchData(): any{
 
-    console.log("fetched one data");
-
-    return ['CR400BF', 'CRH3C', 'CRH5A', 'CRH380BL', 'CRH380B'].map((ele)=>{
-
-      let _amount = 5 + Math.floor(Math.random()*25);
-      let data = [];
-      while(_amount-- > 0){
-        data.push({
-          area: (AREA_LOOK_UP_TABLE[Math.floor(Math.random() * AREA_LOOK_UP_TABLE.length)]),
-          pv: (PV_LOOK_UP_TABLE[Math.floor(Math.random() * PV_LOOK_UP_TABLE.length)]),
-          lx: (LX_LOOK_UP_TABLE[Math.floor(Math.random() * LX_LOOK_UP_TABLE.length)]),
-          attribute: this.generateTemplateData(INFO_LOOK_UP_TEMPLATE[Math.floor(Math.random() * INFO_LOOK_UP_TEMPLATE.length)]),
-        });
-      }
-
-      return {
-        equipType: ele,
-        data: data
-      }
-
-    });
+    //设置超时，确保请求时间在interval周期内
+    this.http.get('/blueScreen/warnForecastInfo', { headers: new HttpHeaders({ timeout: `${FETCH_CYCLE- 50}` })}).subscribe(
+      data => {
+        this.addData(data);
+      },
+      error1 => {
+        this._dataSubject.error(error1);
+      });
 
   }
 
   public startTimer(){
 
-    this.addData(this.fetchData());
+    this.fetchData();
 
     setInterval(()=>{
 
-      this.addData(this.fetchData());
+      this.fetchData();
 
-    }, TIME_INTERVAL);
+    }, FETCH_CYCLE);
   }
 
   private addData(subjectData: any): void {
+    //console.log("warn forecast info data");
+    //console.log(subjectData);
+
     this._dataSubject.next(subjectData);
 
   }

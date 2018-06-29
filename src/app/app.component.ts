@@ -1,10 +1,4 @@
-import {Component, Renderer2, HostListener} from '@angular/core';
-import {OnInit} from '@angular/core';
-import {FRAMES} from "./shared/directives/outer-frame.directive";
-import {BAR_COLOR_PALETTE} from "./routes/main-page/monitor-base-info/monitor-base-info.component";
-import {EquipTypeMonitorDataService} from "./service/impl/monitor/equip-type-monitor-data.service";
-import {SystemMonitorDataService} from "./service/impl/monitor/system-monitor-data.service";
-import {ComponentMonitorDataService} from "./service/impl/monitor/component-monitor-data.service";
+import {Component, HostListener, OnInit, Renderer2} from '@angular/core';
 
 const DEFAULT_CLIENT_HEIGHT: number = 1080;
 const DEFAULT_CLIENT_WIDTH: number = 1920;
@@ -36,7 +30,6 @@ export class AppComponent implements OnInit{
     let innerHeight = window.innerHeight;
 
     this.scaleTransform(innerWidth, innerHeight);
-
   }
 
   //执行scale transform
