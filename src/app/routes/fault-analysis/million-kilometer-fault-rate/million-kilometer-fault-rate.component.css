@@ -1,0 +1,18 @@
+.title-div {
+  padding-left: 40px;
+}
+
+.title-div > span{
+  justify-content: center;
+  color: #14f2f5;
+  font-weight: normal;
+  font-family: Microsoft Yahei, Arial, sans-serif;
+  font-size: 30px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.million-kilometer-fault-rate-chart{
+  height: 410px;
+}

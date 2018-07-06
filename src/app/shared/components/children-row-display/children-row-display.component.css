@@ -1,0 +1,106 @@
+ul.container{
+  width: 100%;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  justify-content: flex-start;
+  height: 116px;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+}
+
+div.item-wrapper {
+  display: flex;
+  transition: transform cubic-bezier(.68,-0.55,.27,1.55) .8s;
+}
+
+.PostItem{
+  margin: 10px;
+  height: 100px;
+  width: 120px;
+  min-width: 120px;
+  border-radius: 5px;
+  box-shadow: 0 6px 14px 0 rgba(26,26,26,.06);
+  background: #8ec9eb;
+  position: relative;
+  overflow: hidden;
+  transition: transform .3s;
+
+  text-decoration: none;
+}
+
+.PostItem:hover{
+  transform: scale(1.1);
+}
+
+
+.PostItem-TitleImage {
+  height: 70px;
+  width: 120px;
+  -o-object-fit: cover;
+  object-fit: cover;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.PostItem-Title {
+  font-weight: 600;
+  font-synthesis: style;
+  font-size: 16px;
+  color: #3a3a3a;
+  margin: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  display: block;
+  text-align: center;
+  font-family: "Microsoft Yahei";
+}
+
+.PagingButton {
+  width: 48px;
+  height: 48px;
+  border-radius: 100px;
+  background: #636363;
+  box-shadow: 0 6px 13px 0 rgba(26,26,26,.06);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  cursor: pointer;
+  margin: 40px 10px 10px;
+  border: none;
+  transition: transform .3s;
+}
+
+.margin-paging-button{
+  margin: 0 65px;
+}
+
+.PagingButton:hover{
+  transform: scale(1.1);
+}
+
+
+.PagingButton-Previous {
+  position: absolute;
+  left: 0;
+  z-index: 1;
+}
+
+.PagingButton-Next {
+  position: absolute;
+  right: 0;
+  z-index: 1;
+}
+
+.Zi {
+  stroke: black;
+  fill: black;
+}

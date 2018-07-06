@@ -65,9 +65,7 @@ export class TrainStatusComponent implements OnInit {
         },
         axisLine: {show: false},
         axisTick: {show: false},
-        splitLine: {
-          show: false
-        },
+        splitLine: {show: false},
       },
       series: [{
         type: 'bar',

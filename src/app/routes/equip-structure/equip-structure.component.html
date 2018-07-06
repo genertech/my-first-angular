@@ -1,0 +1,10 @@
+<div class="equip-structure-datav-container" connerKazaro>
+  <div [outerFrame]="frames.FRAME4" class="equip-structure-display-div">
+    <div class="p-equip-structure-div">
+      <app-children-row-display [children]="equips" (onChildClick)="jump2Equip($event)"></app-children-row-display>
+    </div>
+    <div #equipStructureCharts echarts [loading]="!mapLoaded" [loadingOpts]="loadingOpts" [options]="options"
+         (chartClick)="onChartEvent($event, 'chartClick')"
+         class="equip-structure-chart"></div>
+  </div>
+</div>

@@ -1,4 +1,5 @@
 import {Component, HostListener, OnInit, Renderer2} from '@angular/core';
+import {Router} from "@angular/router";
 
 const DEFAULT_CLIENT_HEIGHT: number = 1080;
 const DEFAULT_CLIENT_WIDTH: number = 1920;
@@ -24,7 +25,7 @@ export class AppComponent implements OnInit{
 
   }
 
-  constructor(private renderer: Renderer2) {
+  constructor(private renderer: Renderer2, private router: Router) {
 
     let innerWidth = window.innerWidth;
     let innerHeight = window.innerHeight;
@@ -37,8 +38,8 @@ export class AppComponent implements OnInit{
 
     let scale = innerHeight/DEFAULT_CLIENT_HEIGHT;
 
-    this.renderer.setStyle(document.body, "transform", "scale(" + scale +  ")");
-    this.renderer.setStyle(document.body, "margin-left", ((innerWidth - DEFAULT_CLIENT_WIDTH*scale) / 2) + "px");
+    this.renderer.setStyle(document.body, "transform", `scale(${scale})`);
+    this.renderer.setStyle(document.body, "margin-left", `${(innerWidth - DEFAULT_CLIENT_WIDTH*scale) / 2 }px`);
   }
 
   ngOnInit() {
@@ -47,4 +48,7 @@ export class AppComponent implements OnInit{
   }
 
 
+  goHome() {
+    this.router.navigateByUrl('/main-page')
+  }
 }

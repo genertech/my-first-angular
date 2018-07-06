@@ -3,6 +3,9 @@ import {HttpClient} from "@angular/common/http";
 import {NgxEchartsService} from "ngx-echarts";
 import {zip} from "rxjs";
 import {TrainOperationMapDataService} from "../../../service/impl/train-operation-map-data.service";
+import {Router} from "@angular/router";
+
+const EQUIP_STRUCTURE_URL = 'equip-structure/';
 
 @Component({
   selector: 'app-train-operation-map',
@@ -10,6 +13,7 @@ import {TrainOperationMapDataService} from "../../../service/impl/train-operatio
   styleUrls: ['./train-operation-map.component.css'],
   providers: [TrainOperationMapDataService]
 })
+
 export class TrainOperationMapComponent implements OnInit {
 
   warn: number = 0;
@@ -32,7 +36,9 @@ export class TrainOperationMapComponent implements OnInit {
   warnLabel: string = "预警";
   forecastLabel: string = "预测";
 
-  constructor(private http: HttpClient, private dataService: TrainOperationMapDataService, private es: NgxEchartsService) {}
+  constructor(private http: HttpClient, private dataService: TrainOperationMapDataService,
+              private es: NgxEchartsService, private router: Router) {
+  }
 
   ngOnInit() {
 
@@ -51,36 +57,44 @@ export class TrainOperationMapComponent implements OnInit {
 
       // update options:
       this.options = {
-        geo: {
+        geo3D: {
           map: 'CHINA',
+          roam: true,
+          itemStyle: {
+            color: '#3fa7dc',
+            opacity: 0.9,
+            borderWidth: 0.4,
+            borderColor: '#eee'
+          },
+          regionHeight: 1,
+          regions: provinceColor,
           label: {
-            emphasis: {
+            show: false,
+            textStyle: {
+              color: '#000', //地图初始化区域字体颜色
+              fontSize: 8,
+              opacity: 1,
+              backgroundColor: 'rgba(0,23,11,0)'
+            },
+          },
+          emphasis: { //当鼠标放上去  地区区域是否显示名称
+            label: {
               show: false
+            },
+            itemStyle:{
+              areaColor: '#3fa7dc',
             }
           },
-          roam: true,
-          scaleLimit: {
-            min: 1,
-            max: 5
-          },
-          zoom: 1.25,
-          itemStyle: {
-            normal: {
-              areaColor: "#329fec",
-              borderColor: '#eee'
-            },
-            emphasis: {
-              areaColor: "#20deec",
-            },
-          },
-          regions: provinceColor,
+          shading: 'color',
         },
         series: [
           {
-            name: '预警/预测',
-            type: 'effectScatter',
-            mapType: 'CHINA', // map type should be registered
-            coordinateSystem: 'geo',
+            id: 'train-current-position',
+            name: 'scatter3D',
+            type: "scatter3D",
+            coordinateSystem: 'geo3D',
+            symbol: 'circle',
+            opacity: 1,
             data: [
               {name: '5501', value: [113, 28.21], warn: 12, forecast: 6},
               {name: '5008', value: [118.88, 28.97], warn: 23, forecast: 0},
@@ -88,7 +102,7 @@ export class TrainOperationMapComponent implements OnInit {
               {name: '5018', value: [115.480656, 35.23375], warn: 6, forecast: 2},
               {name: '5372', value: [125.03, 46.58], warn: 7, forecast: 5},
             ],
-            symbolSize: (val: any, item) => {
+            symbolSize: (val, item) => {
 
               return item.data.warn * 2 + item.data.forecast
             },
@@ -99,7 +113,7 @@ export class TrainOperationMapComponent implements OnInit {
             hoverAnimation: true,
             label: {
               normal: {
-                formatter: (item: any) => `${item.data.name} ${item.data.warn}/${item.data.forecast}`,
+                formatter: (item) => `${item.data.name} ${item.data.warn}/${item.data.forecast}`,
                 position: 'right',
                 show: true
               }
@@ -122,10 +136,11 @@ export class TrainOperationMapComponent implements OnInit {
                 shadowColor: '#333'
               }
             },
-            zlevel: 1
+
           }
         ]
       };
+
     });
 
 
@@ -148,14 +163,14 @@ export class TrainOperationMapComponent implements OnInit {
     this.dataService.startTimer();
   }
 
-  private dataProcess(data: Array<any>){
+  private dataProcess(data: Array<any>) {
 
     let sum_warn = 0, sum_forecast = 0;
 
-    let processedData = data.map((item)=>{
+    let processedData = data.map((item) => {
 
-      sum_warn  += item.warn;
-      sum_forecast  += item.forecast;
+      sum_warn += item.warn;
+      sum_forecast += item.forecast;
       return {
         name: item.train,
         value: item.coordinate,
@@ -166,11 +181,12 @@ export class TrainOperationMapComponent implements OnInit {
     });
 
     this.updateOptions = {
-      series:[
+      series: [
         {
-          type: 'effectScatter',
+          id: 'train-current-position',
+          type: 'scatter3D',
           mapType: 'CHINA', // map type should be registered
-          coordinateSystem: 'geo',
+          coordinateSystem: 'geo3D',
           data: processedData
         }
       ]
@@ -181,4 +197,113 @@ export class TrainOperationMapComponent implements OnInit {
 
   }
 
+  nav2EquipStructure(event) {
+    console.log(event);
+    if (event.componentType === 'series') {
+      this.router.navigateByUrl(EQUIP_STRUCTURE_URL + event.data.name);
+    }
+  }
+
 }
+
+/*  3D中国地图
+option = {
+       geo3D: {
+         map: 'CHINA',
+         roam: true,
+         itemStyle: {
+             areaColor: '#3fa7dc',
+             opacity: .9,
+             borderWidth: 0.4,
+             borderColor: '#fff'
+         },
+         regionHeight: 0.15,
+        regions: provinceColor,
+         label: {
+             show: false,
+             textStyle: {
+                 color: '#000', //地图初始化区域字体颜色
+                 fontSize: 8,
+                 opacity: 1,
+                 backgroundColor: 'rgba(0,23,11,0)'
+             },
+         },
+         emphasis: { //当鼠标放上去  地区区域是否显示名称
+             label: {
+                 show: false,
+                 textStyle: {
+                     color: '#fff',
+                     fontSize: 3,
+                     backgroundColor: 'rgba(0,23,11,0)'
+                 }
+             }
+         },
+         //shading: 'lambert',
+         light: { //光照阴影
+             main: {
+                 color: '#fff', //光照颜色
+                 intensity: 1.2, //光照强度
+                 //shadowQuality: 'high', //阴影亮度
+                 shadow: false, //是否显示阴影
+                 alpha:55,
+                 beta:10
+
+             },
+              ambient: {
+                 intensity: 0.3
+             }
+         }
+     },
+        series: [
+         {
+         name: 'scatter3D',
+         type: "scatter3D",
+         coordinateSystem: 'geo3D',
+         symbol: 'circle',
+         opacity: 1,
+         data: [
+              {name: '5501', value: [113, 28.21], warn: 12, forecast: 6},
+              {name: '5008', value: [118.88, 28.97], warn: 23, forecast: 0},
+              {name: '5654', value: [116.7, 39.53], warn: 0, forecast: 2},
+              {name: '5018', value: [115.480656, 35.23375], warn: 6, forecast: 2},
+              {name: '5372', value: [125.03, 46.58], warn: 7, forecast: 5},
+            ],
+            symbolSize: (val, item) => {
+
+              return item.data.warn * 2 + item.data.forecast
+            },
+            showEffectOn: 'render',
+            rippleEffect: {
+              brushType: 'stroke'
+            },
+            hoverAnimation: true,
+            label: {
+              normal: {
+                formatter: (item) => `${item.data.name} ${item.data.warn}/${item.data.forecast}`,
+                position: 'right',
+                show: true
+              }
+            },
+            itemStyle: {
+              normal: {
+                color: (item) => {
+                  let data = item.data;
+                  if (data.warn) {
+
+                    if (data.forecast) {
+                      return '#ec3c3f'
+                    }
+                    return '#f48900'
+                  }
+
+                  return '#f4e925';
+                },
+                shadowBlur: 10,
+                shadowColor: '#333'
+              }
+            },
+
+     }
+        ]
+    };
+*/

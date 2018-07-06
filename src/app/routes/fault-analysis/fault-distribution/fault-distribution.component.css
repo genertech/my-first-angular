@@ -1,0 +1,52 @@
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.title-div {
+  padding-left: 40px;
+}
+
+.title-div > span{
+  color: #14f2f5;
+  font-weight: normal;
+  font-family: Microsoft Yahei, Arial, sans-serif;
+  font-size: 30px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.equip-type-div{
+  justify-content: flex-end
+
+}
+
+.equip-type-div > label{
+  color: #14f2f5;
+  font-weight: normal;
+  font-family: Microsoft Yahei, Arial, sans-serif;
+  font-size: 30px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.equip-type-div > span{
+  color: #e9f500;
+  font-weight: normal;
+  font-family: Microsoft Yahei, Arial, sans-serif;
+  font-size: 30px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 150px;
+  display: inline-table;
+  text-align: center;
+}
+
+.fault-distribution-chart{
+  height: 410px;
+  flex-basis: 100%;
+}

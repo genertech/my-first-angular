@@ -30,5 +30,6 @@
  {"name":"北京",  "itemStyle":{"areaColor": "#2384B7"}},
  {"name":"天津",  "itemStyle":{"areaColor": "#206199"}},
  {"name":"香港",  "itemStyle":{"areaColor": "#26A2D1"}},
- {"name":"澳门",  "itemStyle":{"areaColor": "#27B1DE"}}
+ {"name":"澳门",  "itemStyle":{"areaColor": "#27B1DE"}},
+ {"name":"上海",  "itemStyle":{"areaColor": "#27B1DE"}}
 ]

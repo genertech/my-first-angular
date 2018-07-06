@@ -40,7 +40,7 @@ export class OuterFrameDirective implements OnInit{
         break;
       }
       case FRAMES.FRAME4: {
-        frameImgPath = "/assets/img/bg-main-3.png";
+        frameImgPath = "/assets/img/bg-main-4.png";
         break;
       }
       default: {

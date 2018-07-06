@@ -5,7 +5,7 @@ import {IDataService} from "../interface/idata-service";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 const REQUEST_URL = '/blueScreen/trainOperation';
-const FETCH_CYCLE: number = 5 * 1000;
+const FETCH_CYCLE: number = 20 * 1000;
 
 @Injectable({
   providedIn: 'root'

@@ -1,0 +1,2 @@
+<div class="title-div"><span>{{labelText}}</span></div>
+<div echarts [loading]="!mapLoaded"  [options]="options" (chartInit)="chartsInit($event)" class="average-no-fault-chart"></div>

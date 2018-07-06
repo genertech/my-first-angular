@@ -33,7 +33,8 @@ export class MainPageComponent implements OnInit {
 
   constructor(private equipTypeMoniDataService: EquipTypeMonitorDataService,
               private systemMoniDataService: SystemMonitorDataService,
-              private componentMoniDataService: ComponentMonitorDataService) {
+              private componentMoniDataService: ComponentMonitorDataService,
+              ) {
 
     this.equipTypeMoniOption = this.equipTypeMoniDataService.getDataStructure();
     this.systemMoniOption = this.systemMoniDataService.getDataStructure();

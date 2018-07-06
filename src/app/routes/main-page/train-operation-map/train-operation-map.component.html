@@ -3,5 +3,6 @@
 <!--预测-->
 <app-rolling-number [title]="forecastLabel" [value]="forecast" class="forecast-div"></app-rolling-number>
 <!--地图-->
-<div echarts [options]="options" [loading]="!mapLoaded" [merge]="updateOptions" [loadingOpts]="loadingOpts" class="train-operation-map-chart"></div>
+<div echarts [options]="options" [loading]="!mapLoaded" [merge]="updateOptions"
+     [loadingOpts]="loadingOpts" (chartClick)="nav2EquipStructure($event)" class="train-operation-map-chart"></div>
 

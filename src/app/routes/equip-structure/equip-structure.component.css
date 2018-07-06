@@ -1,0 +1,28 @@
+:host {
+  height: 100%;
+}
+
+.equip-structure-datav-container {
+  padding: 20px;
+  height: 100%;
+}
+
+.equip-structure-display-div {
+  height: 100%;
+  width: 100%;
+
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.p-equip-structure-div {
+  margin: 20px auto 0 auto;
+  width: 80%;
+}
+
+.equip-structure-chart {
+  width: 1750px;
+  height: 750px;
+  margin: 0 auto;
+}

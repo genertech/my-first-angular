@@ -1,0 +1,25 @@
+<ul class="container">
+  <button *ngIf="showPagingButton('prev')" class="PagingButton PagingButton-Previous" (click)="pagingButtonClick('prev')">
+    <svg class="Zi Zi--ArrowLeft" fill="#d3d3d3" viewBox="0 0 24 24" width="40" height="40">
+      <path
+        d="M14.782 16.78a.737.737 0 0 1-1.052 0L9.218 12.53a.758.758 0 0 1 0-1.063L13.73 7.22a.737.737 0 0 1 1.052 0c.29.294.29.77.001 1.063L11 12l3.782 3.716c.29.294.29.77 0 1.063z"
+        fill-rule="evenodd"></path>
+    </svg>
+  </button>
+  <div #itemWrapper class="item-wrapper" [ngClass]="{'margin-paging-button': showPagingButton() }">
+    <a *ngFor="let item of items" (click)="onClick($event,item)" class="PostItem" [ngStyle]="item.style">
+      <div>
+        <img src="{{item.image}}" class="PostItem-TitleImage"
+             alt="{{item.name}}">
+        <h1 class="PostItem-Title">{{item.name}}</h1>
+      </div>
+    </a>
+  </div>
+  <button *ngIf="showPagingButton('next')" class="PagingButton PagingButton-Next" (click)="pagingButtonClick('next')">
+    <svg class="Zi Zi--ArrowRight" fill="#d3d3d3" viewBox="0 0 24 24" width="40" height="40">
+      <path
+        d="M9.218 16.78a.737.737 0 0 0 1.052 0l4.512-4.249a.758.758 0 0 0 0-1.063L10.27 7.22a.737.737 0 0 0-1.052 0 .759.759 0 0 0-.001 1.063L13 12l-3.782 3.716a.758.758 0 0 0 0 1.063z"
+        fill-rule="evenodd"></path>
+    </svg>
+  </button>
+</ul>

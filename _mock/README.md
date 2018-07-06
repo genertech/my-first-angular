@@ -1,5 +1,7 @@
 # _mock
 
+[文档](https://ng-alain.com/mock/getting-started)
+
 **Mock** 是指通过生成模拟数据让前端开发人员独立于后端进行开发，有时我们也会运用在测试环境中。
 
 **应** 包含定义：

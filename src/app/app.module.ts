@@ -21,10 +21,15 @@ import {DashboardComponent} from './routes/dashboard/dashboard.component';
 import {DelonMockModule} from '@delon/mock';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
-
+import {environment} from '../environments/environment'
+import { EquipStructureComponent } from './routes/equip-structure/equip-structure.component';
+import { ChildrenRowDisplayComponent } from './shared/components/children-row-display/children-row-display.component';
 import * as MOCKDATA from '../../_mock';
-// 只对开发环境有效
-import {environment} from '../environments/environment';
+import {FaultAnalysisComponent} from "./routes/fault-analysis/fault-analysis.component";
+import { MillionKilometerFaultRateComponent } from './routes/fault-analysis/million-kilometer-fault-rate/million-kilometer-fault-rate.component';
+import { RuntimeFaultComponent } from './routes/fault-analysis/runtime-fault/runtime-fault.component';
+import { AverageNoFaultComponent } from './routes/fault-analysis/average-no-fault/average-no-fault.component';
+import { FaultDistributionComponent } from './routes/fault-analysis/fault-distribution/fault-distribution.component';
 
 const MOCKMODULE = !environment.production ? [ DelonMockModule.forRoot({ data: MOCKDATA }) ] : [];
 
@@ -38,7 +43,13 @@ const COMPONENTS = [
   CircleComponent,
   WarnForecastInfoComponent,
   HealthEvaluationInfoComponent,
-
+  MainPageComponent,
+  EquipStructureComponent,
+  DashboardComponent,
+  ChildrenRowDisplayComponent,
+  FaultAnalysisComponent,
+  MillionKilometerFaultRateComponent,
+  RuntimeFaultComponent,
 ];
 
 const DIRECTIVES = [
@@ -56,8 +67,8 @@ export function createTranslateHttpLoader(http: HttpClient) {
   declarations: [
     ...COMPONENTS,
     ...DIRECTIVES,
-    MainPageComponent,
-    DashboardComponent,
+    AverageNoFaultComponent,
+    FaultDistributionComponent,
 
   ],
   imports: [

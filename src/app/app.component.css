@@ -1,0 +1,41 @@
+.banner{
+  width: 100%;
+  height: 90px;
+
+  position: relative;
+
+  background: url(/assets/img/banner-bg.png) no-repeat;
+  background-size: 100% 100%;
+}
+
+.app-logo{
+
+  width: 425px;
+  height: 45px;
+
+  position: absolute;
+  margin-left: 125px;
+  margin-top: 15px;
+
+  background: url(/assets/img/logo.png) no-repeat;
+  background-size: 100% 100%;
+
+  cursor:pointer;
+}
+
+.app-title{
+  width: 600px;
+  height: 45px;
+
+  position: absolute;
+  margin-left: 50%;
+  top: 15px;
+  left: -300px;
+
+  background: url(/assets/img/title.png) no-repeat;
+  background-size: 100% 100%;
+}
+
+.main-content {
+  height: 950px;
+}
