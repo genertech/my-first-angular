@@ -1,0 +1,28 @@
+:host {
+  background: url(../../../../assets/img/title-bg-1.png) no-repeat ;
+  background-size: 100% 100%;
+  display: block;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+:host:before{
+  position: absolute;
+  display: inline-block;
+  content: 'H';
+  color: rgba(0,0,0,0);
+  background-image: url(../../../../assets/img/rivet.png), url(../../../../assets/img/rivet.png);
+  background-repeat: no-repeat, no-repeat;
+  background-position: 30px 50%, calc(100% - 30px) 50%;
+  background-size: 28px, 28px;
+  float: left;
+  height: 100%;
+  width: 100%;;
+}
+
+.glass-display-frame {
+  width: calc(100% - 140px);
+  margin: 0 auto;
+  height: 100%;
+}

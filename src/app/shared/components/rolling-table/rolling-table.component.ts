@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import {animate, AnimationBuilder, AnimationFactory, state, style, transition, trigger} from '@angular/animations';
 import {Subject} from "rxjs/internal/Subject";
+import {RollingTableColumnSetting} from "./rolling-table-column-setting";
 
 const TIME_INTERVAL = 5000;
 
@@ -35,15 +36,12 @@ export class RollingTableComponent implements OnInit, AfterViewInit, OnChanges {
   @ViewChild('title') titleRow: ElementRef;
   @ViewChildren('dataRow', {read: ElementRef}) dataRows: QueryList<ElementRef>;
 
-  //item镜像
-  _item: any;
   items: Array<any> = [];
 
-  @Input() maxGroup: number = 10;   //最大数据组数
-  @Input() maxSize: number = 50;    //最大数据项目
+  @Input() rollingThreshold: number = 5;    //触发滚动阈值
   @Input() timing = '500ms ease-in';
   @Input() rawData: Array<any>;
-  @Input() columnInfo: Array<any>;
+  @Input() columnSetting: RollingTableColumnSetting;
 
   private _selectedPoint: Subject<any> = new Subject<any>();
 
@@ -84,8 +82,15 @@ export class RollingTableComponent implements OnInit, AfterViewInit, OnChanges {
       this.items.length = 0;
     }
 
-    if(data){
-      this.firstSwapTimer();
+    if(data && data.length > 0){
+
+      if(data.length >= this.rollingThreshold){
+
+        this.firstSwapTimer();
+      }else{
+        clearTimeout(this.timerTimeout);
+        clearInterval(this.timerInterval);
+      }
 
       data.map((ele, idx) => {
 
@@ -110,12 +115,12 @@ export class RollingTableComponent implements OnInit, AfterViewInit, OnChanges {
 
       if(this.items){
         //移除头数据到末尾
-        this._item = this.items.shift();
+        let _item = this.items.shift();
 
         this.timerTimeout = setTimeout(() => {
           //移除头数据到末尾
-          this.items.push(this._item);
-        }, TIME_INTERVAL);
+          this.items.push(_item);
+        }, 50);
 
       }
     }, TIME_INTERVAL);

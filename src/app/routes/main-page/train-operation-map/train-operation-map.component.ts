@@ -86,6 +86,12 @@ export class TrainOperationMapComponent implements OnInit {
             }
           },
           shading: 'color',
+          viewControl:{
+            rotateMouseButton: 'left',
+            panMouseButton: 'right',
+            minDistance: 10,
+            maxDistance: 400,
+          }
         },
         series: [
           {
@@ -93,18 +99,18 @@ export class TrainOperationMapComponent implements OnInit {
             name: 'scatter3D',
             type: "scatter3D",
             coordinateSystem: 'geo3D',
-            symbol: 'circle',
+            symbol: 'pin',
             opacity: 1,
             data: [
-              {name: '5501', value: [113, 28.21], warn: 12, forecast: 6},
-              {name: '5008', value: [118.88, 28.97], warn: 23, forecast: 0},
+              {name: '5501', value: [113, 28.21], warn: 2, forecast: 3},
+              {name: '5008', value: [118.88, 28.97], warn: 5, forecast: 0},
               {name: '5654', value: [116.7, 39.53], warn: 0, forecast: 2},
-              {name: '5018', value: [115.480656, 35.23375], warn: 6, forecast: 2},
-              {name: '5372', value: [125.03, 46.58], warn: 7, forecast: 5},
+              {name: '5018', value: [115.480656, 35.23375], warn: 2, forecast: 2},
+              {name: '5372', value: [125.03, 46.58], warn: 1, forecast: 5},
             ],
             symbolSize: (val, item) => {
 
-              return item.data.warn * 2 + item.data.forecast
+              return  20 + 10* (item.data.warn * 2 + item.data.forecast)
             },
             showEffectOn: 'render',
             rippleEffect: {
@@ -113,7 +119,9 @@ export class TrainOperationMapComponent implements OnInit {
             hoverAnimation: true,
             label: {
               normal: {
-                formatter: (item) => `${item.data.name} ${item.data.warn}/${item.data.forecast}`,
+                formatter: (item) => (item.data.warn || item.data.forecast) ?
+                  `${item.data.name} ${item.data.warn}/${item.data.forecast}` : `${item.data.name}`
+                ,
                 position: 'right',
                 show: true
               }
@@ -130,7 +138,11 @@ export class TrainOperationMapComponent implements OnInit {
                     return '#f48900'
                   }
 
-                  return '#f4e925';
+                  if(data.forecast){
+                    return '#f4e925';
+                  }
+
+                  return '#4af43f';
                 },
                 shadowBlur: 10,
                 shadowColor: '#333'
@@ -163,19 +175,41 @@ export class TrainOperationMapComponent implements OnInit {
     this.dataService.startTimer();
   }
 
+  /**
+   * data - >
+   * [{equipName: "0504"
+   *   equipSn: "0504"
+   *   equipType: "CRH380BG"
+   *   equipTypeName: "CRH380BG"
+   *   posX: 126.5078
+   *   posY: 45.6322
+   *   prognosCount: 0
+   *   updateTime: 1530696234000
+   *   warnCount: 0
+   * },...]
+   */
   private dataProcess(data: Array<any>) {
 
     let sum_warn = 0, sum_forecast = 0;
 
-    let processedData = data.map((item) => {
+    let processedData = data.filter(item =>{
+       return (item.posX && item.posY);
 
-      sum_warn += item.warn;
-      sum_forecast += item.forecast;
+    }).map((item) => {
+
+      if(item.warnCount){
+        sum_warn += item.warnCount;
+      }
+
+      if(item.prognosCount){
+        sum_forecast += item.prognosCount;
+      }
+
       return {
-        name: item.train,
-        value: item.coordinate,
-        warn: item.warn,
-        forecast: item.forecast
+        name: item.equipName,
+        value: [item.posX, item.posY],
+        warn: item.warnCount,
+        forecast: item.prognosCount
       };
 
     });
@@ -205,105 +239,3 @@ export class TrainOperationMapComponent implements OnInit {
   }
 
 }
-
-/*  3D中国地图
-option = {
-       geo3D: {
-         map: 'CHINA',
-         roam: true,
-         itemStyle: {
-             areaColor: '#3fa7dc',
-             opacity: .9,
-             borderWidth: 0.4,
-             borderColor: '#fff'
-         },
-         regionHeight: 0.15,
-        regions: provinceColor,
-         label: {
-             show: false,
-             textStyle: {
-                 color: '#000', //地图初始化区域字体颜色
-                 fontSize: 8,
-                 opacity: 1,
-                 backgroundColor: 'rgba(0,23,11,0)'
-             },
-         },
-         emphasis: { //当鼠标放上去  地区区域是否显示名称
-             label: {
-                 show: false,
-                 textStyle: {
-                     color: '#fff',
-                     fontSize: 3,
-                     backgroundColor: 'rgba(0,23,11,0)'
-                 }
-             }
-         },
-         //shading: 'lambert',
-         light: { //光照阴影
-             main: {
-                 color: '#fff', //光照颜色
-                 intensity: 1.2, //光照强度
-                 //shadowQuality: 'high', //阴影亮度
-                 shadow: false, //是否显示阴影
-                 alpha:55,
-                 beta:10
-
-             },
-              ambient: {
-                 intensity: 0.3
-             }
-         }
-     },
-        series: [
-         {
-         name: 'scatter3D',
-         type: "scatter3D",
-         coordinateSystem: 'geo3D',
-         symbol: 'circle',
-         opacity: 1,
-         data: [
-              {name: '5501', value: [113, 28.21], warn: 12, forecast: 6},
-              {name: '5008', value: [118.88, 28.97], warn: 23, forecast: 0},
-              {name: '5654', value: [116.7, 39.53], warn: 0, forecast: 2},
-              {name: '5018', value: [115.480656, 35.23375], warn: 6, forecast: 2},
-              {name: '5372', value: [125.03, 46.58], warn: 7, forecast: 5},
-            ],
-            symbolSize: (val, item) => {
-
-              return item.data.warn * 2 + item.data.forecast
-            },
-            showEffectOn: 'render',
-            rippleEffect: {
-              brushType: 'stroke'
-            },
-            hoverAnimation: true,
-            label: {
-              normal: {
-                formatter: (item) => `${item.data.name} ${item.data.warn}/${item.data.forecast}`,
-                position: 'right',
-                show: true
-              }
-            },
-            itemStyle: {
-              normal: {
-                color: (item) => {
-                  let data = item.data;
-                  if (data.warn) {
-
-                    if (data.forecast) {
-                      return '#ec3c3f'
-                    }
-                    return '#f48900'
-                  }
-
-                  return '#f4e925';
-                },
-                shadowBlur: 10,
-                shadowColor: '#333'
-              }
-            },
-
-     }
-        ]
-    };
-*/

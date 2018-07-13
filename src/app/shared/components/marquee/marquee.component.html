@@ -1,0 +1,10 @@
+<div class="data-marquee">
+  <div class="marquee-text" [@marqueeAnimation]="aniStatus" (@marqueeAnimation.done)="animationCallBack($event)">
+    <span class="marquee-text-span">
+      {{marqueeText}}
+    </span>
+    <span class="marquee-text-span">
+      {{marqueeText}}
+    </span>
+  </div>
+</div>

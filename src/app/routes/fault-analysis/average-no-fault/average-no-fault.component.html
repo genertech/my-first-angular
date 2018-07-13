@@ -1,2 +1,4 @@
 <div class="title-div"><span>{{labelText}}</span></div>
-<div echarts [loading]="!mapLoaded"  [options]="options" (chartInit)="chartsInit($event)" class="average-no-fault-chart"></div>
+<div echarts [loading]="!mapLoaded"  [options]="options" [merge]="mergeOptions" (chartInit)="chartsInit($event)" class="average-no-fault-chart"></div>
+<app-rolling-number [value]="pieNumber" [title]="''" ></app-rolling-number>
+<app-rotation-data-switch [value]="currEquip" [rotationAxis]="axis.Y"></app-rotation-data-switch>

@@ -9,7 +9,7 @@ export class KazaroDirective {
     //el.nativeElement.style.backgroundColor = 'yellow';
 
     this.renderer.setStyle(this.el.nativeElement, "background-image",
-      'url("/assets/img/conner-lt.gif"),url("/assets/img/conner-tr.gif"),url("/assets/img/conner-lb.gif"),url("/assets/img/conner-br.gif")');
+      'url("assets/img/conner-lt.gif"),url("assets/img/conner-tr.gif"),url("assets/img/conner-lb.gif"),url("assets/img/conner-br.gif")');
     this.renderer.setStyle(this.el.nativeElement, "background-repeat",
       "no-repeat, no-repeat, no-repeat, no-repeat");
     this.renderer.setStyle(this.el.nativeElement, "background-position",

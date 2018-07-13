@@ -1,0 +1,16 @@
+.maintenance-decision-container{
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-gap: 10px;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+
+.maintenance-decision-container > div {
+  overflow-y: hidden;
+  padding-bottom: 30px;
+  box-sizing: border-box;
+}

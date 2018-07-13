@@ -76,6 +76,7 @@ export class MainPageComponent implements OnInit {
 
     this.componentMoniDataService.currentSubject().subscribe(
       next => {
+
         this.componentMoniInfoData = next;
 
       },

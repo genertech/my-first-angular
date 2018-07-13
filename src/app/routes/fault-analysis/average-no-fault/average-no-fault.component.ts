@@ -1,22 +1,29 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {AXIS} from "../../../shared/components/rotation-data-switch/rotation-data-switch.component";
 
 @Component({
   selector: 'app-average-no-fault',
   templateUrl: './average-no-fault.component.html',
-  styleUrls: ['./average-no-fault.component.css']
+  styleUrls: ['./average-no-fault.component.css'],
+
 })
-export class AverageNoFaultComponent implements OnInit {
+export class AverageNoFaultComponent implements OnInit, OnChanges {
 
   options: any;
+  mergeOptions: any;
 
   @Input() labelText: string = 'title';
+  @Input() data: any;
 
   mapLoaded = false;
 
-  constructor() { }
+  pieNumber: number = 0;
 
-  ngOnInit() {
+  axis: any = AXIS;
 
+  currEquip: string = '';
+
+  constructor() {
     this.mapLoaded = true;
 
     this.options = {
@@ -32,6 +39,7 @@ export class AverageNoFaultComponent implements OnInit {
       },
       series : [
         {
+          id: 'average_pie',
           type: 'pie',
           center: ['50%', '40%'],
           radius: ['50%', '65%'],
@@ -60,22 +68,63 @@ export class AverageNoFaultComponent implements OnInit {
 
   }
 
+  ngOnChanges(){
+    this.dataProcess();
+  }
+
+  private dataProcess() {
+
+    this.mergeOptions = {
+      legend:{
+        data: this.data.map((item) => { return item.name })
+      },
+      series: [{
+        id: 'average_pie',
+        data: this.data
+      }]
+    };
+
+  }
+
+  ngOnInit() {
+
+
+
+  }
+
   private currentIndex = -1;
   private pieSwitchInterval:any;
 
 
   chartsInit(myCharts) {
+
+    let option = this.data;
+
+    let dataLen = option.length;
+
+    this.currentIndex = (this.currentIndex + 1) % dataLen;
+
+    this.pieNumber = option[this.currentIndex].value;
+    this.currEquip = option[this.currentIndex].name;
+
+    myCharts.dispatchAction({
+      type: 'pieSelect',
+      seriesIndex: 0,
+      dataIndex: this.currentIndex
+    });
+
     this.pieSwitchInterval = setInterval( ()=>  {
-      var dataLen = this.options.series[0].data.length;
 
       this.currentIndex = (this.currentIndex + 1) % dataLen;
+
+      this.pieNumber = option[this.currentIndex].value;
+      this.currEquip = option[this.currentIndex].name;
 
       myCharts.dispatchAction({
         type: 'pieSelect',
         seriesIndex: 0,
         dataIndex: this.currentIndex
       });
-
 
     }, 3000);
   }

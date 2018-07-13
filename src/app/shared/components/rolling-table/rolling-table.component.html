@@ -1,8 +1,8 @@
 <ul class="rolling-table-ul">
   <li #title class="title-li">
     <div class="rolling-table-row-wrapper">
-      <div style="width:10%;"></div>
-      <ng-container *ngFor="let column of columnInfo">
+      <div *ngIf="columnSetting.needIdx" [ngStyle]="{'width': columnSetting.idxOccupancyRate + '%'}"></div>
+      <ng-container *ngFor="let column of columnSetting.columns">
         <div [ngStyle]="column.style">{{column.title}}</div>
       </ng-container>
     </div>
@@ -10,11 +10,11 @@
   <ng-container *ngFor="let item of items" >
     <li #dataRow class="data-li" [@flyInOut]="'in'" [ngClass]="item.idx % 2 === 1 ? 'data-li-odd' : 'data-li-even'" >
       <div class="rolling-table-row-wrapper">
-        <div style="width:10%;">
+        <div *ngIf="columnSetting.needIdx" [ngStyle]="{'width': columnSetting.idxOccupancyRate + '%'}">
           <circle-element [content]="item.idx"></circle-element>
         </div>
-        <ng-container *ngFor="let column of columnInfo">
-          <div [ngStyle]="column.style">{{item[column.key]}}</div>
+        <ng-container *ngFor="let column of columnSetting.columns">
+          <div [ngStyle]="column.style">{{item[column.key] | keyTranslate: column.keyTranslate}}</div>
         </ng-container>
       </div>
     </li>

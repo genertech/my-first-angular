@@ -1,3 +1,12 @@
+:host {
+  height: 100%;
+  padding: 40px;
+  box-sizing: border-box;
+  width: 100%;
+  display: block;
+  color: white;
+}
+
 button {
   width: 100px;
   height: 80px;

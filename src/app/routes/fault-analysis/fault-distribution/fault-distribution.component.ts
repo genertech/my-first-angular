@@ -51,7 +51,8 @@ export class FaultDistributionComponent implements OnInit {
           symbolSize: 12,
           label:{
             show:true,
-            formatter: '{c}'
+            formatter: '{c}',
+            fontSize: 18
           },
           areaStyle: {
             color: {
@@ -77,7 +78,6 @@ export class FaultDistributionComponent implements OnInit {
         }
       ]
     };
-
 
   }
 

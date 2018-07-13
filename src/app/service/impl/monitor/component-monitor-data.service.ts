@@ -2,9 +2,10 @@ import {Injectable} from '@angular/core';
 import {IDataService} from "../../interface/idata-service";
 import {Subject} from "rxjs/internal/Subject";
 import {Observable} from "rxjs/internal/Observable";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {PortletUtils} from "../../../utils/PortletUtils";
 
-const FETCH_CYCLE = 5 * 1000;
+const FETCH_CYCLE = 60 * 1000;
 
 
 @Injectable({
@@ -12,7 +13,7 @@ const FETCH_CYCLE = 5 * 1000;
 })
 export class ComponentMonitorDataService implements IDataService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private portletUtils: PortletUtils) { }
 
   private _idInterval: any;
 
@@ -22,17 +23,42 @@ export class ComponentMonitorDataService implements IDataService {
 
   getDataStructure(): any {
     return {
-      title: {key: "component" },
+      title: {key: "sysName" },
       dataColumns: [
         {key: "warnCount", title: "预警"},
-        {key: "forecastCount", title: "预测"}
+        {key: "prognosCount", title: "预测"}
       ]
     };
   }
 
   fetchData():any {
 
+    let basePortletURL = this.portletUtils.createDefaultResourceURL("reportPortlet", "queryReportData");
+
+    let params = new HttpParams({
+      fromObject : {
+        'reportCode' : "RP_PART_STATISTICS"}
+    });
+
+    this.http.jsonp(`${basePortletURL}&${params.toString()}`, "callback=JSON_CALLBACK").subscribe(
+      data => {
+
+        let _response:any = (data);
+
+        if(_response.status === "success"){
+          this.addData(_response.data.result);
+
+        }else{
+          this._dataSubject.error(_response.msg)
+        }
+      },
+      error1 => {
+        this._dataSubject.error(error1);
+      }
+    );
+
     //设置超时，确保请求时间在interval周期内
+    /*
     this.http.get('/blueScreen/moniBase/component', { headers: new HttpHeaders({ timeout: `${FETCH_CYCLE- 50}` })}).subscribe(
       data => {
         this.addData(data);
@@ -40,7 +66,7 @@ export class ComponentMonitorDataService implements IDataService {
       error1 => {
         this._dataSubject.error(error1);
       });
-
+    */
   }
 
   public startTimer() {
@@ -56,7 +82,7 @@ export class ComponentMonitorDataService implements IDataService {
 
   private addData(subjectData: any): void {
     //console.log("component monitor data");
-    console.log(subjectData);
+    //console.log(subjectData);
 
     this._dataSubject.next(subjectData);
 

@@ -78,6 +78,7 @@ export class MonitorBaseInfoComponent implements OnInit, OnChanges {
         {
           type: 'category',
           offset: 40,
+          inverse: true,
           axisTick: {show: false},
           axisLabel: {
             interval: 0,
@@ -91,6 +92,7 @@ export class MonitorBaseInfoComponent implements OnInit, OnChanges {
       xAxis: [
         {
           type: 'value',
+          minInterval: 1,
           axisLabel: {
             interval: 0,
             fontSize: 16,
@@ -164,6 +166,7 @@ export class MonitorBaseInfoComponent implements OnInit, OnChanges {
 
       let y_axis_data = [], legend_data, series = [];
 
+
       //获取配置legend
       legend_data = this.option.dataColumns.map((columnSetting) =>{
 
@@ -193,6 +196,11 @@ export class MonitorBaseInfoComponent implements OnInit, OnChanges {
 
       });
 
+      while(y_axis_data.length < 5){
+        y_axis_data.push("");
+
+      }
+
 
       this.updateOptions = {
         legend: {
@@ -208,9 +216,9 @@ export class MonitorBaseInfoComponent implements OnInit, OnChanges {
             symbolSize: ['150%', '100%'],
             symbolOffset: ['-110%', 0],
             barCategoryGap: '30%',
-            data: y_axis_data.map(()=>{
+            data: y_axis_data.map((item)=>{
               return {
-                value: 1,
+                value: item ? .1 : 0,
                 symbol: PATH_SYMBOLS.collapseHouse
               };
             })

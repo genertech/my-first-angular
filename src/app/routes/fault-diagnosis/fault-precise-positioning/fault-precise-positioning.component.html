@@ -1,0 +1,3 @@
+<div class="title-div"><span>{{labelText}}</span></div>
+<div class="equip-type-div"><label>{{equipTypeLabelText}}</label><span [@equipTypeStatus]="aniStatus" (@equipTypeStatus.done)="switchCallback($event)">{{equipType}}</span></div>
+<app-rolling-table [rawData]="preciseInfo" [columnSetting]="columnInfo"></app-rolling-table>

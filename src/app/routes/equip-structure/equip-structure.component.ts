@@ -52,6 +52,8 @@ export class EquipStructureComponent implements OnInit {
     let sn = this.route.snapshot.paramMap.get('sn');
 
     this.dataService.getEquipStructure(sn).subscribe(equipStructure => {
+        console.log(equipStructure);
+
         this.dataDisplay(equipStructure);
       },
       error1 => {
@@ -62,6 +64,8 @@ export class EquipStructureComponent implements OnInit {
   private displayAreaParams(areaId: any) {
 
     this.dataService.getAreaParams(areaId).subscribe(areaParams => {
+
+      console.log(areaParams);
 
       if (areaParams.image) {
 
@@ -398,7 +402,6 @@ export class EquipStructureComponent implements OnInit {
         }
       });
     }
-
 
   }
 

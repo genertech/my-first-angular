@@ -1,0 +1,16 @@
+.fault-diagnosis-container{
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-gap: 10px;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+
+.fault-diagnosis-container > div {
+  overflow-y: hidden;
+  padding-bottom: 30px;
+  box-sizing: border-box;
+}

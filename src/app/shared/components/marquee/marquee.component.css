@@ -1,0 +1,17 @@
+.data-marquee {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.marquee-text {
+  display: inline-block;
+  font-size: 25px;
+  color: yellow;
+  font-family: "Microsoft Yahei";
+  width: 210%;
+}
+
+.marquee-text-span {
+  display: inline-block;
+  width: 50%;
+}

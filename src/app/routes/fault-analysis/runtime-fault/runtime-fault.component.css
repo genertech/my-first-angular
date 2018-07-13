@@ -1,3 +1,9 @@
+:host{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
 .title-div {
   padding-left: 40px;
 }
@@ -13,6 +19,12 @@
   overflow: hidden;
 }
 
+ng-marquee{
+  justify-content: flex-end;
+  width: 1080px;
+}
+
 .runtime-fault-chart{
   height: 410px;
+  flex-basis: 100%;
 }

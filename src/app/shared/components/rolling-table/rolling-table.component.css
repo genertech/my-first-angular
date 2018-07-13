@@ -8,6 +8,7 @@
   font-family: "Microsoft Yahei";
   padding-left: 0;
   margin-top: 5px;
+  overflow: hidden;
 
 }
 
@@ -29,12 +30,12 @@
   height: 100%;
 }
 
-.rolling-table-ul > li.data-li-odd, .title-li {
-  background-color: #0a2732;
+.rolling-table-ul > li.data-li-odd {
+  background-color: rgba(48,100,115,0.3);
 }
 
-.rolling-table-ul > li.data-li-even{
-  background-color: rgba(48,100,115,0.3);
+.rolling-table-ul > li.data-li-even, .title-li{
+  background-color: #0a2732;
 }
 
 .rolling-table-row-wrapper > div{

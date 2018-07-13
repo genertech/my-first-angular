@@ -4,7 +4,7 @@
 
   position: relative;
 
-  background: url(/assets/img/banner-bg.png) no-repeat;
+  background: url(../assets/img/banner-bg.png) no-repeat;
   background-size: 100% 100%;
 }
 
@@ -17,7 +17,7 @@
   margin-left: 125px;
   margin-top: 15px;
 
-  background: url(/assets/img/logo.png) no-repeat;
+  background: url(../assets/img/logo.png) no-repeat;
   background-size: 100% 100%;
 
   cursor:pointer;
@@ -32,10 +32,10 @@
   top: 15px;
   left: -300px;
 
-  background: url(/assets/img/title.png) no-repeat;
+  background: url(../assets/img/title.png) no-repeat;
   background-size: 100% 100%;
 }
 
 .main-content {
-  height: 950px;
+  height: 990px;
 }

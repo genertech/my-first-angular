@@ -4,7 +4,7 @@ import {Subject} from "rxjs/internal/Subject";
 import {Observable} from "rxjs/internal/Observable";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 
-const FETCH_CYCLE = 5 * 1000;
+const FETCH_CYCLE = 60 * 1000;
 
 @Injectable({
   providedIn: 'root'

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {HealthEvaluationInfoDataService} from "../../../service/impl/health-evaluation-info-data.service";
+import {RollingTableColumnSetting} from "../../../shared/components/rolling-table/rolling-table-column-setting";
 
 const SWITCH_INTERVAL = 60 * 1000;
 
@@ -12,10 +13,10 @@ const SWITCH_INTERVAL = 60 * 1000;
   animations: [
     trigger('equipTypeStatus', [
       state('inactive', style({
-        transform: 'translateY(-100%)'
+        transform: 'rotateX(0)'
       })),
       state('active',   style({
-        transform: 'translateY(0)'
+        transform: 'rotateX(90deg)'
       })),
       transition('inactive => active', animate('200ms ease-in')),
       transition('active => inactive', animate('200ms ease-out'))
@@ -30,10 +31,10 @@ export class HealthEvaluationInfoComponent implements OnInit {
   _equipType: string = 'N/A';
   equipType: string = 'N/A';
 
-  columnInfo: Array<any>;
+  columnInfo: RollingTableColumnSetting;
 
   healthEvaluationInfo: Array<any>;
-  aniStatus: string = 'active';
+  aniStatus: string = 'inactive';
 
   private switchInterval: any;
 
@@ -63,31 +64,67 @@ export class HealthEvaluationInfoComponent implements OnInit {
 
   }
 
-  private dataSwitch(anies: Array<any>) {
+  private dataSwitch(data: Array<any>) {
     //console.log(anies);
 
-    if(anies && anies.length > 0){
+    if(data && data.length > 0){
+
+      let anies = this.dataProcess(data);
 
       anies.push(this.data2View(anies.shift()));
-
 
       this.switchInterval = setInterval(()=>{
 
         anies.push(this.data2View(anies.shift()));
 
       }, SWITCH_INTERVAL);
-
     }
+  }
 
+  /**
+   * data -> [{
+   *  equipName	"5824"
+   *  areaName	"01车"
+   *  areaCode	"01"
+   *  partName	"3-16"
+   *  equipTypeName	"CRH380BL"
+   *  equipSn	"5824"
+   *  partBei	"3-16"
+   *  healthLevel	"A"
+   *  equipType	"CRH380BL"
+   * }]
+   */
+  private dataProcess(data: Array<any>): Array<any> {
+    let _equipTypes = [];
+    let anies = [];
+
+    data.forEach((item) => {
+
+      let equipTypeName = item.equipTypeName;
+
+      let idx = _equipTypes.indexOf(equipTypeName);
+
+      if (idx > -1) {
+        anies[idx].data.push(item);
+
+      } else {
+        _equipTypes.push(equipTypeName);
+        anies.push({
+          equipType: equipTypeName,
+          data: [item]
+        });
+      }
+    });
+
+    return anies;
   }
 
   private data2View(data: any){
 
-    this.aniStatus = 'inactive';
+    this.aniStatus = 'active';
 
     this._equipType = data.equipType;
     this.healthEvaluationInfo = data.data;
-
 
     return data;
   }
@@ -107,9 +144,9 @@ export class HealthEvaluationInfoComponent implements OnInit {
    */
   switchCallback($event){
 
-    if($event.fromState === 'active' || $event.fromState === 'void'){
+    if($event.fromState === 'inactive' || $event.fromState === 'void'){
       this.equipType = this._equipType;
-      this.aniStatus='active'
+      this.aniStatus='inactive'
     }
 
   }

@@ -1,15 +1,15 @@
 import {Component, OnInit, Input, OnChanges} from '@angular/core';
 import {Observer} from "rxjs/internal/types";
 
-const FETCH_CYCLE: number = 30 * 1000;
-const ANIME_CYCLE: number = 50; //以60HZ刷新率为基准
-const DEBOUNCE: number = 5;
+const MS_PER_FRAME: number = 16; //以60HZ刷新率为基准
+const LOOP_CYCLE: number = 1000; //以3秒
 
 //用于迭代数据，更好的暂时效果
 class RollingAnimation {
   private lastFetchedNumber: number = 0;
 
   private _idNumberRoll: any;
+  private _isIncrease: boolean = true;
 
   ondata: Function;
   oncomplete: Function;
@@ -21,7 +21,7 @@ class RollingAnimation {
 
   private isAnimating(){
    return this._idNumberRoll !== undefined;
-}
+  }
 
   updateValue(v: number){
 
@@ -30,36 +30,45 @@ class RollingAnimation {
       this.destroy();
     }
 
-    let i = this.lastFetchedNumber, timeoutFlag = false;
+    let i = this.lastFetchedNumber;
 
-    //间隔太大，大于动画帧执行时间
-    if(Math.abs(v - i) > DEBOUNCE){
-      timeoutFlag = true;
+    let deltaPerFrame = this.deltaPerFrame(v);
 
-    }
+    this._isIncrease = deltaPerFrame > 0;
 
-    if(i < v){
-      timeoutFlag ? i = v - DEBOUNCE : null;
-      this._idNumberRoll = setInterval(() => this.emit(i++), ANIME_CYCLE);
-    }else{
-      timeoutFlag ? i = v + DEBOUNCE : null;
-      this._idNumberRoll = setInterval(() => this.emit(i--), ANIME_CYCLE);
-    }
+
+    this._idNumberRoll = setInterval(() => this.emit( i += deltaPerFrame), MS_PER_FRAME);
 
     this.lastFetchedNumber = v;
   }
 
-  //数据迭代
-  private emit(n) {
-    if (this.ondata) {
-      this.ondata(n);
-    }
+  private deltaPerFrame(newValue: number){
+    return (newValue - this.lastFetchedNumber) / (LOOP_CYCLE / MS_PER_FRAME);
+  }
 
-    if (n === this.lastFetchedNumber) {
+  //数据迭代
+  private emit(n: number) {
+
+    if(this._isIncrease && n >= this.lastFetchedNumber){
+      this.ondata(this.lastFetchedNumber);
+
       if (this.oncomplete) {
+
         this.oncomplete();
       }
       this.destroy();
+    }else if(!this._isIncrease && n <= this.lastFetchedNumber){
+      this.ondata(this.lastFetchedNumber);
+
+      if (this.oncomplete) {
+
+        this.oncomplete();
+      }
+      this.destroy();
+    }else{
+      if (this.ondata) {
+        this.ondata(n.toFixed(0));
+      }
     }
   }
 

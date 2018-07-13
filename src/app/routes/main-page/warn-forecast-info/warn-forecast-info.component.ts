@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {WarnForecastInfoDataService} from "../../../service/impl/warn-forecast-info-data.service";
+import {RollingTableColumnSetting} from "../../../shared/components/rolling-table/rolling-table-column-setting";
 
 const SWITCH_INTERVAL = 60 * 1000;
 
@@ -8,14 +9,14 @@ const SWITCH_INTERVAL = 60 * 1000;
   selector: 'app-warn-forecast-info',
   templateUrl: './warn-forecast-info.component.html',
   styleUrls: ['./warn-forecast-info.component.css'],
-  providers:[WarnForecastInfoDataService],
+  providers: [WarnForecastInfoDataService],
   animations: [
     trigger('equipTypeStatus', [
       state('inactive', style({
-        transform: 'translateY(-100%)'
+        transform: 'rotateX(0)'
       })),
-      state('active',   style({
-        transform: 'translateY(0)'
+      state('active', style({
+        transform: 'rotateX(90deg)'
       })),
       transition('inactive => active', animate('200ms ease-in')),
       transition('active => inactive', animate('200ms ease-out'))
@@ -29,11 +30,11 @@ export class WarnForecastInfoComponent implements OnInit {
   _equipType: string = 'N/A';
   equipType: string = 'N/A';
 
-  columnInfo: Array<any>;
+  columnInfo: RollingTableColumnSetting;
 
   warnForecastInfo: Array<any>;
   private switchInterval: any;
-  aniStatus: string = 'active';
+  aniStatus: string = 'inactive';
 
   constructor(private dataService: WarnForecastInfoDataService) {
     this.columnInfo = this.dataService.getDataStructure();
@@ -47,7 +48,6 @@ export class WarnForecastInfoComponent implements OnInit {
   //订阅DataService，解耦data-model与view
   subscribeDataService() {
 
-
     this.dataService.currentSubject().subscribe(
       val => {
 
@@ -55,7 +55,7 @@ export class WarnForecastInfoComponent implements OnInit {
         this.dataSwitch(val);
       },
       error => {
-          console.log(`获取数据异常:${error}`)
+        console.log(`获取数据异常:${error}`)
       }
     );
 
@@ -63,15 +63,16 @@ export class WarnForecastInfoComponent implements OnInit {
 
   }
 
-  private dataSwitch(anies: Array<any>) {
+  private dataSwitch(data: Array<any>) {
     //console.log(anies);
 
-    if(anies && anies.length > 0){
+    if (data && data.length > 0) {
+
+      let anies = this.dataProcess(data);
 
       anies.push(this.data2View(anies.shift()));
 
-
-      this.switchInterval = setInterval(()=>{
+      this.switchInterval = setInterval(() => {
 
         anies.push(this.data2View(anies.shift()));
 
@@ -81,9 +82,49 @@ export class WarnForecastInfoComponent implements OnInit {
 
   }
 
-  private data2View(data: any){
+  /**
+   * data -> [{
+   *  warnName	"轴温性能趋势预警"
+   *  time	1529652658000
+   *  equipName	"长客标动-5001"
+   *  areaName	"01车"
+   *  areaCode	"01"
+   *  partName	"TC01车一位转向架"
+   *  equipTypeName	"CR400BF"
+   *  equipSn	"CR400BF5001"
+   *  partBei	"3-9"
+   *  type	"warn"
+   *  quipType	"CR400BF"
+   * }]
+   */
+  private dataProcess(data: Array<any>): Array<any> {
+    let _equipTypes = [];
+    let anies = [];
 
-    this.aniStatus = 'inactive';
+    data.forEach((item) => {
+
+      let equipTypeName = item.equipTypeName;
+
+      let idx = _equipTypes.indexOf(equipTypeName);
+
+      if (idx > -1) {
+        anies[idx].data.push(item);
+
+      } else {
+        _equipTypes.push(equipTypeName);
+        anies.push({
+          equipType: equipTypeName,
+          data: [item]
+        });
+      }
+    });
+
+    return anies;
+  }
+
+  private data2View(data: any) {
+
+    this.aniStatus = 'active';
 
     this._equipType = data.equipType;
     this.warnForecastInfo = data.data;
@@ -105,11 +146,11 @@ export class WarnForecastInfoComponent implements OnInit {
    *  triggerName: "firstDisappear"
    * }
    */
-  switchCallback($event){
+  switchCallback($event) {
 
-    if($event.fromState === 'active' || $event.fromState === 'void'){
-        this.equipType = this._equipType;
-        this.aniStatus='active'
+    if ($event.fromState === 'inactive' || $event.fromState === 'void') {
+      this.equipType = this._equipType;
+      this.aniStatus = 'inactive'
     }
 
   }

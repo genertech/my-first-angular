@@ -1,0 +1,45 @@
+.fault-prediction-container{
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 4fr 4fr;
+  grid-gap: 10px;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+
+.fault-prediction-container > div {
+  overflow-y: hidden;
+  padding-bottom: 30px;
+  box-sizing: border-box;
+}
+
+
+glass-display-frame label{
+  color: #14f2f5;
+  font-weight: normal;
+  font-family: Microsoft Yahei, Arial, sans-serif;
+  font-size: 30px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+glass-display-frame span{
+  color: #e9f500;
+  font-weight: normal;
+  font-family: Microsoft Yahei, Arial, sans-serif;
+  font-size: 34px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 150px;
+  display: inline-table;
+  text-align: center;
+  line-height: 90px;
+}
+
+glass-display-frame span * {
+  margin:0 40px;
+}

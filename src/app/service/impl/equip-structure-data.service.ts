@@ -9,7 +9,6 @@ const TIME_OUT = 10 * 60 * 1000;
 @Injectable({
   providedIn: 'root'
 })
-
 export class EquipStructureDataService {
 
 
