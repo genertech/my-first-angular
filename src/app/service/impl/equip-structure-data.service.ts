@@ -18,6 +18,13 @@ export class EquipStructureDataService {
 
   public getEquipStructure(equipType: string, equipSn: string): Observable<any> {
 
+    if(equipSn === "DEMO" && equipType === "CRH3C"){
+      return this.http.get(`/blueScreen/equipStructure`, {
+        params: {sn: `${equipSn}`, equipType: equipType},
+        headers: new HttpHeaders({timeout: `${TIME_OUT}`})
+      })
+    }
+
     let basePortletURL = this.portletUtils.createDefaultResourceURL("exploadViewPortlet", "queryViewsWithProblem");
 
     let params = new HttpParams({
@@ -38,6 +45,13 @@ export class EquipStructureDataService {
   }
 
   public getAreaParams(equipSn: string, areaId: string): Observable<any> {
+
+    if(equipSn === "DEMO" && areaId.indexOf('_coach_')> -1){
+      return this.http.get(`/blueScreen/equipStructure/areaParams`, {
+        params: {sn: `${equipSn}`, areaId: areaId},
+        headers: new HttpHeaders({timeout: `${TIME_OUT}`})
+      })
+    }
 
     let basePortletURL = this.portletUtils.createDefaultResourceURL("exploadViewPortlet", "queryExploadViewData");
 

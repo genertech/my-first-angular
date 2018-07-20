@@ -75,7 +75,7 @@ export class EquipStructureComponent implements OnInit {
     this.dataService.getAreaParams(this.currEquipSn, areaId).subscribe(response => {
 
       let areaParams;
-      //console.log(response);
+      console.log(response);
 
       if (response.status !== 'success') {
         //异常处理

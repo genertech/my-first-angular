@@ -27,6 +27,10 @@ export class DashboardComponent implements OnInit {
         routerLink: '/equip-structure/CR400BF/CR400BF5001'
       },
       {
+        name: '虚拟车DEMO(3C)',
+        routerLink: '/equip-structure/CRH3C/DEMO'
+      },
+      {
         name: '故障分析',
         routerLink: '/fault-analysis'
       },
