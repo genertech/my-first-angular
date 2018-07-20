@@ -1,0 +1,17 @@
+.health-evaluation-container{
+  height: 100%;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 2fr;
+  grid-gap: 10px;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+
+.health-evaluation-container > div {
+  overflow-y: hidden;
+  padding-top: 45px;
+  padding-bottom: 30px;
+  box-sizing: border-box;
+}

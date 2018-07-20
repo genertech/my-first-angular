@@ -1,18 +1,18 @@
 <div class="maintenance-decision-container">
   <div [outerFrame]="frames.FRAME5" style="grid-column: 1 / 2;">
-    <app-simple-rolling-table-fragment [config]="repairSuggestionRTConfig" [data]="faultPredictionData"></app-simple-rolling-table-fragment>
+    <app-simple-rolling-table-fragment [config]="repairSuggestionRTConfig" [data]="repairSuggestionData"></app-simple-rolling-table-fragment>
 
   </div>
   <div [outerFrame]="frames.FRAME5" style="grid-column: 2 / 3">
-    <app-simple-rolling-table-fragment [config]="adRepairSuggestionRTConfig" [data]="faultPredictionData"></app-simple-rolling-table-fragment>
+    <app-simple-rolling-table-fragment [config]="adRepairSuggestionRTConfig" [data]="adRepairSuggestionData"></app-simple-rolling-table-fragment>
 
   </div>
   <div [outerFrame]="frames.FRAME6">
-    <app-simple-rolling-table-fragment [config]="mtPurchaseSuggestionRTConfig" [data]="faultPredictionData"></app-simple-rolling-table-fragment>
+    <app-simple-rolling-table-fragment [config]="mtPurchaseSuggestionRTConfig" [data]="mtPurchaseSuggestionData"></app-simple-rolling-table-fragment>
 
   </div>
   <div [outerFrame]="frames.FRAME6">
-    <app-simple-rolling-table-fragment [config]="intervalOptimizationRTConfig" [data]="faultPredictionData"></app-simple-rolling-table-fragment>
+    <app-simple-rolling-table-fragment [config]="intervalOptimizationRTConfig" [data]="intervalOptimizationData"></app-simple-rolling-table-fragment>
 
   </div>
 </div>

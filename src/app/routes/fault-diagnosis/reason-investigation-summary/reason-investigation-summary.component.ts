@@ -1,4 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ReasonInvestigationSummaryDataService} from "../../../service/impl/reason-investigation-summary-data.service";
+import {SingleBarChartData} from "../../../shared/components/single-bar-chart-fragment/single-bar-chart-data";
+
+const BAR_STYLE = {
+  type:'bar',
+  barWidth : 40,
+  stack: 'train',
+  label:{
+    show:true,
+    position:'inside',
+    formatter: '{c}'
+  },
+};
 
 @Component({
   selector: 'app-reason-investigation-summary',
@@ -8,12 +21,32 @@ import { Component, OnInit } from '@angular/core';
 export class ReasonInvestigationSummaryComponent implements OnInit {
 
   labelText: string = '原因排查统计';
-  mapLoaded: boolean = false;
-  options: any;
 
-  constructor() { }
+  data: SingleBarChartData;
+
+  mapLoaded: boolean = false;
+  _chartInitFinished = false;
+
+  options: any;
+  updateOptions: any;
+
+  constructor(private dataService: ReasonInvestigationSummaryDataService) {
+  }
 
   ngOnInit() {
+
+    this.dataService.currentSubject().subscribe(next => {
+
+      this.chartUpdate(next);
+
+    }, error1 => {
+      console.log('error', error1)
+    });
+
+    this.dataService.startTimer();
+  }
+
+  initChart() {
 
     this.mapLoaded = true;
 
@@ -24,7 +57,6 @@ export class ReasonInvestigationSummaryComponent implements OnInit {
         fontSize: 15
       },
       legend: {
-        data:['交互式','原因排序'],
         bottom: '7%',
         textStyle: {
           fontSize: 17,
@@ -37,67 +69,114 @@ export class ReasonInvestigationSummaryComponent implements OnInit {
         bottom: '15%',
         containLabel: true
       },
-      xAxis : [
+      xAxis: [
         {
-          type : 'category',
-          data : ['高压','牵引','制动','辅助','门','空调','网络'],
+          type: 'category',
           axisLine: {
-            lineStyle:{
+            lineStyle: {
               color: 'white'
             },
           },
           axisTick: {show: false},
-          axisLabel:{
-            interval:0,
+          axisLabel: {
+            interval: 0,
             fontSize: 17
           },
           splitLine: {show: false}
 
         }
       ],
-      yAxis : [
+      yAxis: [
         {
-          type : 'value',
+          type: 'value',
           axisLine: {
-            lineStyle:{
+            lineStyle: {
               color: 'white'
             },
           },
           axisTick: {show: false},
-          axisLabel:{
-            interval:0,
+          axisLabel: {
+            interval: 0,
             fontSize: 17
           },
           splitLine: {show: false},
 
         }
       ],
-      series : [
-        {
-          name:'交互式',
-          type:'bar',
-          barWidth : 40,
-          stack: 'train',
-          label:{
-            show:true,
-            position:'inside',
-            formatter: '{c}'
-          },
-          data:[346, 113, 319, 213, 411, 135, 98]
-        },
-        {
-          name:'原因排序',
-          type:'bar',
-          stack: 'train',
-          label:{
-            show:true,
-            position:'inside',
-            formatter: '{c}'
-          },
-          data:[125, 346, 76, 67, 74, 213, 544]
-        }
-      ]
+      series: []
     };
+
+  }
+
+  private chartUpdate(data) {
+
+    if (!this._chartInitFinished) {
+      this.initChart();
+      this._chartInitFinished = true;
+    }
+
+    this.data = this.dataProcess(data);
+
+    if (this.data && this.data.series.length > 0) {
+
+      this.mapLoaded = true;
+
+      this.updateOptions = {
+        legend: {
+          data: this.data.series.map((ele) => (ele.name))
+        },
+        xAxis: {
+          data: this.data.xAxisData,
+        },
+        series: this.data.series.map(ele => {
+          return Object.assign(ele, BAR_STYLE);
+        })
+      };
+
+    }
+  }
+
+  private dataProcess(data: any): SingleBarChartData {
+
+    if (Array.isArray(data)) {
+      let xAxisData = [], label = [], series = [];
+      data.forEach((ele) => {
+
+        let labelIndex, xAxisIndex;
+
+        labelIndex = label.indexOf(ele.diagnosisType);
+        xAxisIndex = xAxisData.indexOf(ele.sysName);
+
+        if (labelIndex === -1) {
+
+          label.push(ele.diagnosisType);
+
+          series.push({
+            name: ele.diagnosisType,
+            data: []
+          });
+
+          labelIndex = series.length - 1;
+        }
+
+        if (xAxisIndex === -1) {
+
+          xAxisData.push(ele.sysName);
+          xAxisIndex = xAxisData.length - 1
+        }
+
+        series[labelIndex].data[xAxisIndex] = ele.count;
+
+      });
+
+      return {
+        xAxisData: xAxisData,
+        series: series
+      };
+
+    } else {
+      return null;
+    }
 
   }
 

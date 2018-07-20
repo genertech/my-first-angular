@@ -81,15 +81,15 @@ export class FaultReasonInvestigationComponent implements OnInit {
 
   /**
    * data -> [{
-   *  equipName	"5824"
-   *  areaName	"01车"
+   *  warnName	"1轴大齿轮箱车轮侧轴温传感器故障"
+   *  equipName	"5001"
    *  areaCode	"01"
-   *  partName	"3-16"
-   *  equipTypeName	"CRH380BL"
-   *  equipSn	"5824"
-   *  partBei	"3-16"
-   *  healthLevel	"A"
-   *  equipType	"CRH380BL"
+   *  equipTypeName	"CR400BF"
+   *  equipSn	"CR400BF5001"
+   *  faultModeName	"故障"
+   *  diagnosisType	"3"
+   *  equipType	"CR400BF"
+   *  maintenanceName	""
    * }]
    */
   private dataProcess(data: Array<any>): Array<any> {

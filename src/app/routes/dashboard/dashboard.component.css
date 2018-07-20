@@ -14,4 +14,5 @@ button {
   border: 1px solid #6495ed;
   border-radius: 4px;
   margin: 5px;
+  box-sizing: content-box;
 }

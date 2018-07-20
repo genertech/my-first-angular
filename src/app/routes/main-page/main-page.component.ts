@@ -28,8 +28,8 @@ export class MainPageComponent implements OnInit {
   systemMoniInfoData: any;
   componentMoniInfoData: any;
   systemMoniOption: any;
-  private equipTypeMoniOption: any;
-  private componentMoniOption: any;
+  equipTypeMoniOption: any;
+  componentMoniOption: any;
 
   constructor(private equipTypeMoniDataService: EquipTypeMonitorDataService,
               private systemMoniDataService: SystemMonitorDataService,
@@ -49,7 +49,7 @@ export class MainPageComponent implements OnInit {
 
       },
       error1 => {
-        console.log(`异常信息${error1}`);
+        console.log(`异常信息`, error1);
       }
     );
 
@@ -65,7 +65,7 @@ export class MainPageComponent implements OnInit {
 
       },
       error1 => {
-        console.log(`异常信息${error1}`);
+        console.log(`异常信息`,error1);
       }
     );
 
@@ -81,7 +81,7 @@ export class MainPageComponent implements OnInit {
 
       },
       error1 => {
-        console.log(`异常信息${error1}`);
+        console.log(`异常信息`, error1);
       }
     );
 

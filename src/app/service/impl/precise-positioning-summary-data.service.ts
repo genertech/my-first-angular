@@ -1,28 +1,20 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
+import {PortletUtils} from "../../utils/PortletUtils";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs/internal/Observable";
 import {Subject} from "rxjs/internal/Subject";
-import {IDataService} from "../interface/idata-service";
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import {PortletUtils} from "../../utils/PortletUtils";
 
-const REQUEST_URL = '/blueScreen/trainOperation';
-const FETCH_CYCLE: number = 60 * 1000;
+const FETCH_CYCLE = 10 * 60 * 1000;
 
 @Injectable({
   providedIn: 'root'
 })
-
-/**
- * 首屏-车组运行地图实时数据供应商服务
- */
-export class TrainOperationMapDataService implements IDataService {
+export class PrecisePositioningSummaryDataService {
 
   private _dataSubject: Subject<any> = new Subject<any>();
 
   constructor(private http: HttpClient, private portletUtils: PortletUtils) {
   }
-
-  private _idInterval: any;
 
   fetchData(): any {
 
@@ -31,10 +23,10 @@ export class TrainOperationMapDataService implements IDataService {
 
     let params = new HttpParams({
       fromObject : {
-        'reportCode' : "RP_MAP_MONITOR"}
+        'reportCode' : "RP_DIAGNOSIS_JZDWTJ"}
     });
 
-    this.http.jsonp(`${basePortletURL}&${params.toString()}`, "callback").subscribe(
+    this.http.jsonp(`${basePortletURL}&${params.toString()}`, "callback=JSON_CALLBACK").subscribe(
       data => {
 
         let _response:any = (data);
@@ -51,21 +43,6 @@ export class TrainOperationMapDataService implements IDataService {
       }
     );
 
-    //设置超时，确保请求时间在interval周期内
-    /*
-    this.http.get('/blueScreen/trainOperation', {headers: new HttpHeaders({timeout: `${FETCH_CYCLE - 50}`})}).subscribe(
-      data => {
-        this.addData(data);
-      },
-      error1 => {
-        this._dataSubject.error(error1);
-      });
-    */
-  }
-
-  public destroy() {
-    clearInterval(this._idInterval);
-
   }
 
   public startTimer() {
@@ -80,7 +57,7 @@ export class TrainOperationMapDataService implements IDataService {
   }
 
   private addData(subjectData: any): void {
-    //console.log("train operation map data");
+    //console.log("precise positioning summary data");
     //console.log(subjectData);
 
     this._dataSubject.next(subjectData);
@@ -90,5 +67,4 @@ export class TrainOperationMapDataService implements IDataService {
   public currentSubject(): Observable<any> {
     return this._dataSubject.asObservable();
   }
-
 }

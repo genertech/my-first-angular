@@ -46,7 +46,7 @@ export class WarnForecastInfoDataService implements IDataService {
       }
     });
 
-    this.http.jsonp(`${basePortletURL}&${params.toString()}`, "callback=JSON_CALLBACK").subscribe(
+    this.http.jsonp(`${basePortletURL}&${params.toString()}`, "callback").subscribe(
       data => {
 
         let _response: any = (data);

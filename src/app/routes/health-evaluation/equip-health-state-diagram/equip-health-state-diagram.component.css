@@ -1,0 +1,42 @@
+:host{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+
+.section-div{
+  justify-content: flex-end;
+  padding: 10px;
+
+}
+
+.section-div > label{
+  color: #14f2f5;
+  font-weight: normal;
+  font-family: Microsoft Yahei, Arial, sans-serif;
+  font-size: 30px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.section-div > span{
+  color: #e9f500;
+  font-weight: normal;
+  font-family: Microsoft Yahei, Arial, sans-serif;
+  font-size: 30px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 150px;
+  display: inline-table;
+  text-align: center;
+}
+
+
+.equip-structure-chart {
+  width: 1100px;
+  height: 750px;
+  margin: 0 auto;
+  flex-basis: 100%;
+}

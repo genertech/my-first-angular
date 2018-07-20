@@ -45,6 +45,8 @@ import {SingleBarChartFragmentComponent} from './shared/components/single-bar-ch
 import {GlassDisplayFrameComponent} from './shared/components/glass-display-frame/glass-display-frame.component';
 import { SimpleRollingTableFragmentComponent } from './shared/components/simple-rolling-table-fragment/simple-rolling-table-fragment.component';
 import { MaintenanceDecisionComponent } from './routes/maintenance-decision/maintenance-decision.component';
+import { HealthEvaluationComponent } from './routes/health-evaluation/health-evaluation.component';
+import { EquipHealthStateDiagramComponent } from './routes/health-evaluation/equip-health-state-diagram/equip-health-state-diagram.component';
 
 const MOCKMODULE = !environment.production ? [ DelonMockModule.forRoot({ data: MOCKDATA }) ] : [];
 
@@ -108,6 +110,8 @@ export function StartupServiceFactory(
     GlassDisplayFrameComponent,
     SimpleRollingTableFragmentComponent,
     MaintenanceDecisionComponent,
+    HealthEvaluationComponent,
+    EquipHealthStateDiagramComponent,
   ],
   imports: [
     ...MOCKMODULE,

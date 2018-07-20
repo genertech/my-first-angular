@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {Subject} from "rxjs/internal/Subject";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs/internal/Observable";
+import {PortletUtils} from "../../utils/PortletUtils";
 
 
 const TIME_OUT = 10 * 60 * 1000;
@@ -12,63 +13,49 @@ const TIME_OUT = 10 * 60 * 1000;
 export class EquipStructureDataService {
 
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private portletUtils: PortletUtils) {
   }
 
-  public getEquipStructure(id: number | string): Observable<any> {
+  public getEquipStructure(equipType: string, equipSn: string): Observable<any> {
 
+    let basePortletURL = this.portletUtils.createDefaultResourceURL("exploadViewPortlet", "queryViewsWithProblem");
+
+    let params = new HttpParams({
+      fromObject: {
+        equipType: equipType,
+        equipSn: equipSn
+      }
+    });
+
+    return this.http.jsonp(`${basePortletURL}&${params.toString()}`, "callback");
+
+    /*
     return this.http.get(`/blueScreen/equipStructure`, {
       params: {sn: `${id}`},
       headers: new HttpHeaders({timeout: `${TIME_OUT}`})
     })
-
+    */
   }
 
-  public getAreaParams(areaId: number | string): Observable<any> {
+  public getAreaParams(equipSn: string, areaId: string): Observable<any> {
+
+    let basePortletURL = this.portletUtils.createDefaultResourceURL("exploadViewPortlet", "queryExploadViewData");
+
+    let params = new HttpParams({
+      fromObject: {
+        viewId: areaId,
+        equipSn: equipSn
+      }
+    });
+
+    return this.http.jsonp(`${basePortletURL}&${params.toString()}`, "callback");
+
+    /*
     return this.http.get(`/blueScreen/equipStructure/areaParams`, {
       params: {areaId: `${areaId}`},
       headers: new HttpHeaders({timeout: `${TIME_OUT}`})
     });
-  }
-
-  public getImageBlobFromUrl(url: string):Observable<any> {
-    return this.http.get(url, {
-      headers: new HttpHeaders({timeout: `${TIME_OUT}`}),
-      responseType: "blob"});
-
-  }
-
-  public blobImage2DataURLObservable(imageBlob: Blob): Observable<any> {
-
-    const fileReader = new FileReader();
-
-    // init read
-    fileReader.readAsDataURL(imageBlob);
-
-    return Observable.create(observer => {
-
-      // if success
-      fileReader.onloadend = ev => {
-
-        observer.next(fileReader.result);
-      }
-
-    });
-  }
-
-  public imageDataURL2ImageObservable(imageDataURL: any): Observable<HTMLImageElement> {
-
-    let image = new Image();
-    image.src = imageDataURL;
-
-    // init
-    return Observable.create(observer => {
-
-      // if success
-      image.onload = ev => {
-        observer.next(image);
-      }
-    });
+    */
   }
 
 }

@@ -1,0 +1,14 @@
+<div class="health-evaluation-container">
+  <div [outerFrame]="frames.FRAME2" style="grid-column: 1 / 2;">
+    <app-simple-rolling-table-fragment [config]="systemEvaluationRTConfig" [data]="faultPredictionData"></app-simple-rolling-table-fragment>
+
+  </div>
+  <div [outerFrame]="frames.FRAME7" style="grid-column: 2 / 3; grid-row: 1/3">
+    <app-equip-health-state-diagram [equipType]="currEquipType" [equipSn]="currEquipSn"></app-equip-health-state-diagram>
+  </div>
+  <div [outerFrame]="frames.FRAME2" style="grid-column: 1 / 2;">
+    <app-simple-rolling-table-fragment [config]="partEvaluationRTConfig" [data]="faultPredictionData"></app-simple-rolling-table-fragment>
+
+  </div>
+</div>
+

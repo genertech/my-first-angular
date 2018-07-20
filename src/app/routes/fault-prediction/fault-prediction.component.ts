@@ -2,6 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import {FRAMES} from "../../shared/directives/outer-frame.directive";
 import {SingleBarChartData} from "../../shared/components/single-bar-chart-fragment/single-bar-chart-data";
 import {SimpleRollingTableConfig} from "../../shared/components/simple-rolling-table-fragment/simple-rolling-table-config";
+import {FaultPredictionDataService} from "../../service/impl/fault-prediction/fault-prediction-data.service";
+import {PredictionByEquipTypeDataService} from "../../service/impl/fault-prediction/prediction-by-equip-type-data.service";
+import {PredictionByComponentDataService} from "../../service/impl/fault-prediction/prediction-by-component-data.service";
+import {PredictionBySystemDataService} from "../../service/impl/fault-prediction/prediction-by-system-data.service";
+
+const LEVEL_TRANSLATION = {
+  'A':'后期',
+  'B':'中期',
+  'C':'早期'
+};
 
 @Component({
   selector: 'app-fault-prediction',
@@ -21,39 +31,53 @@ export class FaultPredictionComponent implements OnInit {
   rollingTableConfig: SimpleRollingTableConfig;
   faultPredictionData: Array<any>;
 
-  constructor() { }
+  constructor(private faultPredictionDS: FaultPredictionDataService,
+              private equipTypePredictionDS: PredictionByEquipTypeDataService,
+              private componentPredictionDS: PredictionByComponentDataService,
+              private systemPredictionDS: PredictionBySystemDataService) { }
 
   ngOnInit() {
 
     this.startTime = new Date();
     this.endTime = new Date();
 
-    this.predictionByEquipType = {
-      xAxisData: ['CR400BF', 'CRH380B', 'CRH5G', 'CRH5A', 'CRH3A'],
-      series:[
-        {name: '早期',data:[100, 200, 300, 213, 412]},
-        {name: '中期',data:[200, 150, 230, 213, 112]},
-        {name: '后期', data:[410, 200, 60, 213, 92]}
-      ]
-    };
+    this.faultPredictionDS.currentSubject().subscribe(next =>{
 
-    this.predictionByComponent = {
-      xAxisData: ['牵引变流器', '轮对', '齿轮箱', '轴承', '电机', '空调', '转向架'],
-      series:[
-        {name: '早期',data:[100, 311,200, 300, 77, 213, 412]},
-        {name: '中期',data:[97, 200, 150, 230, 200, 213, 112]},
-        {name: '后期', data:[410, 200, 60, 213, 343, 72, 81]}
-      ]
-    };
+      this.faultPredictionData = next;
 
-    this.predictionBySystem = {
-      xAxisData: ['主供电', '牵引', '制动', '门', '空调', '辅助供电', '转向架'],
-      series:[
-        {name: '早期',data:[100, 200, 300, 400, 88, 213, 412]},
-        {name: '中期',data:[200, 150, 67, 230, 213, 97, 112]},
-        {name: '后期', data:[410, 373, 200, 90, 313, 213, 42]}
-      ]
-    };
+    }, error1 => {
+      console.log("error", error1);
+    });
+
+    this.equipTypePredictionDS.currentSubject().subscribe(next =>{
+
+      this.predictionByEquipType = this.barChartDataGenerator(next, 'equipTypeName');
+
+    }, error1 => {
+      console.log("error", error1);
+    });
+
+    this.componentPredictionDS.currentSubject().subscribe(next =>{
+
+      this.predictionByComponent = this.barChartDataGenerator(next, 'sysName');
+
+    }, error1 => {
+      console.log("error", error1);
+    });
+
+    this.systemPredictionDS.currentSubject().subscribe(next =>{
+
+      this.predictionBySystem = this.barChartDataGenerator(next, 'sysName');
+
+    }, error1 => {
+      console.log("error", error1);
+    });
+
+    this.faultPredictionDS.startTimer();
+    this.componentPredictionDS.startTimer();
+    this.systemPredictionDS.startTimer();
+    this.equipTypePredictionDS.startTimer();
+
 
     this.rollingTableConfig = {
       labelText: '故障预测',
@@ -64,236 +88,59 @@ export class FaultPredictionComponent implements OnInit {
         needIdx: true,
         idxOccupancyRate: 5,
         columns: [
-          {title: '车组号', key: 'area', style: {width: '20%'}},
-          {title: '部件', key: 'code', style: {width: '30%'}},
-          {title: '预测等级', key: 'lx', style: {width: '15%'}},
-          {title: '预测详情', key: 'attribute', style: {width: '30%'}}
+          {title: '车组号', key: 'equipName', style: {width: '20%'}},
+          {title: '车厢', key: 'areaName', style: {width: '15%'}},
+          {title: '部件', key: 'code', style: {width: '20%'}},
+          {title: '预测等级', key: 'lvl', style: {width: '15%'}},
+          {title: '预测详情', key: 'description', style: {width: '30%'}}
         ]
       }
+    };
+
+  }
+
+  private barChartDataGenerator(data: any, xAxisLb:string) : SingleBarChartData{
+
+    if(Array.isArray(data)){
+      let xAxisData = [], label = [], series = [];
+      data.forEach( (ele) => {
+
+        let labelIndex, xAxisIndex;
+
+        labelIndex = label.indexOf(ele.lvl);
+        xAxisIndex = xAxisData.indexOf(ele[xAxisLb]);
+
+        if(labelIndex === -1){
+
+          label.push(ele.lvl);
+
+          series.push({
+            name: LEVEL_TRANSLATION[ele.lvl],
+            data: []
+          });
+
+          labelIndex = series.length-1;
+        }
+
+        if(xAxisIndex === -1){
+
+          xAxisData.push(ele[xAxisLb]);
+          xAxisIndex = xAxisData.length -1
+        }
+
+        series[labelIndex].data[xAxisIndex] = ele.count;
+
+      });
+
+      return {
+        xAxisData: xAxisData,
+        series: series
+      };
+
+    }else{
+      return null;
     }
 
-    this.faultPredictionData = [
-      {
-        "equipTypeName": "CRH3C",
-        "area": "550702",
-        "code": "6740 转向架1侧的牵引电机过热(火灾检测)",
-        "lx": "自动定位",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CRH380BL",
-        "area": "565708",
-        "code": "65B0 未启动列车自动保护",
-        "lx": "专家库匹配",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CR400BF",
-        "area": "531402",
-        "code": "6148 卫生间2火警",
-        "lx": "自动定位",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CR400BF",
-        "area": "560406",
-        "code": "0401 01/高压牵引系统 调整不良",
-        "lx": "自动定位",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CRH380BL",
-        "area": "561708",
-        "code": "65B0 未启动列车自动保护良",
-        "lx": "专家库匹配",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CRH380B",
-        "area": "560408",
-        "code": "65B0 未启动列车自动保护",
-        "lx": "专家库匹配",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CRH380BL",
-        "area": "550702",
-        "code": "0401 01/高压牵引系统 调整不良",
-        "lx": "自动定位",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CRH3C",
-        "area": "550301",
-        "code": "684F 关闭分布图：转换到应急模式后电池断开",
-        "lx": "自动定位",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CRH5A",
-        "area": "565708",
-        "code": "6148 卫生间2火警",
-        "lx": "专家库匹配",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CRH5A",
-        "area": "550301",
-        "code": "684F 关闭分布图：转换到应急模式后电池断开",
-        "lx": "自动定位",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CR400BF",
-        "area": "550702",
-        "code": "65B0 未启动列车自动保护良",
-        "lx": "专家库匹配",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CR400BF",
-        "area": "565708",
-        "code": "9200 给水卫生系统",
-        "lx": "自动定位",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CR400BF",
-        "area": "501509",
-        "code": "0401 01/高压牵引系统 调整不良",
-        "lx": "专家库匹配",
-        "lx2": "交互式",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CRH5A",
-        "area": "561708",
-        "code": "65B0 MCB 44-F11 TCC1 ETCS断开",
-        "lx": "自动定位",
-        "lx2": "交互式",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CRH380BL",
-        "area": "550301",
-        "code": "6148 卫生间2火警",
-        "lx": "自动定位",
-        "lx2": "交互式",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CRH380BL",
-        "area": "531808",
-        "code": "684F 关闭分布图：转换到应急模式后电池断开",
-        "lx": "专家库匹配",
-        "lx2": "原因排序",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CRH3C",
-        "area": "501509",
-        "code": "65B0 MCB 44-F11 TCC1 ETCS断开",
-        "lx": "专家库匹配",
-        "lx2": "原因排序",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CRH5A",
-        "area": "550702",
-        "code": "65B0 MCB 44-F11 TCC1 ETCS断开",
-        "lx": "专家库匹配",
-        "lx2": "交互式",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CRH3C",
-        "area": "557201",
-        "code": "0401 01/高压牵引系统 调整不良",
-        "lx": "专家库匹配",
-        "lx2": "原因排序",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CRH5A",
-        "area": "557201",
-        "code": "65B0 MCB 44-F11 TCC1 ETCS断开",
-        "lx": "自动定位",
-        "lx2": "交互式",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CRH3C",
-        "area": "550301",
-        "code": "65B0 未启动列车自动保护良",
-        "lx": "专家库匹配",
-        "lx2": "交互式",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CRH380B",
-        "area": "560408",
-        "code": "9200 给水卫生系统",
-        "lx": "自动定位",
-        "lx2": "交互式",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CRH380B",
-        "area": "560406",
-        "code": "6740 转向架1侧的牵引电机过热(火灾检测)",
-        "lx": "专家库匹配",
-        "lx2": "交互式",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CRH380B",
-        "area": "531808",
-        "code": "684F 关闭分布图：转换到应急模式后电池断开",
-        "lx": "自动定位",
-        "lx2": "交互式",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CR400BF",
-        "area": "550301",
-        "code": "65B0 未启动列车自动保护良",
-        "lx": "自动定位",
-        "lx2": "原因排序",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CRH380B",
-        "area": "560406",
-        "code": "65B0 未启动列车自动保护",
-        "lx": "自动定位",
-        "lx2": "原因排序",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CRH3C",
-        "area": "550301",
-        "code": "0401 01/高压牵引系统 调整不良",
-        "lx": "自动定位",
-        "lx2": "交互式",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CRH380B",
-        "area": "531402",
-        "code": "65B0 未启动列车自动保护良",
-        "lx": "专家库匹配",
-        "lx2": "交互式",
-        "attribute": "XXXXXXXXX"
-      },
-      {
-        "equipTypeName": "CRH5A",
-        "area": "550301",
-        "code": "65B0 未启动列车自动保护良",
-        "lx": "自动定位",
-        "lx2": "交互式",
-        "attribute": "XXXXXXXXX"
-      }
-    ]
   }
 
 }

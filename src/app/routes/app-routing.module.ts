@@ -7,17 +7,19 @@ import {FaultAnalysisComponent} from "./fault-analysis/fault-analysis.component"
 import {FaultDiagnosisComponent} from "./fault-diagnosis/fault-diagnosis.component";
 import {FaultPredictionComponent} from "./fault-prediction/fault-prediction.component";
 import {MaintenanceDecisionComponent} from "./maintenance-decision/maintenance-decision.component";
+import {HealthEvaluationComponent} from "./health-evaluation/health-evaluation.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'main-page', component: MainPageComponent },
   { path: 'equip-structure', component: EquipStructureComponent },
-  { path: 'equip-structure/:sn', component: EquipStructureComponent },
+  { path: 'equip-structure/:equipType/:equipSn', component: EquipStructureComponent },
   { path: 'fault-analysis', component: FaultAnalysisComponent},
   { path: 'fault-diagnosis', component: FaultDiagnosisComponent},
   { path: 'fault-prediction', component: FaultPredictionComponent},
   { path: 'maintenance-decision', component: MaintenanceDecisionComponent},
+  { path: 'health-evaluation', component: HealthEvaluationComponent},
 
 ];
 

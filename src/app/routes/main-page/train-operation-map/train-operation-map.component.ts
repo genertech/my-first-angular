@@ -102,11 +102,11 @@ export class TrainOperationMapComponent implements OnInit {
             symbol: 'pin',
             opacity: 1,
             data: [
-              {name: '5501', value: [113, 28.21], warn: 2, forecast: 3},
-              {name: '5008', value: [118.88, 28.97], warn: 5, forecast: 0},
-              {name: '5654', value: [116.7, 39.53], warn: 0, forecast: 2},
-              {name: '5018', value: [115.480656, 35.23375], warn: 2, forecast: 2},
-              {name: '5372', value: [125.03, 46.58], warn: 1, forecast: 5},
+              // {name: '5501', value: [113, 28.21], warn: 2, forecast: 3},
+              // {name: '5008', value: [118.88, 28.97], warn: 5, forecast: 0},
+              // {name: '5654', value: [116.7, 39.53], warn: 0, forecast: 2},
+              // {name: '5018', value: [115.480656, 35.23375], warn: 2, forecast: 2},
+              // {name: '5372', value: [125.03, 46.58], warn: 1, forecast: 5},
             ],
             symbolSize: (val, item) => {
 
@@ -209,7 +209,9 @@ export class TrainOperationMapComponent implements OnInit {
         name: item.equipName,
         value: [item.posX, item.posY],
         warn: item.warnCount,
-        forecast: item.prognosCount
+        forecast: item.prognosCount,
+        equipSn: item.equipSn,
+        equipType: item.equipType
       };
 
     });
@@ -234,7 +236,7 @@ export class TrainOperationMapComponent implements OnInit {
   nav2EquipStructure(event) {
     console.log(event);
     if (event.componentType === 'series') {
-      this.router.navigateByUrl(EQUIP_STRUCTURE_URL + event.data.name);
+      this.router.navigateByUrl(`${EQUIP_STRUCTURE_URL}${event.data.equipType}/${event.data.equipSn}`);
     }
   }
 

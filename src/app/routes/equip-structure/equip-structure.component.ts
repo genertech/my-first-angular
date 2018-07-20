@@ -1,9 +1,9 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FRAMES} from "../../shared/directives/outer-frame.directive";
-import {HttpClient} from "@angular/common/http";
 import {NgxEchartsService} from "ngx-echarts";
 import {ActivatedRoute} from "@angular/router";
 import {EquipStructureDataService} from "../../service/impl/equip-structure-data.service";
+import {ImageCommonService} from "../../shared/service/image-common.service";
 
 //展示内容范围
 const CANVAS_WIDTH = 1750;
@@ -29,9 +29,11 @@ export class EquipStructureComponent implements OnInit {
     maskColor: 'rgba(0, 0, 0, 0.2)',
     zlevel: 0
   };
-  private PARAMS_GRAPHS: Array<any> = [];
+
   private INFO_FRAME_POINTS: Array<any> = [];
   private PARAMS_SERIES: Array<any> = [];
+
+  private areasHaveProblem = [];
 
   @ViewChild("equipStructureCharts") equipStructureCharts: ElementRef;
   private echarts: any;
@@ -42,19 +44,26 @@ export class EquipStructureComponent implements OnInit {
 
   equips: any;
 
-  constructor(private http: HttpClient, private nes: NgxEchartsService, private route: ActivatedRoute,
-              private dataService: EquipStructureDataService) {
+  constructor(private nes: NgxEchartsService, private route: ActivatedRoute,
+              private dataService: EquipStructureDataService, private imageService: ImageCommonService) {
     this.echarts = this.nes.echarts;
   }
 
+  private currEquipType;
+  private currEquipSn;
+
   ngOnInit() {
 
-    let sn = this.route.snapshot.paramMap.get('sn');
+    this.currEquipType = this.route.snapshot.paramMap.get('equipType');
+    this.currEquipSn = this.route.snapshot.paramMap.get('equipSn');
 
-    this.dataService.getEquipStructure(sn).subscribe(equipStructure => {
-        console.log(equipStructure);
+    this.dataService.getEquipStructure(this.currEquipType, this.currEquipSn).subscribe(response => {
+        //console.log(response);
 
-        this.dataDisplay(equipStructure);
+        if (response.status === 'success') {
+          this.dataDisplay(response.data.result)
+        }
+
       },
       error1 => {
         console.log('获取数据异常', error1)
@@ -63,93 +72,101 @@ export class EquipStructureComponent implements OnInit {
 
   private displayAreaParams(areaId: any) {
 
-    this.dataService.getAreaParams(areaId).subscribe(areaParams => {
+    this.dataService.getAreaParams(this.currEquipSn, areaId).subscribe(response => {
 
-      console.log(areaParams);
+      let areaParams;
+      //console.log(response);
 
-      if (areaParams.image) {
+      if (response.status !== 'success') {
+        //异常处理
 
-        this.dataService.getImageBlobFromUrl('assets/data/train-head.png').subscribe(imageBlob => {
+      } else {
+        areaParams = response.data.result;
 
-          this.dataService.blobImage2DataURLObservable(imageBlob).subscribe(imageDataURL => {
+        if (areaParams.image) {
 
-              this.dataService.imageDataURL2ImageObservable(imageDataURL).subscribe(image => {
+          this.imageService.getImageBlobFromUrl(areaParams.image).subscribe(imageBlob => {
 
-                let bgConfig = this.processBgConfig(image);
+            this.imageService.blobImage2DataURLObservable(imageBlob).subscribe(imageDataURL => {
 
-                this.dataProcess(areaParams.hotSpots, bgConfig);
+                this.imageService.imageDataURL2ImageObservable(imageDataURL).subscribe(image => {
 
-                this.mapLoaded = true;
+                  let bgConfig = this.processBgConfig(image);
 
-                if(this.echartsInstance === undefined){
+                  this.dataProcess(areaParams.hotSpots, bgConfig);
 
-                  this.echartsInstance = this.echarts.init(this.equipStructureCharts.nativeElement);
+                  this.mapLoaded = true;
 
-                }
-                this.echartsInstance.clear();
+                  if (this.echartsInstance === undefined) {
 
-                this.options = {
-                  title: {
-                    text: areaParams.name,
-                    textStyle:{
-                      color: 'white'
-                    },
-                    left: 'center',
-                    bottom: '0'
-                  },
-                  color: ['#8EC9EB'],
-                  grid: {id: 'grid', width: '100%', height: '100%', left: 0, bottom: 0},
-                  xAxis: {
-                    type: 'value',
-                    axisLine: {show: false},
-                    axisTick: {show: false},
-                    axisLabel: {show: false},
-                    splitLine: {show: false},
-                    min: 0,
-                    max: CANVAS_WIDTH,
-                    interval: 100
-                  },
-                  yAxis: {
-                    type: 'value',
-                    axisLine: {show: false},
-                    axisTick: {show: false},
-                    axisLabel: {show: false},
-                    splitLine: {show: false},
-                    min: 0,
-                    max: CANVAS_HEIGHT,
-                    interval: 100
-                  },
-                  graphic: [
-                    {
-                      id: 'structure',
-                      type: 'image',
+                    this.echartsInstance = this.echarts.init(this.equipStructureCharts.nativeElement);
+
+                  }
+                  this.echartsInstance.clear();
+
+                  this.options = {
+                    title: {
+                      text: areaParams.name,
+                      textStyle: {
+                        color: 'white'
+                      },
                       left: 'center',
-                      top: 'middle',
-                      z: -1,
-                      bounding: 'raw',
-                      cursor: 'normal',
-                      style: {
-                        image: imageDataURL,
-                        width: bgConfig.width,
-                        height: bgConfig.height
-                      }
+                      bottom: '0'
                     },
-                    ...this.PARAMS_GRAPHS
-                  ],
-                  series: [...this.PARAMS_SERIES]
-                };
+                    color: ['#8EC9EB'],
+                    grid: {id: 'grid', width: '100%', height: '100%', left: 0, bottom: 0},
+                    xAxis: {
+                      type: 'value',
+                      axisLine: {show: false},
+                      axisTick: {show: false},
+                      axisLabel: {show: false},
+                      splitLine: {show: false},
+                      min: 0,
+                      max: CANVAS_WIDTH,
+                      interval: 100
+                    },
+                    yAxis: {
+                      type: 'value',
+                      axisLine: {show: false},
+                      axisTick: {show: false},
+                      axisLabel: {show: false},
+                      splitLine: {show: false},
+                      min: 0,
+                      max: CANVAS_HEIGHT,
+                      interval: 100
+                    },
+                    graphic: [
+                      {
+                        id: 'structure',
+                        type: 'image',
+                        left: 'center',
+                        top: 'middle',
+                        z: -1,
+                        bounding: 'raw',
+                        cursor: 'normal',
+                        style: {
+                          image: imageDataURL,
+                          width: bgConfig.width,
+                          height: bgConfig.height
+                        }
+                      },
+                    ],
+                    series: [...this.PARAMS_SERIES]
+                  };
 
-                this.bindDragEvent();
+                  this.bindDragEvent();
 
-              });
-            }
-          );
+                });
+              }
+            );
 
-        }, error1 => {
-          console.log(error1);
+          }, error1 => {
+            console.log(error1);
 
-        });
+          });
+        }
       }
+
     }, error1 => {
       console.log(error1);
     });
@@ -165,48 +182,51 @@ export class EquipStructureComponent implements OnInit {
 
     this.updateChildRow(equipStructure);
 
-    let areaIds = equipStructure.areasHaveProblem;
+    let areaIds = this.areasHaveProblem;
+
     if (areaIds && areaIds.length) {
       this.displayAreaParams(areaIds[0]);
     } else {
-      this.displayAreaParams(equipStructure.areas[0].id)
+      this.displayAreaParams(equipStructure[0].id)
     }
 
   }
 
-  private updateChildRow(equipStructure: any){
+  private updateChildRow(equipStructure: any) {
 
-    let _result = equipStructure, areas = equipStructure.areasHaveProblem;
+    if (equipStructure && equipStructure.length) {
 
-    if (areas && areas.length) {
+      this.equips = equipStructure.map(area => {
 
-      _result = equipStructure.areas.map(area => {
-
-        let special= {} as any;
-        if(areas.includes(area.id)){
+        let special = {} as any;
+        if (area.hasOwnProperty('hasProblem') && area.hasProblem === true) {
+          this.areasHaveProblem.push(area.id);
           special.style = {
             'background-color': '#ff3636'
           }
         }
         return Object.assign(area, special);
       });
-    }
 
-    this.equips = _result;
+    }
 
   }
 
   dataProcess(hotSpots: any, bgConfig: any) {
 
-    this.PARAMS_GRAPHS.length = 0;
+    //this.PARAMS_GRAPHS.length = 0;
     this.PARAMS_SERIES.length = 0;
     this.INFO_FRAME_POINTS.length = 0;
+
+    if (!hotSpots || hotSpots.length == 0) {
+      return;
+    }
 
     hotSpots.forEach((hotSpot) => {
 
       let dataPoint = [
-        hotSpot.coordinate[0] * bgConfig.scale + bgConfig.prefixX,
-        (bgConfig.naturalHeight - hotSpot.coordinate[1]) * bgConfig.scale + bgConfig.prefixY
+        hotSpot.posX * bgConfig.scale + bgConfig.prefixX,
+        (bgConfig.naturalHeight - hotSpot.posY) * bgConfig.scale + bgConfig.prefixY
       ];
 
       //数据框锚点，定位于数据框左下
@@ -237,50 +257,62 @@ export class EquipStructureComponent implements OnInit {
         symbol: 'circle',
         symbolSize: SYMBOL_SIZE,
         showSymbol: true,
-        data: [dataPoint, dataFrameAnchor]
-      });
-
-      //数据展示框体
-      this.PARAMS_GRAPHS.push({
-        id: hotSpot.id,
-        type: 'group',
-        progressive: true,
-        invisible: false,
-        left: dataFrameAnchor[0],
-        bottom: dataFrameAnchor[1],
-        cursor: 'normal',
-        children: [
+        data: [
+          {value: dataPoint},
           {
-            id: `${hotSpot.id}_bg`,
-            type: 'image',
-            z: PARAM_INFO_FRAME_Z_INDEX,
-            left: 'center',
-            top: 'middle',
-            cursor: 'normal',
-            style: {
-              image: 'assets/img/bg-main-3.png',
-              width: PARAM_INFO_FRAME_WIDTH,
-              height: PARAM_INFO_FRAME_HEIGHT
-            }
-          },
-          {
-            id: `${hotSpot.id}_txt`,
-            type: 'text',
-            z: PARAM_INFO_FRAME_Z_INDEX + 1,
-            left: 'center',
-            top: 'middle',
-            cursor: 'normal',
-            style: {
-              text: (hotSpot.params.map(param => {
+            value: dataFrameAnchor,
+            label: {
+              show: true,
+              position: 'right',
+              formatter: (data) => {
 
-                return `${param.hasProblem ? '[*] ' : ''}${param.name} ${param.value}`;
+                let paramsInfo = hotSpot.params.map(param => {
 
-              })).join('\n'),
-              font: '30px Microsoft YaHei',
-              fill: "#00ff00"
+                  return `${param.hasProblem ? '{problemParam' : '{normalParam'}|${param.name}} ${param.hasProblem ? '{problemValue' : '{normalValue'}|${param.value}}`;
+
+                });
+
+                return [...paramsInfo].join('\n');
+              },
+              backgroundColor: {
+                image: 'assets/img/bg-main-3.png'
+              },
+              padding: [20, 0, 20, 50],
+              width: 400,
+              rich: {
+                normalParam: {
+                  fontSize: 24,
+                  color: '#25e314',
+                  width: 150,
+                  padding: 2,
+                  align: 'left'
+                },
+                problemParam: {
+                  fontSize: 24,
+                  color: '#ff3636',
+                  width: 150,
+                  padding: 2,
+                  align: 'left'
+                },
+                normalValue: {
+                  fontSize: 24,
+                  color: '#25e314',
+                  width: 130,
+                  padding: [2, 0, 2, 100],
+                  align: 'left'
+                },
+                problemValue: {
+                  fontSize: 24,
+                  color: '#ff3636',
+                  width: 130,
+                  padding: [2, 0, 2, 100],
+                  align: 'left'
+                },
+              }
             }
           }
-        ]
+        ],
+
       });
 
     });
@@ -308,15 +340,12 @@ export class EquipStructureComponent implements OnInit {
             ondrag: ($event) => {
               //console.log($event);
 
-              this.PARAMS_SERIES[idx].data[1] = this.echartsInstance.convertFromPixel('grid', $event.target.position);
+              this.PARAMS_SERIES[idx].data[1].value = this.echartsInstance.convertFromPixel('grid', $event.target.position);
 
-              this.PARAMS_GRAPHS[idx].left = $event.target.position[0];
-              this.PARAMS_GRAPHS[idx].bottom = CANVAS_HEIGHT - $event.target.position[1];
 
               // Update data
               this.echartsInstance.setOption({
                 series: this.PARAMS_SERIES[idx],
-                graphic: this.PARAMS_GRAPHS[idx]
               });
             },
             z: PARAM_INFO_FRAME_Z_INDEX + 2
@@ -373,32 +402,19 @@ export class EquipStructureComponent implements OnInit {
 
     let identify = key.split('_')[0];
 
-    let graph = this.PARAMS_GRAPHS.find((ele) => {
-      return ele.id === identify;
-    });
 
     let serie = this.PARAMS_SERIES.find((ele) => {
       return ele.id === key;
     });
 
-    if (graph && graph.id) {
-      graph.invisible = !graph.invisible;
+
+    if (serie && serie.id) {
+      serie.invisible = !serie.invisible;
 
       this.echartsInstance.setOption({
-        graphic: [
-          {
-            id: `${identify}_bg`,
-            invisible: graph.invisible
-          },
-          {
-            id: `${identify}_txt`,
-            invisible: graph.invisible,
-            style: {}  //由于echarts.4.1.0版本存在bug, 这个style必须有
-          }
-        ],
         series: {
           id: key,
-          data: (graph.invisible ? [serie.data[0]] : [...serie.data])
+          data: (serie.invisible ? [serie.data[0]] : [...serie.data])
         }
       });
     }

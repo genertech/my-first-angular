@@ -23,8 +23,8 @@ export class DashboardComponent implements OnInit {
         routerLink: '/main-page'
       },
       {
-        name: '虚拟车(3782)',
-        routerLink: '/equip-structure/3782'
+        name: '虚拟车(BF5001)',
+        routerLink: '/equip-structure/CR400BF/CR400BF5001'
       },
       {
         name: '故障分析',
@@ -37,6 +37,10 @@ export class DashboardComponent implements OnInit {
       {
         name: '故障诊断',
         routerLink: '/fault-prediction'
+      },
+      {
+        name: '健康评估',
+        routerLink: '/health-evaluation'
       },
       {
         name: '运维决策',

@@ -8,6 +8,14 @@ import {SingleBarChartData} from "./single-bar-chart-data";
 })
 export class SingleBarChartFragmentComponent implements OnInit, OnChanges {
 
+  loadingOpts = {
+    text: 'loading',
+    color: '#c23531',
+    textColor: '#fff',
+    maskColor: 'rgba(0, 0, 0, 0.2)',
+    zlevel: 0
+  };
+
   @Input() labelText: string = 'title';
 
   @Input() colorPalette: Array<string> = ['#27f30c', '#f3de0c'];

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs/internal/Observable";
 import {PortletUtils} from "../../utils/PortletUtils";
 import {Subject} from "rxjs/internal/Subject";
@@ -19,24 +19,25 @@ export class FaultReasonInvestigationDataService {
   getDataStructure(): RollingTableColumnSetting {
 
     return {needIdx: true,
-      idxOccupancyRate: 10,
+      idxOccupancyRate: 5,
       columns:[
-      {title:'车组号', key: 'area', style:{ width: '20%'}},
-      {title:'故障详情', key: 'code', style:{ width: '30%'}},
-      {title:'排查方法', key: 'lx2', style:{ width: '15%'}},
-      {title:'排查结果',key: 'attribute', style:{ width: '25%'}}
+      {title:'车组号', key: 'equipName', style:{ width: '15%'}},
+      {title:'车箱', key: 'equipName', style:{ width: '10%'}},
+      {title:'故障详情', key: 'warnName', style:{ width: '30%'}},
+      {title:'排查方法', key: 'diagnosisType', style:{ width: '15%'}},
+      {title:'排查结果',key: 'maintenanceName', style:{ width: '25%'}}
     ]};
 
   }
 
   fetchData(): any{
 
-    /*
+
     let basePortletURL = this.portletUtils.createDefaultResourceURL("reportPortlet", "queryReportData");
 
     let params = new HttpParams({
       fromObject : {
-        'reportCode' : "RP_HEALTH_INDEX"}
+        'reportCode' : "RP_DIAGNOSIS_YYPC"}
     });
 
     this.http.jsonp(`${basePortletURL}&${params.toString()}`, "callback=JSON_CALLBACK").subscribe(
@@ -55,9 +56,10 @@ export class FaultReasonInvestigationDataService {
         this._dataSubject.error(error1);
       }
     );
-    */
+
 
     //设置超时，确保请求时间在interval周期内
+    /*
     this.http.get('/blueScreen/faultReasonInvestigation', { headers: new HttpHeaders({ timeout: `${FETCH_CYCLE- 50}` })}).subscribe(
       data => {
         this.addData(data);
@@ -66,7 +68,7 @@ export class FaultReasonInvestigationDataService {
         this._dataSubject.error(error1);
       });
 
-
+    */
   }
 
   public startTimer(){
