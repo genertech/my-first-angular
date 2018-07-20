@@ -9,7 +9,7 @@ const FETCH_CYCLE = 10 * 60 * 1000;
 @Injectable({
   providedIn: 'root'
 })
-export class MtPurchaseSuggestionDataService {
+export class SystemEvaluationDataService {
 
   private _dataSubject: Subject<any> = new Subject<any>();
 
@@ -22,7 +22,7 @@ export class MtPurchaseSuggestionDataService {
 
     let params = new HttpParams({
       fromObject : {
-        'reportCode' : "RP_MD_PJCGJY"}
+        'reportCode' : "RP_HEALTH_SYS"}
     });
 
     this.http.jsonp(`${basePortletURL}&${params.toString()}`, "callback=JSON_CALLBACK").subscribe(

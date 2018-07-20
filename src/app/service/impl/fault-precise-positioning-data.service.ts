@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Subject} from "rxjs/internal/Subject";
 import {Observable} from "rxjs/internal/Observable";
 import {PortletUtils} from "../../utils/PortletUtils";
@@ -26,7 +26,16 @@ export class FaultPrecisePositioningDataService {
         {title: '车组号', key: 'equipName', style: {width: '15%'}},
         {title: '车厢', key: 'areaName', style: {width: '10%'}},
         {title: '故障详情', key: 'warnName', style: {width: '30%'}},
-        {title: '定位方法', key: 'diagnosisType', style: {width: '15%'}},
+        {
+          title: '定位方法', key: 'diagnosisType', style: {width: '15%'},
+          keyTranslate:
+            {
+              '1': '自动定位',
+              '2': '专家库匹配',
+              '3': '交互式排故',
+              '4': '原因排名'
+            }
+        },
         {title: '故障原因', key: 'maintenanceName', style: {width: '25%'}}
       ]
     };
@@ -39,19 +48,20 @@ export class FaultPrecisePositioningDataService {
     let basePortletURL = this.portletUtils.createDefaultResourceURL("reportPortlet", "queryReportData");
 
     let params = new HttpParams({
-      fromObject : {
-        'reportCode' : "RP_DIAGNOSIS_JZDW"}
+      fromObject: {
+        'reportCode': "RP_DIAGNOSIS_JZDW"
+      }
     });
 
     this.http.jsonp(`${basePortletURL}&${params.toString()}`, "callback=JSON_CALLBACK").subscribe(
       data => {
 
-        let _response:any = (data);
+        let _response: any = (data);
 
-        if(_response.status === "success"){
+        if (_response.status === "success") {
           this.addData(_response.data.result);
 
-        }else{
+        } else {
           this._dataSubject.error(_response.msg)
         }
       },

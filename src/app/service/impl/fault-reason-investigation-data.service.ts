@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs/internal/Observable";
 import {PortletUtils} from "../../utils/PortletUtils";
 import {Subject} from "rxjs/internal/Subject";
@@ -14,41 +14,54 @@ export class FaultReasonInvestigationDataService {
 
   private _dataSubject: Subject<any> = new Subject<any>();
 
-  constructor(private http: HttpClient, private portletUtils: PortletUtils) { }
+  constructor(private http: HttpClient, private portletUtils: PortletUtils) {
+  }
 
   getDataStructure(): RollingTableColumnSetting {
 
-    return {needIdx: true,
+    return {
+      needIdx: true,
       idxOccupancyRate: 5,
-      columns:[
-      {title:'车组号', key: 'equipName', style:{ width: '15%'}},
-      {title:'车箱', key: 'equipName', style:{ width: '10%'}},
-      {title:'故障详情', key: 'warnName', style:{ width: '30%'}},
-      {title:'排查方法', key: 'diagnosisType', style:{ width: '15%'}},
-      {title:'排查结果',key: 'maintenanceName', style:{ width: '25%'}}
-    ]};
+      columns: [
+        {title: '车组号', key: 'equipName', style: {width: '15%'}},
+        {title: '车箱', key: 'equipName', style: {width: '10%'}},
+        {title: '故障详情', key: 'warnName', style: {width: '30%'}},
+        {
+          title: '排查方法', key: 'diagnosisType', style: {width: '15%'},
+          keyTranslate:
+            {
+              '1': '自动定位',
+              '2': '专家库匹配',
+              '3': '交互式排故',
+              '4': '原因排名'
+            }
+        },
+        {title: '排查结果', key: 'maintenanceName', style: {width: '25%'}}
+      ]
+    };
 
   }
 
-  fetchData(): any{
+  fetchData(): any {
 
 
     let basePortletURL = this.portletUtils.createDefaultResourceURL("reportPortlet", "queryReportData");
 
     let params = new HttpParams({
-      fromObject : {
-        'reportCode' : "RP_DIAGNOSIS_YYPC"}
+      fromObject: {
+        'reportCode': "RP_DIAGNOSIS_YYPC"
+      }
     });
 
     this.http.jsonp(`${basePortletURL}&${params.toString()}`, "callback=JSON_CALLBACK").subscribe(
       data => {
 
-        let _response:any = (data);
+        let _response: any = (data);
 
-        if(_response.status === "success"){
+        if (_response.status === "success") {
           this.addData(_response.data.result);
 
-        }else{
+        } else {
           this._dataSubject.error(_response.msg)
         }
       },
@@ -71,11 +84,11 @@ export class FaultReasonInvestigationDataService {
     */
   }
 
-  public startTimer(){
+  public startTimer() {
 
     this.fetchData();
 
-    setInterval(()=>{
+    setInterval(() => {
 
       this.fetchData();
 

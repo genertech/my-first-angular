@@ -39,7 +39,7 @@ export class DashboardComponent implements OnInit {
         routerLink: '/fault-diagnosis'
       },
       {
-        name: '故障诊断',
+        name: '故障预测',
         routerLink: '/fault-prediction'
       },
       {

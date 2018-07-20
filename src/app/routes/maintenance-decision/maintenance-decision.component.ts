@@ -92,10 +92,10 @@ export class MaintenanceDecisionComponent implements OnInit {
         needIdx: false,
         columns: [
           {title: '车型', key: 'equipTypeName', style: {width: '15%'}},
-          {title: '车组号', key: 'area', style: {width: '15%'}},
-          {title: '处理建议', key: 'code', style: {width: '40%'}},
-          {title: '建议修程', key: 'lx', style: {width: '15%'}},
-          {title: '状态', key: 'attribute', style: {width: '15%'}}
+          {title: '车组号', key: 'equipName', style: {width: '15%'}},
+          {title: '处理建议', key: 'adviceContent', style: {width: '40%'}},
+          {title: '建议修程', key: 'repairClassName', style: {width: '15%'}},
+          {title: '状态', key: 'status', style: {width: '15%'}, keyTranslate:{'10':'未处理','20':'已推送','30':'已完成'}}
         ]
       }
     };
@@ -110,10 +110,10 @@ export class MaintenanceDecisionComponent implements OnInit {
         needIdx: false,
         columns: [
           {title: '车型', key: 'equipTypeName', style: {width: '15%'}},
-          {title: '车组号', key: 'area', style: {width: '15%'}},
-          {title: '处理建议', key: 'code', style: {width: '40%'}},
-          {title: '建议修程', key: 'lx', style: {width: '15%'}},
-          {title: '状态', key: 'attribute', style: {width: '15%'}}
+          {title: '车组号', key: 'equipName', style: {width: '15%'}},
+          {title: '处理建议', key: 'adviceContent', style: {width: '40%'}},
+          {title: '建议修程', key: 'repairClassName', style: {width: '15%'}},
+          {title: '状态', key: 'status', style: {width: '15%'}, keyTranslate:{'10':'未处理','20':'已推送','30':'已完成'}}
         ]
       }
     };

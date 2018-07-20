@@ -13,6 +13,14 @@ const BAR_STYLE = {
   },
 };
 
+const CODE_TRANSLATION = {
+  '1':'自动定位',
+  '2':'专家库匹配',
+  '3':'交互式排故',
+  '4':'原因排名'
+
+};
+
 @Component({
   selector: 'app-precise-positioning-summary',
   templateUrl: './precise-positioning-summary.component.html',
@@ -152,7 +160,7 @@ export class PrecisePositioningSummaryComponent implements OnInit {
           label.push(ele.diagnosisType);
 
           series.push({
-            name: ele.diagnosisType,
+            name: CODE_TRANSLATION[ele.diagnosisType],
             data: []
           });
 
