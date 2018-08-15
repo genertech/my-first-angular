@@ -28,8 +28,8 @@ export class HealthEvaluationComponent implements OnInit {
 
   ngOnInit() {
 
-    this.currEquipType = 'CR400BF';
-    this.currEquipSn = '5001';
+    this.currEquipType = 'CRH3C';
+    this.currEquipSn = 'DEMO';
 
     this.rollingTableInit();
 
@@ -53,7 +53,7 @@ export class HealthEvaluationComponent implements OnInit {
 
   }
 
-  private rollingTableInit(){
+  private rollingTableInit() {
 
     this.systemEvaluationRTConfig = {
       labelText: '系统评估',
@@ -83,11 +83,18 @@ export class HealthEvaluationComponent implements OnInit {
         idxOccupancyRate: 10,
         columns: [
           {title: '车组', key: 'equipName', style: {width: '30%'}},
-          {title: '部件', key: 'code', style: {width: '30%'}},
+          {title: '部件', key: 'partName', style: {width: '30%'}},
           {title: '最低等级', key: 'minLevel', style: {width: '30%'}}
         ]
       }
     };
+  }
+
+  switchEquip($event) {
+
+      this.currEquipType = $event.equipType;
+      this.currEquipSn = $event.equipSn;
+
   }
 
 }

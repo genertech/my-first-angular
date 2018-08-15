@@ -47,6 +47,7 @@ import { SimpleRollingTableFragmentComponent } from './shared/components/simple-
 import { MaintenanceDecisionComponent } from './routes/maintenance-decision/maintenance-decision.component';
 import { HealthEvaluationComponent } from './routes/health-evaluation/health-evaluation.component';
 import { EquipHealthStateDiagramComponent } from './routes/health-evaluation/equip-health-state-diagram/equip-health-state-diagram.component';
+import {DatePipe, HashLocationStrategy, LocationStrategy} from "@angular/common";
 
 const MOCKMODULE = !environment.production ? [ DelonMockModule.forRoot({ data: MOCKDATA }) ] : [];
 
@@ -132,6 +133,7 @@ export function StartupServiceFactory(
     })
   ],
   providers: [
+    DatePipe,
     StartupService,
     {
       provide: APP_INITIALIZER,
@@ -139,6 +141,7 @@ export function StartupServiceFactory(
       deps: [StartupService],
       multi: true,
     },
+    {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [AppComponent]
 })

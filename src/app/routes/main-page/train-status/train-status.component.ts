@@ -108,12 +108,13 @@ export class TrainStatusComponent implements OnInit {
   subscribeDataService() {
 
     this.dataService.currentSubject().subscribe(
-      val => {
+      next => {
 
-        this.updateChart(val);
+          this.updateChart(next);
+
       },
       error => {
-        console.log(`获取数据异常:${error}`)
+        console.error(`获取数据异常`, error);
       }
     );
 
@@ -123,20 +124,22 @@ export class TrainStatusComponent implements OnInit {
 
   updateChart(data: any){
 
+    if(!data) return;
+
+    let max = data.seriesData[0][0];
+
     this.updateOptions = {
       yAxis: {
-        max: data.all
+        max: max
       },
       xAxis:{
-        data: Object.keys(data.status),
+        data: data.axisData,
       },
       series: [{
-        data: Object.keys(data.status).map(function (key) {
-          return data.status[key];
-        })
+        data: data.seriesData[0]
       }, {
-        data: Object.keys(data.status).map(function (key) {
-          return data.all - data.status[key];
+        data: data.seriesData[0].map(function (dt) {
+          return max - dt;
         })
       }]
     }

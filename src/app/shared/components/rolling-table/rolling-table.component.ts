@@ -1,10 +1,10 @@
 import {
   AfterViewInit,
   Component,
-  ElementRef,
+  ElementRef, EventEmitter,
   Input,
   OnChanges,
-  OnInit,
+  OnInit, Output,
   QueryList,
   ViewChild,
   ViewChildren
@@ -42,6 +42,8 @@ export class RollingTableComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() timing = '500ms ease-in';
   @Input() rawData: Array<any>;
   @Input() columnSetting: RollingTableColumnSetting;
+
+  @Output() onChildClick = new EventEmitter<any>();
 
   private _selectedPoint: Subject<any> = new Subject<any>();
 
@@ -125,6 +127,10 @@ export class RollingTableComponent implements OnInit, AfterViewInit, OnChanges {
       }
     }, TIME_INTERVAL);
 
+  }
+
+  onClick($event,item){
+    this.onChildClick.emit(item);
   }
 
 }

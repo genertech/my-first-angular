@@ -22,7 +22,7 @@ export class AdvanceRepairSuggestionDataService {
 
     let params = new HttpParams({
       fromObject : {
-        'reportCode' : "RP_MD_YYXJY"}
+        'reportCode' : "RP_MD_GJXJY"}
     });
 
     this.http.jsonp(`${basePortletURL}&${params.toString()}`, "callback=JSON_CALLBACK").subscribe(

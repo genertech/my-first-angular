@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import {IDataService} from "../interface/idata-service";
 import {Subject} from "rxjs/internal/Subject";
 import {Observable} from "rxjs/internal/Observable";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {PHMUtils} from "../../utils/PHMUtils";
+import {DatePipe} from "@angular/common";
 
 const FETCH_CYCLE = 60 * 1000;
 
@@ -17,7 +19,7 @@ export class TrainStatusDataService implements IDataService{
 
   private _dataSubject: Subject<any> = new Subject<any>();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private phmUtils: PHMUtils, private datePipe: DatePipe) { }
 
   getDataStructure(): any {
     return {
@@ -31,7 +33,7 @@ export class TrainStatusDataService implements IDataService{
 
   fetchData(): any{
 
-    //设置超时，确保请求时间在interval周期内
+    /*设置超时，确保请求时间在interval周期内
     this.http.get('/blueScreen/trainStatus', { headers: new HttpHeaders({ timeout: `${FETCH_CYCLE- 50}` })}).subscribe(
       data => {
         this.addData(data);
@@ -39,6 +41,33 @@ export class TrainStatusDataService implements IDataService{
       error1 => {
         this._dataSubject.error(error1);
       });
+    */
+
+    let today = this.datePipe.transform(new Date(),'yyyy-MM-dd');
+
+    let params = new HttpParams({
+      fromObject : {
+        'queryDate' : today}
+    });
+
+    let interfaceURL = this.phmUtils.createPHMServerURL("data/gzAnalysis/trainGroupState");
+
+    this.http.jsonp(`${interfaceURL}?${params.toString()}`, "callback").subscribe(
+      data => {
+
+        let _response:any = (data);
+
+        if(_response.status.toLowerCase() === "success"){
+          this.addData(_response.data);
+
+        }else{
+          this._dataSubject.error(_response.msg)
+        }
+      },
+      error1 => {
+        this._dataSubject.error(error1);
+      }
+    );
 
   }
 

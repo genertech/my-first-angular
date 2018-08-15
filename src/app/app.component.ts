@@ -36,7 +36,10 @@ export class AppComponent implements OnInit{
   //执行scale transform
   private scaleTransform(innerWidth: number, innerHeight: number ){
 
-    let scale = innerHeight/DEFAULT_CLIENT_HEIGHT;
+    let scaleH = innerHeight/DEFAULT_CLIENT_HEIGHT;
+    let scaleW = innerWidth/DEFAULT_CLIENT_WIDTH;
+
+    let scale = scaleH < scaleW ? scaleH : scaleW;
 
     this.renderer.setStyle(document.body, "transform", `scale(${scale})`);
     this.renderer.setStyle(document.body, "margin-left", `${(innerWidth - DEFAULT_CLIENT_WIDTH*scale) / 2 }px`);

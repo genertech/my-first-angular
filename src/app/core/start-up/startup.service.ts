@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { zip } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import {PortletUtils} from "../../utils/PortletUtils";
+import {PHMUtils} from "../../utils/PHMUtils";
 
 /**
  * 用于应用启动时
@@ -10,7 +11,7 @@ import {PortletUtils} from "../../utils/PortletUtils";
  */
 @Injectable()
 export class StartupService {
-  constructor(private httpClient: HttpClient, private portletUtils: PortletUtils) {}
+  constructor(private httpClient: HttpClient, private portletUtils: PortletUtils, private phmUtils: PHMUtils) {}
 
   load(): Promise<any> {
     // only works with promises
@@ -27,6 +28,10 @@ export class StartupService {
             this.portletUtils.setServerPort(res.remotePortletProperties.serverPort);
             this.portletUtils.setPortletLayoutId(res.remotePortletProperties.portletLayoutId);
             this.portletUtils.setPluginPortletName(res.remotePortletProperties.pluginPortletName);
+
+            this.phmUtils.setServerIp(res.remotePHMProperties.serverIp);
+            this.phmUtils.setServerPort(res.remotePHMProperties.serverPort);
+            this.phmUtils.setCtx(res.remotePHMProperties.ctx);
 
           },
           () => {},

@@ -1,5 +1,6 @@
 import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {AXIS} from "../../../shared/components/rotation-data-switch/rotation-data-switch.component";
+import {AverageNoFaultDataService} from "../../../service/impl/fault-analysis/average-no-fault-data.service";
 
 @Component({
   selector: 'app-average-no-fault',
@@ -74,58 +75,61 @@ export class AverageNoFaultComponent implements OnInit, OnChanges {
 
   private dataProcess() {
 
-    this.mergeOptions = {
-      legend:{
-        data: this.data.map((item) => { return item.name })
-      },
-      series: [{
-        id: 'average_pie',
-        data: this.data
-      }]
-    };
+    if(this.data){
+      this.mergeOptions = {
+        legend:{
+          data: this.data.map((item) => { return item.name })
+        },
+        series: [{
+          id: 'average_pie',
+          data: this.data
+        }]
+      };
 
-  }
+      let option = this.data;
 
-  ngOnInit() {
+      clearInterval(this.pieSwitchInterval);
 
-
-
-  }
-
-  private currentIndex = -1;
-  private pieSwitchInterval:any;
-
-
-  chartsInit(myCharts) {
-
-    let option = this.data;
-
-    let dataLen = option.length;
-
-    this.currentIndex = (this.currentIndex + 1) % dataLen;
-
-    this.pieNumber = option[this.currentIndex].value;
-    this.currEquip = option[this.currentIndex].name;
-
-    myCharts.dispatchAction({
-      type: 'pieSelect',
-      seriesIndex: 0,
-      dataIndex: this.currentIndex
-    });
-
-    this.pieSwitchInterval = setInterval( ()=>  {
+      let dataLen = option.length;
 
       this.currentIndex = (this.currentIndex + 1) % dataLen;
 
       this.pieNumber = option[this.currentIndex].value;
       this.currEquip = option[this.currentIndex].name;
 
-      myCharts.dispatchAction({
+      this.myCharts.dispatchAction({
         type: 'pieSelect',
         seriesIndex: 0,
         dataIndex: this.currentIndex
       });
 
-    }, 3000);
+      this.pieSwitchInterval = setInterval( ()=>  {
+
+        this.currentIndex = (this.currentIndex + 1) % dataLen;
+
+        this.pieNumber = option[this.currentIndex].value;
+        this.currEquip = option[this.currentIndex].name;
+
+        this.myCharts.dispatchAction({
+          type: 'pieSelect',
+          seriesIndex: 0,
+          dataIndex: this.currentIndex
+        });
+
+      }, 10000);
+    }
+  }
+
+  ngOnInit() {}
+
+  private currentIndex = -1;
+  private pieSwitchInterval:any;
+  private myCharts = null;
+
+
+  chartsInit(myCharts) {
+
+    this.myCharts = myCharts;
+
   }
 }

@@ -1,3 +1,4 @@
 <div class="section-div"><label>{{equipTypeLabelText}}</label><span [@labelSwitch]="aniStatus" (@labelSwitch.done)="switchCallback($event)">{{_equipType}}</span></div>
 <div class="section-div"><label>{{equipSnLabelText}}</label><span [@labelSwitch]="aniStatus" (@labelSwitch.done)="switchCallback($event)">{{_equipSn}}</span></div>
+<app-children-row-display [children]="equips" (onChildClick)="jump2Equip($event)"></app-children-row-display>
 <div #equipStructureCharts echarts [loading]="!mapLoaded" [loadingOpts]="loadingOpts" [options]="options" class="equip-structure-chart"></div>

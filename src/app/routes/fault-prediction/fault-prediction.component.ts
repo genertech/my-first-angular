@@ -90,7 +90,7 @@ export class FaultPredictionComponent implements OnInit {
         columns: [
           {title: '车组号', key: 'equipName', style: {width: '20%'}},
           {title: '车厢', key: 'areaName', style: {width: '15%'}},
-          {title: '部件', key: 'code', style: {width: '20%'}},
+          {title: '部件', key: 'partName', style: {width: '20%'}},
           {title: '预测等级', key: 'lvl', style: {width: '15%'}},
           {title: '预测详情', key: 'description', style: {width: '30%'}}
         ]

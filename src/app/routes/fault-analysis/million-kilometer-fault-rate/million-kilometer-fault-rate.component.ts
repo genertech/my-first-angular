@@ -1,5 +1,6 @@
 import {Component, OnChanges, OnInit} from '@angular/core';
 import {NgxEchartsService} from "ngx-echarts";
+import {MillionKilometerFaultRateDataService} from "../../../service/impl/fault-analysis/million-kilometer-fault-rate-data.service";
 
 @Component({
   selector: 'app-million-kilometer-fault-rate',
@@ -9,17 +10,42 @@ import {NgxEchartsService} from "ngx-echarts";
 export class MillionKilometerFaultRateComponent implements OnInit, OnChanges {
 
   options: any;
+  updateOptions: any;
   labelText: string = '百万公里故障数';
 
   mapLoaded = false;
   private echarts: any;
 
-  constructor(private nes: NgxEchartsService) {
+  constructor(private nes: NgxEchartsService, private dataService: MillionKilometerFaultRateDataService) {
     this.echarts = this.nes.echarts;
   }
 
+
   ngOnInit() {
 
+    //console.log("init");
+
+    this.dataService.getDataObservable().subscribe(next => {
+
+      //console.log(next);
+      if(next.status.toLowerCase() === "success"){
+
+        this.dataProcess(next.data);
+      }
+
+    }, error1 => {
+      console.error(error1);
+    });
+
+
+  }
+
+  ngOnChanges(){
+
+  }
+
+
+  private dataProcess(data: any){
     this.mapLoaded = true;
 
     this.options = {
@@ -33,7 +59,7 @@ export class MillionKilometerFaultRateComponent implements OnInit, OnChanges {
       },
       radiusAxis: {
         type: 'category',
-        data: ['CRH380B', 'CR400BF', 'CRH3A', 'CRH5G', 'CRH5A'],
+        data:  data.axisData, //['CRH380B', 'CR400BF', 'CRH3A', 'CRH5G', 'CRH5A'],
         z: 10,
         axisLine: {show: false},
         axisTick: {show: false},
@@ -49,7 +75,7 @@ export class MillionKilometerFaultRateComponent implements OnInit, OnChanges {
       },
       series: [{
         type: 'bar',
-        data: [0.8, 0.7, 0.8, 0.65, 0.9],
+        data: data.seriesData[0],//[0.8, 0.7, 0.8, 0.65, 0.9],
         coordinateSystem: 'polar',
         name: '百万公里故障数',
         barCategoryGap :'50%',
@@ -75,7 +101,7 @@ export class MillionKilometerFaultRateComponent implements OnInit, OnChanges {
         coordinateSystem: 'polar',
         name: 'line',
         type: 'scatter',
-        data: [0.8, 0.7, 0.8, 0.65, 0.9],
+        data: data.seriesData[0], //[0.8, 0.7, 0.8, 0.65, 0.9],
         itemStyle:{
           color: 'rgba(1,2,3, 0)',
         },
@@ -89,9 +115,4 @@ export class MillionKilometerFaultRateComponent implements OnInit, OnChanges {
       }]
     };
   }
-
-  ngOnChanges(){
-
-  }
-
 }

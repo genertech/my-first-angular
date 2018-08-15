@@ -1,21 +1,54 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {RuntimeFaultDataService} from "../../../service/impl/fault-analysis/runtime-fault-data.service";
 
 @Component({
   selector: 'app-runtime-fault',
   templateUrl: './runtime-fault.component.html',
   styleUrls: ['./runtime-fault.component.css']
 })
-export class RuntimeFaultComponent implements OnInit {
+export class RuntimeFaultComponent implements OnInit, OnChanges {
 
   labelText: string = '运营故障';
   mapLoaded: boolean = false;
   options: any;
+  marqueeText: any = "";
 
-  constructor() { }
+  constructor(private dataService: RuntimeFaultDataService) {
+
+  }
 
   ngOnInit() {
 
+    this.dataService.getDataObservable().subscribe(next => {
+
+      if(next.status.toLowerCase() === "success"){
+
+        this.dataProcess(next.data);
+      }
+
+    }, error1 => {
+      console.error(error1);
+    });
+
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+
+  }
+
+  private dataProcess(data: any){
     this.mapLoaded = true;
+
+    if(!data) return;
+
+    let lastDateSplit = data.axisData[data.axisData.length-1].split('-');
+    let lastData = data.seriesData[data.seriesData.length-1].reduce( (p, c) => {
+
+
+      return Number(p||0)+Number(isNaN(c) ? 0 : c);
+    });
+
+    this.marqueeText = `${lastDateSplit[0]}年${lastDateSplit[1]}月长客股份各型动车组总计发生故障${lastData}件`; //，其中造成运行影响故障0件（安监报0件 ）;
 
     this.options = {
       color: ['#f98446', '#c0c610', '#25d04f', '#2a89e5', '#ef2ee7'],
@@ -24,7 +57,7 @@ export class RuntimeFaultComponent implements OnInit {
         fontSize: 15
       },
       legend: {
-        data:['CRH5A','CRH5G','CRH3A','CRH380B', 'CR400BF'],
+        data: data.legendData, //['CRH5A','CRH5G','CRH3A','CRH380B', 'CR400BF'],
         bottom: '7%',
         textStyle: {
           fontSize: 17,
@@ -40,7 +73,7 @@ export class RuntimeFaultComponent implements OnInit {
       xAxis : [
         {
           type : 'category',
-          data : ['1月','2月','3月','4月','5月','6月','7月', '8月', '9月', '10月', '11月', '12月'],
+          data : data.axisData, //['1月','2月','3月','4月','5月','6月','7月', '8月', '9月', '10月', '11月', '12月'],
           axisLine: {
             lineStyle:{
               color: 'white'
@@ -72,7 +105,21 @@ export class RuntimeFaultComponent implements OnInit {
 
         }
       ],
-      series : [
+      series : data.legendData.map( ( d, i) => {
+
+        return {
+          name: d,
+          type:'bar',
+          barWidth : 40,
+          stack: 'train',
+          label:{
+            show:true,
+            position:'inside',
+            formatter: '{c}'
+          },
+          data: data.seriesData[i]
+        }
+      })/*[
         {
           name:'CRH5A',
           type:'bar',
@@ -129,9 +176,8 @@ export class RuntimeFaultComponent implements OnInit {
           },
           data:[6, 8, 11, 8, 6, 11, 20, 6, 23, 11, 19, 13]
         }
-      ]
+      ]*/
     };
-
   }
 
 }

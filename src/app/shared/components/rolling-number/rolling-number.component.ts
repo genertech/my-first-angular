@@ -30,20 +30,25 @@ class RollingAnimation {
       this.destroy();
     }
 
-    let i = this.lastFetchedNumber;
+    let i:number = this.lastFetchedNumber;
 
     let deltaPerFrame = this.deltaPerFrame(v);
 
     this._isIncrease = deltaPerFrame > 0;
 
 
-    this._idNumberRoll = setInterval(() => this.emit( i += deltaPerFrame), MS_PER_FRAME);
+    this._idNumberRoll = setInterval(() => {
+
+      i = Number(i) + Number(deltaPerFrame);
+      this.emit( i);
+
+    }, MS_PER_FRAME);
 
     this.lastFetchedNumber = v;
   }
 
-  private deltaPerFrame(newValue: number){
-    return (newValue - this.lastFetchedNumber) / (LOOP_CYCLE / MS_PER_FRAME);
+  private deltaPerFrame(newValue: number): number{
+    return Number(newValue - this.lastFetchedNumber) / Number(LOOP_CYCLE / MS_PER_FRAME);
   }
 
   //数据迭代
@@ -67,7 +72,7 @@ class RollingAnimation {
       this.destroy();
     }else{
       if (this.ondata) {
-        this.ondata(n.toFixed(0));
+        this.ondata((n||0).toFixed(0));
       }
     }
   }

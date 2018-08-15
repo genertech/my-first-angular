@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {FaultPrecisePositioningDataService} from "../../../service/impl/fault-precise-positioning-data.service";
 import {SimpleRollingTableConfig} from "./simple-rolling-table-config";
@@ -45,6 +45,8 @@ export class SimpleRollingTableFragmentComponent implements OnInit, OnChanges {
   };
 
   @Input() data: any;
+
+  @Output() onChildClick = new EventEmitter<any>();
 
   private switchInterval: any;
 
@@ -138,4 +140,7 @@ export class SimpleRollingTableFragmentComponent implements OnInit, OnChanges {
   }
 
 
+  tableElementClick($event: any) {
+    this.onChildClick.emit($event);
+  }
 }

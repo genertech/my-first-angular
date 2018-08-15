@@ -6,7 +6,7 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
 
 //展示内容范围
 const CANVAS_WIDTH = 1100;
-const CANVAS_HEIGHT = 750;
+const CANVAS_HEIGHT = 660;
 const SYMBOL_SIZE = 20;
 
 const COLOR_PALETTE = {
@@ -37,9 +37,9 @@ export class EquipHealthStateDiagramComponent implements OnInit, OnChanges {
 
   equipTypeLabelText = '车型';
   equipSnLabelText = '车组';
-  @Input() equipType: string;
+  @Input() equipType: string = 'CRH3C';
   _equipType: string = 'N/A';
-  @Input() equipSn: string;
+  @Input() equipSn: string = 'DEMO';
   _equipSn: string = 'N/A';
 
   loadingOpts = {
@@ -49,6 +49,9 @@ export class EquipHealthStateDiagramComponent implements OnInit, OnChanges {
     maskColor: 'rgba(0, 0, 0, 0.2)',
     zlevel: 0
   };
+
+  equips: Array<any> = [];
+  private areasHaveProblem = [];
 
   @ViewChild("equipStructureCharts") equipStructureCharts: ElementRef;
   private echarts: any;
@@ -68,111 +71,208 @@ export class EquipHealthStateDiagramComponent implements OnInit, OnChanges {
 
   }
 
-  ngOnChanges(){
+  ngOnChanges() {
 
     this.aniStatus = 'active';
-    this.displayHealthStateDiagram('CRH5A', '5001');
+    this.mapLoaded = false;
+    this.dataService.getHealthStateDiagram(this.equipType, this.equipSn).subscribe(response => {
+        console.log(response);
+
+
+        if (response.status === 'success') {
+
+          this.dataDisplay(response.data.result)
+        } else {
+          console.log('获取数据异常', response);
+
+        }
+
+      },
+      error1 => {
+        console.log('获取数据异常', error1)
+      });
 
   }
 
-  private displayHealthStateDiagram(equipType: string, equipSn: string) {
+  private dataDisplay(equipStructure: any) {
 
-    this.dataService.getHealthStateDiagram(equipType, equipSn).subscribe(response => {
+    this.areasHaveProblem.length = 0;
+    this.equips.length = 0;
 
-      let areaParams;
-      console.log(response);
+    this.updateChildRow(equipStructure);
 
-      if (response.status !== 'success') {
-        //异常处理
+    let areaIds = this.areasHaveProblem;
 
-      } else {
-        areaParams = response.data.result;
+    if (areaIds && areaIds.length) {
+      this.displayHealthStateDiagram(areaIds[0]);
+    } else if (equipStructure && equipStructure.length) {
+      this.displayHealthStateDiagram(equipStructure[0].id)
+    } else {
+      this.displayHealthStateDiagram(null);
+    }
 
-        if (areaParams.image) {
+  }
 
-          this.imageService.getImageBlobFromUrl(areaParams.image).subscribe(imageBlob => {
+  private updateChildRow(equipStructure: any) {
 
-            this.imageService.blobImage2DataURLObservable(imageBlob).subscribe(imageDataURL => {
+    if (equipStructure && equipStructure.length) {
 
-                this.imageService.imageDataURL2ImageObservable(imageDataURL).subscribe(image => {
+      this.equips = equipStructure.map(area => {
 
-                  let bgConfig = this.processBgConfig(image);
-
-                  this.dataProcess(areaParams.hotSpots, bgConfig);
-
-                  this.mapLoaded = true;
-
-                  if (this.echartsInstance === undefined) {
-
-                    this.echartsInstance = this.echarts.init(this.equipStructureCharts.nativeElement);
-
-                  }
-                  this.echartsInstance.clear();
-
-                  this.options = {
-                    title: {
-                      text: areaParams.name,
-                      textStyle: {
-                        color: 'white'
-                      },
-                      left: 'center',
-                      bottom: '0'
-                    },
-                    color: ['#8EC9EB'],
-                    grid: {id: 'grid', width: '100%', height: '100%', left: 0, bottom: 0},
-                    xAxis: {
-                      type: 'value',
-                      axisLine: {show: false},
-                      axisTick: {show: false},
-                      axisLabel: {show: false},
-                      splitLine: {show: false},
-                      min: 0,
-                      max: CANVAS_WIDTH,
-                      interval: 100
-                    },
-                    yAxis: {
-                      type: 'value',
-                      axisLine: {show: false},
-                      axisTick: {show: false},
-                      axisLabel: {show: false},
-                      splitLine: {show: false},
-                      min: 0,
-                      max: CANVAS_HEIGHT,
-                      interval: 100
-                    },
-                    graphic: [
-                      {
-                        id: 'structure',
-                        type: 'image',
-                        left: 'center',
-                        top: 'middle',
-                        z: -1,
-                        bounding: 'raw',
-                        cursor: 'normal',
-                        style: {
-                          image: imageDataURL,
-                          width: bgConfig.width,
-                          height: bgConfig.height
-                        }
-                      },
-                    ],
-                    series: [...this.PARAMS_SERIES]
-                  };
-
-                });
-              }
-            );
-
-          }, error1 => {
-            console.log(error1);
-
-          });
+        let special = {} as any;
+        if (area.hasOwnProperty('hasProblem') && area.hasProblem === true) {
+          this.areasHaveProblem.push(area.id);
+          special.style = {
+            'background-color': '#ff3636'
+          }
         }
+        return Object.assign(area, special);
+      });
+
+    }
+
+  }
+
+  private displayHealthStateDiagram(areaId: string) {
+
+    if (this.echartsInstance === undefined) {
+
+      this.echartsInstance = this.echarts.init(this.equipStructureCharts.nativeElement);
+
+    }
+
+    this.echartsInstance.clear();
+
+    let area = this.equips.filter(ele => {
+      return ele.id === areaId;
+    });
+
+    if (!area || area.length == 0) {
+      this.mapLoaded = true;
+
+      //显示N/A
+      this.options = {
+        grid: {id: 'grid', width: '100%', height: '100%', left: 0, bottom: 0},
+        xAxis: {
+          type: 'value',
+          axisLine: {show: false},
+          axisTick: {show: false},
+          axisLabel: {show: false},
+          splitLine: {show: false},
+          min: 0,
+          max: CANVAS_WIDTH,
+          interval: 100
+        },
+        yAxis: {
+          type: 'value',
+          axisLine: {show: false},
+          axisTick: {show: false},
+          axisLabel: {show: false},
+          splitLine: {show: false},
+          min: 0,
+          max: CANVAS_HEIGHT,
+          interval: 100
+        },
+        graphic: [
+          {
+            id: 'structure',
+            type: 'text',
+            left: 'center',
+            top: 'middle',
+            z: -1,
+            bounding: 'raw',
+            cursor: 'normal',
+            style: {
+              text: 'N/A',
+              width: CANVAS_WIDTH,
+              height: CANVAS_HEIGHT,
+              fill: 'red',
+              font: 'italic bolder 40px "Microsoft YaHei"'
+            }
+          },
+        ]
       }
 
-    }, error1 => {
-      console.log(error1);
-    });
+    } else {
+
+      let f_area = area[0];
+
+      if (f_area.image) {
+
+        this.imageService.getImageBlobFromUrl(f_area.image).subscribe(imageBlob => {
+
+          this.imageService.blobImage2DataURLObservable(imageBlob).subscribe(imageDataURL => {
+
+              this.imageService.imageDataURL2ImageObservable(imageDataURL).subscribe(image => {
+
+                let bgConfig = this.processBgConfig(image);
+
+                this.dataProcess(f_area.hotSpots, bgConfig);
+
+                this.mapLoaded = true;
+
+                this.options = {
+                  title: {
+                    text: f_area.name,
+                    textStyle: {
+                      color: 'white'
+                    },
+                    left: 'center',
+                    bottom: '0'
+                  },
+                  color: ['#8EC9EB'],
+                  grid: {id: 'grid', width: '100%', height: '100%', left: 0, bottom: 0},
+                  xAxis: {
+                    type: 'value',
+                    axisLine: {show: false},
+                    axisTick: {show: false},
+                    axisLabel: {show: false},
+                    splitLine: {show: false},
+                    min: 0,
+                    max: CANVAS_WIDTH,
+                    interval: 100
+                  },
+                  yAxis: {
+                    type: 'value',
+                    axisLine: {show: false},
+                    axisTick: {show: false},
+                    axisLabel: {show: false},
+                    splitLine: {show: false},
+                    min: 0,
+                    max: CANVAS_HEIGHT,
+                    interval: 100
+                  },
+                  graphic: [
+                    {
+                      id: 'structure',
+                      type: 'image',
+                      left: 'center',
+                      top: 'middle',
+                      z: -1,
+                      bounding: 'raw',
+                      cursor: 'normal',
+                      style: {
+                        image: imageDataURL,
+                        width: bgConfig.width,
+                        height: bgConfig.height
+                      }
+                    },
+                  ],
+                  series: [...this.PARAMS_SERIES]
+                };
+
+              });
+            }
+          );
+
+        }, error1 => {
+          console.log(error1);
+
+        });
+      }
+    }
+
+
   }
 
   //对底图尺寸进行换算
@@ -226,7 +326,7 @@ export class EquipHealthStateDiagramComponent implements OnInit, OnChanges {
         symbolSize: SYMBOL_SIZE,
         showSymbol: true,
         itemStyle: {
-          color: COLOR_PALETTE[hotSpot.index]
+          color: COLOR_PALETTE[hotSpot.healthLevel]
         },
         data: [
           {value: dataPoint},
@@ -248,5 +348,12 @@ export class EquipHealthStateDiagramComponent implements OnInit, OnChanges {
     }
 
   }
+
+  jump2Equip(area: any) {
+    this.mapLoaded = false;
+    this.displayHealthStateDiagram(area.id);
+
+  }
+
 
 }

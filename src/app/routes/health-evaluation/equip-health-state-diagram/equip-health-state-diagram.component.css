@@ -33,10 +33,12 @@
   text-align: center;
 }
 
+app-children-row-display{
+  width: 100%;
+}
 
 .equip-structure-chart {
   width: 1100px;
-  height: 750px;
+  height: 660px;
   margin: 0 auto;
-  flex-basis: 100%;
 }

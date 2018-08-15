@@ -24,7 +24,7 @@ export class FaultReasonInvestigationDataService {
       idxOccupancyRate: 5,
       columns: [
         {title: '车组号', key: 'equipName', style: {width: '15%'}},
-        {title: '车箱', key: 'equipName', style: {width: '10%'}},
+        {title: '车厢', key: 'equipName', style: {width: '10%'}},
         {title: '故障详情', key: 'warnName', style: {width: '30%'}},
         {
           title: '排查方法', key: 'diagnosisType', style: {width: '15%'},

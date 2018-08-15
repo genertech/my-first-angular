@@ -1,3 +1,3 @@
 <div class="title-div" [ngStyle]="config.labelStyle"><span>{{config.labelText}}</span></div>
 <div class="section-div"><label>{{config.sectionLabelText}}</label><span [@equipTypeStatus]="aniStatus" (@equipTypeStatus.done)="switchCallback($event)">{{section}}</span></div>
-<app-rolling-table [rawData]="rollingTableData" [columnSetting]="columnInfo"></app-rolling-table>
+<app-rolling-table [rawData]="rollingTableData" [columnSetting]="columnInfo" (onChildClick)="tableElementClick($event)"></app-rolling-table>
