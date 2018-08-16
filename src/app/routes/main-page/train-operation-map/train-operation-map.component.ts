@@ -109,8 +109,9 @@ export class TrainOperationMapComponent implements OnInit {
               // {name: '5372', value: [125.03, 46.58], warn: 1, forecast: 5},
             ],
             symbolSize: (val, item) => {
+                let fix = 20 + 10* (item.data.warn * 2 + item.data.forecast);
 
-              return  20 + 10* (item.data.warn * 2 + item.data.forecast)
+              return fix > 50 ? 50: fix;
             },
             showEffectOn: 'render',
             rippleEffect: {

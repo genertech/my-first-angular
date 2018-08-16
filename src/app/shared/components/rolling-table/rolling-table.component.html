@@ -7,14 +7,22 @@
       </ng-container>
     </div>
   </li>
-  <ng-container *ngFor="let item of items" >
-    <li #dataRow class="data-li" [@flyInOut]="'in'" (click)="onClick($event,item)" [ngClass]="item.idx % 2 === 1 ? 'data-li-odd' : 'data-li-even'" >
+  <ng-container *ngFor="let item of items">
+    <li #dataRow class="data-li" [@flyInOut]="'in'" (click)="onClick($event,item)"
+        [ngClass]="item.idx % 2 === 1 ? 'data-li-odd' : 'data-li-even'">
       <div class="rolling-table-row-wrapper">
         <div *ngIf="columnSetting.needIdx" [ngStyle]="{'width': columnSetting.idxOccupancyRate + '%'}">
           <circle-element [content]="item.idx"></circle-element>
         </div>
         <ng-container *ngFor="let column of columnSetting.columns">
-          <div [ngStyle]="column.style">{{item[column.key] | keyTranslate: column.keyTranslate}}</div>
+          <div [ngStyle]="column.style">
+            <ng-container *ngIf="column.matchPatten; else other_content">
+              {{processMatchPattern(item, column.key, column.matchPatten)| keyTranslate: column.keyTranslate}}
+            </ng-container>
+            <ng-template #other_content>
+                  {{item[column.key] | keyTranslate: column.keyTranslate}}
+            </ng-template>
+          </div>
         </ng-container>
       </div>
     </li>

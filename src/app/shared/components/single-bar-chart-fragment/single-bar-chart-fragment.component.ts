@@ -102,7 +102,8 @@ export class SingleBarChartFragmentComponent implements OnInit, OnChanges {
         axisTick: {show: false},
         axisLabel: {
           interval: 0,
-          fontSize: 17
+          fontSize: 17,
+          rotate: 30
         },
         splitLine: {show: false}
       },

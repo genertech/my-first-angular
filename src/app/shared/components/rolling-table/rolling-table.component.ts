@@ -133,4 +133,21 @@ export class RollingTableComponent implements OnInit, AfterViewInit, OnChanges {
     this.onChildClick.emit(item);
   }
 
+  //特殊的key处理方式
+  processMatchPattern(item: any, key: string, matchPatten: string) {
+    if(matchPatten){
+
+      let keys = key.split("|");
+      if(matchPatten === 'first'){
+
+        for(let i = 0; i < keys.length; i++){
+          if(item[keys[i]]){
+            return item[keys[i]];
+          }
+        }
+      }
+    }
+
+    return "";
+  }
 }

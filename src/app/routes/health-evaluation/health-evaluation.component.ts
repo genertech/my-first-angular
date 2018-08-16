@@ -28,8 +28,8 @@ export class HealthEvaluationComponent implements OnInit {
 
   ngOnInit() {
 
-    this.currEquipType = 'CRH3C';
-    this.currEquipSn = 'DEMO';
+    this.currEquipType = '请选择';
+    this.currEquipSn = '请选择';
 
     this.rollingTableInit();
 

@@ -42,10 +42,12 @@ export class RuntimeFaultComponent implements OnInit, OnChanges {
     if(!data) return;
 
     let lastDateSplit = data.axisData[data.axisData.length-1].split('-');
-    let lastData = data.seriesData[data.seriesData.length-1].reduce( (p, c) => {
 
+    let lastData = 0;
 
-      return Number(p||0)+Number(isNaN(c) ? 0 : c);
+    data.seriesData.forEach(serie => {
+      lastData = Number(lastData) + Number(isNaN(serie[serie.length - 1]) ? 0 : serie[serie.length - 1]);
+
     });
 
     this.marqueeText = `${lastDateSplit[0]}年${lastDateSplit[1]}月长客股份各型动车组总计发生故障${lastData}件`; //，其中造成运行影响故障0件（安监报0件 ）;

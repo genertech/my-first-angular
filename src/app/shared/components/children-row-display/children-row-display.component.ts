@@ -21,7 +21,9 @@ const PAGE_BUTTON_MARGIN = 2 * (45 + 10 * 2);
 //由于展示某节点的所有后续子节点
 export class ChildrenRowDisplayComponent implements OnInit, OnChanges {
 
-  constructor(private el: ElementRef, private renderer: Renderer2) {}
+  constructor(private el: ElementRef, private renderer: Renderer2) {
+
+  }
 
   items: Array<any>;
 
@@ -33,7 +35,8 @@ export class ChildrenRowDisplayComponent implements OnInit, OnChanges {
 
   showPagingButton(action?: any): boolean {
 
-    if (this.items) {
+    if (this.items && this.items.length > 0) {
+      //console.log(this.el.nativeElement);
       if (this.items.length * ITEM_WIDTH + PAGE_BUTTON_MARGIN > this.el.nativeElement.offsetWidth) {
 
         if(action === 'prev' && this.page === 0){
@@ -70,17 +73,16 @@ export class ChildrenRowDisplayComponent implements OnInit, OnChanges {
     if (this.showPagingButton()) {
       const gaps = Math.ceil(this.items.length * ITEM_WIDTH / (this.el.nativeElement.offsetWidth - PAGE_BUTTON_MARGIN));
 
-
-      this.PAGES = (new Array(gaps)).fill(0).map(( e, idx )=>{
-        if(idx == 0) return 0;
-        if(idx == gaps-1) return this.el.nativeElement.offsetWidth - PAGE_BUTTON_MARGIN - this.items.length * ITEM_WIDTH;
-        return  -idx * (this.el.nativeElement.offsetWidth - PAGE_BUTTON_MARGIN);
-      });
+        this.PAGES = (new Array(gaps)).fill(0).map(( e, idx )=>{
+          if(idx == 0) return 0;
+          if(idx == gaps-1) return this.el.nativeElement.offsetWidth - PAGE_BUTTON_MARGIN - this.items.length * ITEM_WIDTH;
+          return  -idx * (this.el.nativeElement.offsetWidth - PAGE_BUTTON_MARGIN);
+        });
 
     }
   }
 
-  PAGES: Array<number>;
+  PAGES: Array<number> = [];
   private page: number = 0;
 
   pagingButtonClick(action: string) {

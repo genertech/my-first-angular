@@ -36,7 +36,7 @@ export class FaultPrecisePositioningDataService {
               '4': '原因排名'
             }
         },
-        {title: '故障原因', key: 'maintenanceName', style: {width: '25%'}}
+        {title: '故障原因', key: 'faultModeName', style: {width: '25%'}}
       ]
     };
 

@@ -30,7 +30,7 @@ export class HealthEvaluationInfoDataService implements IDataService {
         {title: '车组号', key: 'equipName', style: {width: '20%'}},
         {title: '车辆号', key: 'areaName', style: {width: '20%'}},
         {title: '等级', key: 'healthLevel', style: {width: '20%'}},
-        {title: '系统/部件', key: 'partName', style: {width: '30%'}}
+        {title: '系统/部件', key: 'partName|sysName', matchPatten:"first", style: {width: '30%'}}
       ]
     };
 

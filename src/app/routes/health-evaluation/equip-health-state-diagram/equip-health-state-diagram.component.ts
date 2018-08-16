@@ -222,6 +222,20 @@ export class EquipHealthStateDiagramComponent implements OnInit, OnChanges {
                   },
                   color: ['#8EC9EB'],
                   grid: {id: 'grid', width: '100%', height: '100%', left: 0, bottom: 0},
+                  tooltip : {
+                    // trigger: 'axis',
+                    showDelay : 0,
+                    formatter : function (params) {
+
+                      if(params.data){
+                        return `${params.data.hotSpot.name}:${params.data.hotSpot.healthLevel}`;
+
+                      }else{
+                        return "";
+                      }
+
+                    }
+                  },
                   xAxis: {
                     type: 'value',
                     axisLine: {show: false},
@@ -329,7 +343,7 @@ export class EquipHealthStateDiagramComponent implements OnInit, OnChanges {
           color: COLOR_PALETTE[hotSpot.healthLevel]
         },
         data: [
-          {value: dataPoint},
+          {value: dataPoint, hotSpot:hotSpot},
         ],
 
       });

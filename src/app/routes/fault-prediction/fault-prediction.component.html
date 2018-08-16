@@ -3,15 +3,15 @@
     <span><label>开始时间:</label>{{startTime | date:'yyyy-MM-dd'}} <label>结束时间:</label>{{endTime | date:'yyyy-MM-dd'}}</span>
   </glass-display-frame>
   <div [outerFrame]="frames.FRAME6" style="grid-column: 1 / 2;">
-    <app-single-bar-chart-fragment [labelText]="'车型'" [colorPalette]="['#0caff3', '#27f30c', '#f3de0c']"
+    <app-single-bar-chart-fragment [labelText]="'车型'" [colorPalette]="['#27f30c', '#0caff3', '#f3de0c']"
                                    [data]="predictionByEquipType"></app-single-bar-chart-fragment>
   </div>
   <div [outerFrame]="frames.FRAME6" style="grid-column: 2 / 3">
-    <app-single-bar-chart-fragment [labelText]="'部件'" [colorPalette]="['#0caff3', '#27f30c', '#f3de0c']"
+    <app-single-bar-chart-fragment [labelText]="'部件'" [colorPalette]="['#27f30c', '#0caff3', '#f3de0c']"
                                    [data]="predictionByComponent"></app-single-bar-chart-fragment>
   </div>
   <div [outerFrame]="frames.FRAME6">
-    <app-single-bar-chart-fragment [labelText]="'系统'" [colorPalette]="['#0caff3', '#27f30c', '#f3de0c']"
+    <app-single-bar-chart-fragment [labelText]="'系统'" [colorPalette]="['#27f30c', '#0caff3', '#f3de0c']"
                                    [data]="predictionBySystem"></app-single-bar-chart-fragment>
   </div>
   <div [outerFrame]="frames.FRAME6">
