@@ -23,3 +23,29 @@
   height: 750px;
   margin: 0 auto;
 }
+
+.back-button {
+  width: 900px;
+  height: 45px;
+  font-size: 25px;
+  font-weight: bold;
+  border-width: 45px 45px 0 50px;
+  border-color: blue transparent blue transparent;
+  color: white;
+  background-color: unset;
+  border-radius: 5px;
+  cursor: pointer;
+
+}
+
+.back-button::before{
+  content: "返回";
+  position: relative;
+  top: -40px;
+  text-align: center;
+}
+
+.back-button-holder {
+  text-align: center;
+  padding-top: 15px;
+}

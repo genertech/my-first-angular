@@ -20,7 +20,7 @@ div.item-wrapper {
 }
 
 .PostItem{
-  margin: 10px;
+  margin: 10px 0;
   height: 100px;
   width: 120px;
   min-width: 120px;

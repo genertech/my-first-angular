@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FRAMES} from "../../shared/directives/outer-frame.directive";
 import {NgxEchartsService} from "ngx-echarts";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {EquipStructureDataService} from "../../service/impl/equip-structure-data.service";
 import {ImageCommonService} from "../../shared/service/image-common.service";
 
@@ -12,6 +12,8 @@ const SYMBOL_SIZE = 20;
 const PARAM_INFO_FRAME_WIDTH = 400;
 const PARAM_INFO_FRAME_HEIGHT = 180;
 const PARAM_INFO_FRAME_Z_INDEX = 99;
+
+const MAIN_PAGE_URL = 'main-page';
 
 @Component({
   selector: 'app-equip-structure',
@@ -44,13 +46,16 @@ export class EquipStructureComponent implements OnInit {
 
   equips: any;
 
-  constructor(private nes: NgxEchartsService, private route: ActivatedRoute,
+  constructor(private nes: NgxEchartsService, private route: ActivatedRoute, private router: Router,
               private dataService: EquipStructureDataService, private imageService: ImageCommonService) {
     this.echarts = this.nes.echarts;
   }
 
   private currEquipType;
   private currEquipSn;
+
+  //单个热点区域的参数太多时，通过time line 切分显示
+  private timeLineOptions = [];
 
   ngOnInit() {
 
@@ -93,8 +98,6 @@ export class EquipStructureComponent implements OnInit {
 
                   let bgConfig = this.processBgConfig(image);
 
-                  this.dataProcess(areaParams.hotSpots, bgConfig);
-
                   this.mapLoaded = true;
 
                   if (this.echartsInstance === undefined) {
@@ -104,36 +107,36 @@ export class EquipStructureComponent implements OnInit {
                   }
                   this.echartsInstance.clear();
 
-                  this.options = {
+                  let baseOption = {
                     title: {
                       text: areaParams.name,
-                      textStyle: {
+                        textStyle: {
                         color: 'white'
                       },
                       left: 'center',
-                      bottom: '0'
+                        bottom: '0'
                     },
                     color: ['#8EC9EB'],
-                    grid: {id: 'grid', width: '100%', height: '100%', left: 0, bottom: 0},
+                      grid: {id: 'grid', width: '100%', height: '100%', left: 0, bottom: 0},
                     xAxis: {
                       type: 'value',
-                      axisLine: {show: false},
+                        axisLine: {show: false},
                       axisTick: {show: false},
                       axisLabel: {show: false},
                       splitLine: {show: false},
                       min: 0,
-                      max: CANVAS_WIDTH,
-                      interval: 100
+                        max: CANVAS_WIDTH,
+                        interval: 100
                     },
                     yAxis: {
                       type: 'value',
-                      axisLine: {show: false},
+                        axisLine: {show: false},
                       axisTick: {show: false},
                       axisLabel: {show: false},
                       splitLine: {show: false},
                       min: 0,
-                      max: CANVAS_HEIGHT,
-                      interval: 100
+                        max: CANVAS_HEIGHT,
+                        interval: 100
                     },
                     graphic: [
                       {
@@ -151,8 +154,14 @@ export class EquipStructureComponent implements OnInit {
                         }
                       },
                     ],
-                    series: [...this.PARAMS_SERIES]
+                    series: null
                   };
+
+                  this.dataProcess(areaParams.hotSpots, bgConfig, true);
+
+                  //baseOption.series = [...this.PARAMS_SERIES];
+
+                  this.options = this.buildTimeLine(baseOption);
 
                   this.bindDragEvent();
 
@@ -212,8 +221,9 @@ export class EquipStructureComponent implements OnInit {
 
   }
 
-  dataProcess(hotSpots: any, bgConfig: any) {
+  dataProcess(hotSpots: any, bgConfig: any, isParameterSeparate:boolean = false) {
 
+    let options;
     //this.PARAMS_GRAPHS.length = 0;
     this.PARAMS_SERIES.length = 0;
     this.INFO_FRAME_POINTS.length = 0;
@@ -221,6 +231,12 @@ export class EquipStructureComponent implements OnInit {
     if (!hotSpots || hotSpots.length == 0) {
       return;
     }
+
+    if(isParameterSeparate){
+      options = [];
+    }
+
+    this.timeLineOptions.length = 0;
 
     hotSpots.forEach((hotSpot) => {
 
@@ -248,78 +264,137 @@ export class EquipStructureComponent implements OnInit {
         dataFrameAnchor[1] = CANVAS_HEIGHT - SYMBOL_SIZE / 2 - PARAM_INFO_FRAME_HEIGHT
       }
 
-      this.INFO_FRAME_POINTS.push(dataFrameAnchor);
-
-      //数据延长线
-      this.PARAMS_SERIES.push({
-        id: `${hotSpot.id}_pointer`,
-        type: 'line',
-        symbol: 'circle',
-        symbolSize: SYMBOL_SIZE,
-        showSymbol: true,
-        data: [
-          {value: dataPoint},
-          {
-            value: dataFrameAnchor,
-            label: {
-              show: true,
-              position: 'right',
-              formatter: (data) => {
-
-                let paramsInfo = hotSpot.params.map(param => {
-
-                  return `${param.hasProblem ? '{problemParam' : '{normalParam'}|${param.name}} ${param.hasProblem ? '{problemValue' : '{normalValue'}|${param.value}}`;
-
-                });
-
-                return [...paramsInfo].join('\n');
-              },
-              backgroundColor: {
-                image: 'assets/img/bg-main-3.png'
-              },
-              padding: [20, 0, 20, 50],
-              width: 400,
-              rich: {
-                normalParam: {
-                  fontSize: 24,
-                  color: '#25e314',
-                  width: 150,
-                  padding: 2,
-                  align: 'left'
-                },
-                problemParam: {
-                  fontSize: 24,
-                  color: '#ff3636',
-                  width: 150,
-                  padding: 2,
-                  align: 'left'
-                },
-                normalValue: {
-                  fontSize: 24,
-                  color: '#25e314',
-                  width: 130,
-                  padding: [2, 0, 2, 100],
-                  align: 'left'
-                },
-                problemValue: {
-                  fontSize: 24,
-                  color: '#ff3636',
-                  width: 130,
-                  padding: [2, 0, 2, 100],
-                  align: 'left'
-                },
-              }
-            }
-          }
-        ],
-
+      this.INFO_FRAME_POINTS.push({
+        id: hotSpot.id,
+        coordinate: dataFrameAnchor
       });
+
+
+      if(isParameterSeparate){
+        let parameterSeparatesArray = hotSpot.params.reduce((prev, next, index) => {
+          index % 3 === 0 ? prev.push([next]) : prev[prev.length-1].push(next);
+          return prev
+        },[]);
+
+        parameterSeparatesArray.forEach((spParams, idx) => {
+          if(!this.timeLineOptions[idx]) this.timeLineOptions[idx] = {series:[]};
+          this.timeLineOptions[idx].series.push(this.buildSeries(hotSpot.id, dataPoint, dataFrameAnchor, spParams));
+        });
+
+      }else{
+
+        //数据延长线
+        this.PARAMS_SERIES.push(this.buildSeries(hotSpot.id, dataPoint, dataFrameAnchor, hotSpot.params));
+
+      }
 
     });
 
   }
 
-  //使用隐藏的原点实现拖动效果
+  private buildTimeLine(baseOption: any): any{
+    baseOption.timeline = {
+      // y: 0,
+      axisType: 'category',
+      // realtime: false,
+      // loop: false,
+      autoPlay: true,
+      // currentIndex: 2,
+      playInterval: 3000,
+      // controlStyle: {
+      //     position: 'left'
+      // },
+      data: this.timeLineOptions.map((ele, idx) => (idx)),
+      label: {
+        formatter : (s) => s
+      }
+    };
+    baseOption.calculable = true;
+
+    console.log(this.timeLineOptions);
+
+    return {
+      baseOption: baseOption,
+      options: this.timeLineOptions
+    }
+  }
+
+  buildSeries(dataId, dataPoint: number[], dataFrameAnchor: number[], params): any{
+    return {
+      id: `${dataId}_pointer`,
+      type: 'line',
+      symbol: 'circle',
+      symbolSize: SYMBOL_SIZE,
+      showSymbol: true,
+      data: [
+        {value: dataPoint},
+        {
+          value: dataFrameAnchor,
+          label: {
+            show: true,
+            position: 'right',
+            formatter: (data) => {
+
+              let paramsInfo = params.map(param => {
+
+                //每14个字符长度换行
+                let name = param.name.replace(/[^\x00-\xff]/g,"$&\x01").replace(/.{14}\x01?/g,"$&\n").replace(/\x01/g,"");
+                return `${param.hasProblem ? '{problemParam' : '{normalParam'}|${name}} ${param.hasProblem ? '{problemValue' : '{normalValue'}|${param.value}}`;
+
+              });
+
+              return [...paramsInfo].join('\n{hr|}\n');
+            },
+            backgroundColor: {
+              image: 'assets/img/bg-main-3.png'
+            },
+            padding: [20, 0, 20, 50],
+            width: 400,
+            height: 200,
+            rich: {
+              hr: {
+                borderColor: '#61b8ff',
+                width: '90%',
+                borderWidth: 0.5,
+                height: 0
+              },
+              normalParam: {
+                fontSize: 24,
+                color: '#25e314',
+                width: 150,
+                padding: 5,
+                align: 'left'
+              },
+              problemParam: {
+                fontSize: 24,
+                color: '#ff3636',
+                width: 150,
+                padding: 5,
+                align: 'left'
+              },
+              normalValue: {
+                fontSize: 24,
+                color: '#25e314',
+                width: 130,
+                padding: [5, 0, 5, 100],
+                align: 'left'
+              },
+              problemValue: {
+                fontSize: 24,
+                color: '#ff3636',
+                width: 130,
+                padding: [5, 0, 5, 100],
+                align: 'left'
+              },
+            }
+          }
+        }
+      ],
+
+    };
+  }
+
+  //使用隐藏的点实现拖动效果
   bindDragEvent() {
     setTimeout(() => {
 
@@ -327,26 +402,50 @@ export class EquipStructureComponent implements OnInit {
         graphic: this.echarts.util.map(this.INFO_FRAME_POINTS, (item, idx) => {
 
           return {
-            id: `dragHandle_${idx}`,
+            id: `dragHandle_${item.id}`,
             type: 'circle',
-            position: this.echartsInstance.convertFromPixel('grid', item),
+            position: this.echartsInstance.convertFromPixel('grid', item.coordinate),
             shape: {
               cx: 0,
               cy: 0,
               r: SYMBOL_SIZE / 2
             },
-            invisible: true,    //设置为false以追踪轨迹
+            invisible: false,    //设置为false以追踪轨迹
             draggable: true,
+            ondragstart: $event => {
+              this.echartsInstance.dispatchAction({
+                type: 'timelineChange',
+                // 时间点的 index
+                currentIndex: 0
+              });
+            },
             ondrag: ($event) => {
               //console.log($event);
+              this.timeLineOptions.forEach((option) => {
 
-              this.PARAMS_SERIES[idx].data[1].value = this.echartsInstance.convertFromPixel('grid', $event.target.position);
+                let matcher = option.series.find((ele) =>{
+                  return ele.id === `${item.id}_pointer`;
+                });
 
+                if(matcher){
+                  //console.log(matcher);
+                  matcher.data[1].value = this.echartsInstance.convertFromPixel('grid', $event.target.position);
+                }
+
+              });
+
+              this.echartsInstance.setOption({
+                options: this.timeLineOptions,
+              });
+
+              //this.PARAMS_SERIES[idx].data[1].value = this.echartsInstance.convertFromPixel('grid', $event.target.position);
 
               // Update data
+              /*
               this.echartsInstance.setOption({
                 series: this.PARAMS_SERIES[idx],
               });
+              */
             },
             z: PARAM_INFO_FRAME_Z_INDEX + 2
           };
@@ -398,15 +497,26 @@ export class EquipStructureComponent implements OnInit {
 
   }
 
+  onClick($event){
+    this.router.navigateByUrl(`${MAIN_PAGE_URL}`);
+
+  }
+
+  //显示/隐藏参数面板
   toggleStatus(key: String) {
 
     let identify = key.split('_')[0];
 
 
+    this.echartsInstance.dispatchAction({
+      type: 'timelineChange',
+      // 时间点的 index
+      currentIndex: 0
+    });
+
     let serie = this.PARAMS_SERIES.find((ele) => {
       return ele.id === key;
     });
-
 
     if (serie && serie.id) {
       serie.invisible = !serie.invisible;
@@ -418,6 +528,22 @@ export class EquipStructureComponent implements OnInit {
         }
       });
     }
+
+    this.timeLineOptions.forEach((option) => {
+
+      let matcher = option.series.find((ele) =>{
+        return ele.id === `${identify}_pointer`;
+      });
+
+      if(matcher){
+        matcher.invisible = !matcher.invisible;
+        //TODO 操作series的第二个DATA
+        
+      }
+
+    });
+
+
 
   }
 

@@ -1,0 +1,17 @@
+{
+  "app": {
+    "name": "my-first-angular",
+    "description": "蓝屏前端"
+  },
+  "remotePortletProperties": {
+    "serverIp": "172.22.172.180",
+    "serverPort": "8080",
+    "pluginPortletName":"jetsphmportlet",
+    "portletLayoutId": "21990"
+  },
+  "remotePHMProperties": {
+    "serverIp": "172.22.172.201",
+    "serverPort": "8080",
+    "ctx": "PHM"
+  }
+}

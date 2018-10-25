@@ -1,4 +1,4 @@
-<div class="equip-structure-datav-container" >
+<div class="equip-structure-datav-container">
   <div [outerFrame]="frames.FRAME4" class="equip-structure-display-div">
     <div class="p-equip-structure-div">
       <app-children-row-display [children]="equips" (onChildClick)="jump2Equip($event)"></app-children-row-display>
@@ -6,5 +6,6 @@
     <div #equipStructureCharts echarts [loading]="!mapLoaded" [loadingOpts]="loadingOpts" [options]="options"
          (chartClick)="onChartEvent($event, 'chartClick')"
          class="equip-structure-chart"></div>
+    <div class="back-button-holder"> <button class="back-button" (click)="onClick($event)"></button></div>
   </div>
 </div>

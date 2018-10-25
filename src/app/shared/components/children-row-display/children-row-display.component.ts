@@ -10,7 +10,7 @@ import {
   ViewChild
 } from '@angular/core';
 
-const ITEM_WIDTH = 120 + 10 * 2;
+const ITEM_WIDTH = 120;
 const PAGE_BUTTON_MARGIN = 2 * (45 + 10 * 2);
 
 @Component({
