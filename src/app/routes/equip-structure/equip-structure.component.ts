@@ -6,7 +6,7 @@ import {EquipStructureDataService} from "../../service/impl/equip-structure-data
 import {ImageCommonService} from "../../shared/service/image-common.service";
 
 //展示内容范围
-const CANVAS_WIDTH = 1750;
+const CANVAS_WIDTH = 1550;
 const CANVAS_HEIGHT = 750;
 const SYMBOL_SIZE = 20;
 const PARAM_INFO_FRAME_WIDTH = 400;
@@ -111,13 +111,14 @@ export class EquipStructureComponent implements OnInit {
                     title: {
                       text: areaParams.name,
                         textStyle: {
-                        color: 'white'
+                          color: 'white',
+                          fontSize: 30
                       },
                       left: 'center',
-                        bottom: '0'
+                      bottom: 80
                     },
                     color: ['#8EC9EB'],
-                      grid: {id: 'grid', width: '100%', height: '100%', left: 0, bottom: 0},
+                      grid: {id: 'grid', width: '100%', height: '100%', left: 0, top: 0},
                     xAxis: {
                       type: 'value',
                         axisLine: {show: false},
@@ -140,6 +141,22 @@ export class EquipStructureComponent implements OnInit {
                     },
                     graphic: [
                       {
+                        id: 'halo',
+                        type: 'image',
+                        //left: 'center',
+                        //top: 'middle',
+                        z: -1,
+                        bounding: 'raw',
+                        cursor: 'normal',
+                        style: {
+                          image: 'assets/img/halo.png',
+                          width: 1500,
+                          y: -60,
+                          x: -20
+                          //height: bgConfig.height
+                        }
+                      }
+                      ,{
                         id: 'structure',
                         type: 'image',
                         left: 'center',
@@ -152,7 +169,7 @@ export class EquipStructureComponent implements OnInit {
                           width: bgConfig.width,
                           height: bgConfig.height
                         }
-                      },
+                      }
                     ],
                     series: null
                   };
@@ -360,7 +377,7 @@ export class EquipStructureComponent implements OnInit {
               },
               normalParam: {
                 fontSize: 24,
-                color: '#25e314',
+                color: '#d99252',
                 width: 150,
                 padding: 5,
                 align: 'left'
@@ -374,7 +391,7 @@ export class EquipStructureComponent implements OnInit {
               },
               normalValue: {
                 fontSize: 24,
-                color: '#25e314',
+                color: '#d99252',
                 width: 130,
                 padding: [5, 0, 5, 100],
                 align: 'left'
@@ -410,7 +427,7 @@ export class EquipStructureComponent implements OnInit {
               cy: 0,
               r: SYMBOL_SIZE / 2
             },
-            invisible: false,    //设置为false以追踪轨迹
+            invisible: true,    //设置为false以追踪轨迹
             draggable: true,
             ondragstart: $event => {
               this.echartsInstance.dispatchAction({
@@ -538,7 +555,7 @@ export class EquipStructureComponent implements OnInit {
       if(matcher){
         matcher.invisible = !matcher.invisible;
         //TODO 操作series的第二个DATA
-        
+
       }
 
     });

@@ -96,6 +96,8 @@ export class RollingNumberComponent implements OnInit, OnChanges {
 
   @Input() value: number = 0;
   @Input() title: string = '标题';
+  @Input() numStyle: any;
+
   rollingAnimation: RollingAnimation;
 
   private rollingAnimationObservable(observer: Observer<number>) {

@@ -1,7 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FaultSummaryDataService} from "../../../service/impl/fault-analysis/fault-summary-data.service";
 
-const COLOR_PALETTE = ['#f98446', '#c0c610', '#25d04f', '#2a89e5', '#ef2ee7'];
+const COLOR_PALETTE = ["#f98446","#f94646","#f946c4","#c046f9","#4689f9","#46f9e2","#4ef946","#def946","#f9d546","#f5a57e" ];
+
 
 @Component({
   selector: 'app-fault-summary',

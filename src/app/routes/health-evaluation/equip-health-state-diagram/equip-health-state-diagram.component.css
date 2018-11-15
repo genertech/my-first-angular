@@ -21,7 +21,7 @@
 }
 
 .section-div > span{
-  color: #e9f500;
+  color: #d99252;
   font-weight: normal;
   font-family: Microsoft Yahei, Arial, sans-serif;
   font-size: 30px;
@@ -42,4 +42,13 @@ app-children-row-display{
   width: 1100px;
   height: 660px;
   margin: 0 auto;
+}
+
+.right-arrow-triple {
+  background-image: url("/assets/img/right-arrow-triple.png");
+  background-size: 80px;
+  width: 60px;
+  height: 8px;
+  padding: 10px;
+  margin: 17px 45px 0;
 }

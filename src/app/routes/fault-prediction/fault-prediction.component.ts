@@ -13,6 +13,8 @@ const LEVEL_TRANSLATION = {
   'C':'早期'
 };
 
+const COLOR_PALETTE = ['#00678f', '#92b446', '#d99252'];
+
 @Component({
   selector: 'app-fault-prediction',
   templateUrl: './fault-prediction.component.html',
@@ -27,6 +29,8 @@ export class FaultPredictionComponent implements OnInit {
 
   startTime: Date;
   endTime: Date;
+
+  COLOR_PALETTE: Array<any> = COLOR_PALETTE;
 
   rollingTableConfig: SimpleRollingTableConfig;
   faultPredictionData: Array<any>;

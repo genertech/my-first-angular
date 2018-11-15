@@ -21,6 +21,8 @@ const CODE_TRANSLATION = {
 
 };
 
+const COLOR_PALETTE = ["#d99252","#92b446","#f946c4","#c046f9","#4689f9","#46f9e2","#4ef946","#def946","#f9d546","#f5a57e" ];
+
 @Component({
   selector: 'app-reason-investigation-summary',
   templateUrl: './reason-investigation-summary.component.html',
@@ -59,7 +61,7 @@ export class ReasonInvestigationSummaryComponent implements OnInit {
     this.mapLoaded = true;
 
     this.options = {
-      color: ['#27f30c', '#f3de0c', '#f98446', '#c0c610', '#25d04f', '#2a89e5', '#ef2ee7'],
+      color: COLOR_PALETTE,
       textStyle: {
         color: 'white',
         fontSize: 15

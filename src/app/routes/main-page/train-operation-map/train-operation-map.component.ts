@@ -35,6 +35,7 @@ export class TrainOperationMapComponent implements OnInit {
 
   warnLabel: string = "预警";
   forecastLabel: string = "预测";
+  rollNumberStyle: any = { "font-size": "50px", "color":"#d99252", "font-style": "italic", "margin-left": "15px", "font-weight": "normal" };
 
   constructor(private http: HttpClient, private dataService: TrainOperationMapDataService,
               private es: NgxEchartsService, private router: Router) {

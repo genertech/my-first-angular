@@ -1,6 +1,8 @@
 import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {RuntimeFaultDataService} from "../../../service/impl/fault-analysis/runtime-fault-data.service";
 
+const COLOR_PALETTE = ["#f98446","#f94646","#f946c4","#c046f9","#4689f9","#46f9e2","#4ef946","#def946","#f9d546","#f5a57e" ];
+
 @Component({
   selector: 'app-runtime-fault',
   templateUrl: './runtime-fault.component.html',
@@ -53,7 +55,7 @@ export class RuntimeFaultComponent implements OnInit, OnChanges {
     this.marqueeText = `${lastDateSplit[0]}年${lastDateSplit[1]}月长客股份各型动车组总计发生故障${lastData}件`; //，其中造成运行影响故障0件（安监报0件 ）;
 
     this.options = {
-      color: ['#f98446', '#c0c610', '#25d04f', '#2a89e5', '#ef2ee7'],
+      color: COLOR_PALETTE,
       textStyle: {
         color: 'white',
         fontSize: 15

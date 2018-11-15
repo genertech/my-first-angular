@@ -1,13 +1,13 @@
 <div class="main-datav-container">
 
   <!--车组实时运行图-->
-  <div [outerFrame]="frames.FRAME1" style="grid-row: 1 / 4;">
+  <div [outerFrame]="frames.FRAME1" style="grid-row: 1 / 3;">
     <app-train-operation-map></app-train-operation-map>
   </div>
 
   <!--监控信息-车型-->
   <div [outerFrame]="frames.FRAME1" style="grid-row: 1 / 2;">
-    <app-monitor-info [labelText]="equipTypeLabel" [palette]="palettes.SP1" [data]="equipTypeMoniInfoData" [option]="equipTypeMoniOption"></app-monitor-info>
+    <app-monitor-info [labelText]="equipTypeLabel" [palette]="palettes.SP_MG" [data]="equipTypeMoniInfoData" [option]="equipTypeMoniOption"></app-monitor-info>
   </div>
 
   <!--预警/预测信息-->
@@ -16,13 +16,13 @@
   </div>
 
   <!--车组状态-->
-  <div [outerFrame]="frames.FRAME2" style="grid-row: 4 / 5; padding-top: 40px;">
+  <div [outerFrame]="frames.FRAME2" style="grid-row: 3 / 5; padding-top: 50px;">
     <app-train-status></app-train-status>
   </div>
 
   <!--监控信息-系统-->
   <div [outerFrame]="frames.FRAME1" style="grid-row: 2 / 4;">
-    <app-monitor-info [labelText]="systemLabel" [palette]="palettes.SP2" [data]="systemMoniInfoData" [option]="systemMoniOption"></app-monitor-info>
+    <app-monitor-info [labelText]="systemLabel" [palette]="palettes.SP_MG" [data]="systemMoniInfoData" [option]="systemMoniOption"></app-monitor-info>
   </div>
 
   <!--健康评估结果-->
@@ -32,6 +32,6 @@
 
   <!--监控信息-部件-->
   <div [outerFrame]="frames.FRAME2" style=" grid-row: 4 / 5; padding-top: 40px;">
-    <app-monitor-info [labelText]="componentLabel" [palette]="palettes.SP3" [data]="componentMoniInfoData" [option]="componentMoniOption"></app-monitor-info>
+    <app-monitor-info [labelText]="componentLabel" [palette]="palettes.SP_MG" [data]="componentMoniInfoData" [option]="componentMoniOption"></app-monitor-info>
   </div>
 </div>

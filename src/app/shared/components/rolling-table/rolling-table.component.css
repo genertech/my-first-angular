@@ -19,7 +19,7 @@
 
 .rolling-table-ul > li.title-li{
   height: 50px;
-  color: #78d57b;
+  color: #ffffff;
   font-size: 24px;
   z-index: 2;
 }
@@ -30,11 +30,15 @@
   height: 100%;
 }
 
+.rolling-table-ul > li.title-li {
+  background-color: #00678f;
+}
+
 .rolling-table-ul > li.data-li-odd {
   background-color: rgba(48,100,115,0.3);
 }
 
-.rolling-table-ul > li.data-li-even, .title-li{
+.rolling-table-ul > li.data-li-even {
   background-color: #0a2732;
 }
 

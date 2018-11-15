@@ -96,7 +96,7 @@ export class FaultDistributionComponent implements OnInit, OnChanges {
 
     }else{
       this.options = {
-        color: ['#6cf5f2'],
+        color: ['#d99252'],
         textStyle: {
           color: 'white'
         },
@@ -128,6 +128,9 @@ export class FaultDistributionComponent implements OnInit, OnChanges {
               formatter: '{c}',
               fontSize: 18
             },
+            lineStyle: {
+              width: 0
+            },
             areaStyle: {
               color: {
                 type: 'linear',
@@ -142,7 +145,7 @@ export class FaultDistributionComponent implements OnInit, OnChanges {
                     opacity: 2
                   }, {
                     offset: 1,
-                    color: '#3d9399'
+                    color: '#F5A265'
                   }],
                 globalCoor: true,
 

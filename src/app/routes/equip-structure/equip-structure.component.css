@@ -19,7 +19,7 @@
 }
 
 .equip-structure-chart {
-  width: 1750px;
+  width: 1550px;
   height: 750px;
   margin: 0 auto;
 }
@@ -28,9 +28,9 @@
   width: 900px;
   height: 45px;
   font-size: 25px;
-  font-weight: bold;
+  font-weight: normal;
   border-width: 45px 45px 0 50px;
-  border-color: blue transparent blue transparent;
+  border-color: #00678f transparent #00678f transparent;
   color: white;
   background-color: unset;
   border-radius: 5px;
@@ -39,6 +39,16 @@
 }
 
 .back-button::before{
+  content: "　";
+  background-image: url('/assets/img/right-arrow.png');
+  position: relative;
+  top: -40px;
+  text-align: center;
+  background-size: 28px;
+}
+
+
+.back-button::after{
   content: "返回";
   position: relative;
   top: -40px;

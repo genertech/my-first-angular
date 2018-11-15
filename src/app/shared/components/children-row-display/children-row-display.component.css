@@ -22,11 +22,10 @@ div.item-wrapper {
 .PostItem{
   margin: 10px 0;
   height: 100px;
-  width: 120px;
+  width: 180px;
   min-width: 120px;
   border-radius: 5px;
   box-shadow: 0 6px 14px 0 rgba(26,26,26,.06);
-  background: #8ec9eb;
   position: relative;
   overflow: hidden;
   transition: transform .3s;
@@ -41,7 +40,7 @@ div.item-wrapper {
 
 .PostItem-TitleImage {
   height: 70px;
-  width: 120px;
+  width: 180px;
   -o-object-fit: contain;
   object-fit: contain;
   border-top-left-radius: 5px;
@@ -49,10 +48,10 @@ div.item-wrapper {
 }
 
 .PostItem-Title {
-  font-weight: 600;
+  font-weight: 500;
   font-synthesis: style;
-  font-size: 16px;
-  color: #3a3a3a;
+  font-size: 18px;
+  color: #FFFFFF;
   margin: 0;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -60,6 +59,33 @@ div.item-wrapper {
   display: block;
   text-align: center;
   font-family: "Microsoft Yahei";
+  z-index: 1;
+  position: relative;
+}
+
+.PostItem-Title::after {
+  content: " ";
+  position: absolute;
+  width: 35%;
+  height: 4px;
+  background-color: #00678f;
+  left: 0;
+  bottom: 10px;
+  margin: 0 2%;
+  z-index: -1;
+}
+
+
+.PostItem-Title::before {
+  content: " ";
+  position: absolute;
+  width: 35%;
+  height: 4px;
+  background-color: #00678f;
+  right: 0;
+  bottom: 10px;
+  margin: 0 2%;
+  z-index: -1;
 }
 
 .PagingButton {

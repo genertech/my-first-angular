@@ -7,7 +7,7 @@
     </svg>
   </button>
   <div #itemWrapper class="item-wrapper" [ngClass]="{'margin-paging-button': showPagingButton() }">
-    <a *ngFor="let item of items" (click)="onClick($event,item)" class="PostItem" [ngStyle]="item.style">
+    <a *ngFor="let item of items" (click)="onClick($event,item)" class="PostItem" ><!--[ngStyle]="item.style"-->
       <div>
         <img src="{{item.image}}" class="PostItem-TitleImage"
              alt="{{item.name}}">

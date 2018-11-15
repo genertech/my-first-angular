@@ -5,7 +5,7 @@ import {ImageCommonService} from "../../../shared/service/image-common.service";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 
 //展示内容范围
-const CANVAS_WIDTH = 1100;
+const CANVAS_WIDTH = 900;
 const CANVAS_HEIGHT = 660;
 const SYMBOL_SIZE = 20;
 
@@ -215,10 +215,11 @@ export class EquipHealthStateDiagramComponent implements OnInit, OnChanges {
                   title: {
                     text: f_area.name,
                     textStyle: {
-                      color: 'white'
+                      color: 'white',
+                      fontSize: 30
                     },
                     left: 'center',
-                    bottom: '0'
+                    bottom: 160
                   },
                   color: ['#8EC9EB'],
                   grid: {id: 'grid', width: '100%', height: '100%', left: 0, bottom: 0},
@@ -258,17 +259,35 @@ export class EquipHealthStateDiagramComponent implements OnInit, OnChanges {
                   },
                   graphic: [
                     {
+                      id: 'halo',
+                      type: 'image',
+                      //left: 'center',
+                      //top: 'middle',
+                      z: -1,
+                      bounding: 'raw',
+                      cursor: 'normal',
+                      style: {
+                        image: 'assets/img/halo.png',
+                        width: 1100,
+                        x: -20,
+                        y: -20,
+                        //height: bgConfig.height
+                      }
+                    },
+                    {
                       id: 'structure',
                       type: 'image',
                       left: 'center',
-                      top: 'middle',
+                      //top: 'middle',
                       z: -1,
                       bounding: 'raw',
                       cursor: 'normal',
                       style: {
                         image: imageDataURL,
                         width: bgConfig.width,
-                        height: bgConfig.height
+                        height: bgConfig.height,
+                        y: 180,
+
                       }
                     },
                   ],

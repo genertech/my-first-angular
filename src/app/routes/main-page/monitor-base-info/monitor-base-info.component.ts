@@ -5,7 +5,8 @@ import {HttpClient} from "@angular/common/http";
 const BAR_COLOR_PALETTE = {
   SP1:["rgb(39, 122, 206)", "rgb(101, 245, 243)", "rgb(39, 122, 206)"],
   SP2:["rgb(39, 122, 206)", "rgb(153, 189, 46)", "rgb(206, 39, 199)"],
-  SP3:["rgb(39, 122, 206)", "rgb(245, 162, 101)", "rgb(86, 39, 206)"]
+  SP3:["rgb(39, 122, 206)", "rgb(245, 162, 101)", "rgb(86, 39, 206)"],
+  SP_MG:["#c70019", "#92b446", "#d99252"],
 };
 
 type BAR_COLOR_PALETTE = (typeof BAR_COLOR_PALETTE)[keyof typeof BAR_COLOR_PALETTE];
