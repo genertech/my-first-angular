@@ -48,6 +48,7 @@ import { MaintenanceDecisionComponent } from './routes/maintenance-decision/main
 import { HealthEvaluationComponent } from './routes/health-evaluation/health-evaluation.component';
 import { EquipHealthStateDiagramComponent } from './routes/health-evaluation/equip-health-state-diagram/equip-health-state-diagram.component';
 import {DatePipe, HashLocationStrategy, LocationStrategy} from "@angular/common";
+import { AverageNoFaultJoinComponent } from './routes/fault-analysis/average-no-fault-join/average-no-fault-join.component';
 
 const MOCKMODULE = !environment.production ? [ DelonMockModule.forRoot({ data: MOCKDATA }) ] : [];
 
@@ -113,6 +114,7 @@ export function StartupServiceFactory(
     MaintenanceDecisionComponent,
     HealthEvaluationComponent,
     EquipHealthStateDiagramComponent,
+    AverageNoFaultJoinComponent,
   ],
   imports: [
     ...MOCKMODULE,

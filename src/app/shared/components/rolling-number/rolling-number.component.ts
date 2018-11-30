@@ -1,7 +1,7 @@
 import {Component, OnInit, Input, OnChanges} from '@angular/core';
 import {Observer} from "rxjs/internal/types";
 
-const MS_PER_FRAME: number = 16; //以60HZ刷新率为基准
+const MS_PER_FRAME: number = 90; //以60HZ刷新率为基准
 const LOOP_CYCLE: number = 1000; //以3秒
 
 //用于迭代数据，更好的暂时效果

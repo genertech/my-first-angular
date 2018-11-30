@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FaultSummaryDataService} from "../../../service/impl/fault-analysis/fault-summary-data.service";
+import {NgxEchartsService} from "ngx-echarts";
 
 const COLOR_PALETTE = ["#f98446","#f94646","#f946c4","#c046f9","#4689f9","#46f9e2","#4ef946","#def946","#f9d546","#f5a57e" ];
 
@@ -11,6 +12,7 @@ const COLOR_PALETTE = ["#f98446","#f94646","#f946c4","#c046f9","#4689f9","#46f9e
 })
 export class FaultSummaryComponent implements OnInit {
 
+  private echarts: any;
   options: any;
 
   @Input() labelText: string = '故障统计';
@@ -19,7 +21,10 @@ export class FaultSummaryComponent implements OnInit {
 
   mapLoaded = false;
 
-  constructor(private dataService: FaultSummaryDataService) { }
+  constructor(private nes: NgxEchartsService, private dataService: FaultSummaryDataService) {
+    this.echarts = this.nes.echarts;
+
+  }
 
   ngOnInit() {
 
@@ -91,11 +96,21 @@ export class FaultSummaryComponent implements OnInit {
         {
           name:'故障数',
           type:'bar',
-          barWidth : 40,
+          barWidth : 30,
           stack: 'train',
           itemStyle: {
             color: (p) => {
-              return COLOR_PALETTE [ p.dataIndex % COLOR_PALETTE.length];
+
+              return {
+                x:1,
+                y: 1,
+                x2: 1,
+                y2: 0,
+                colorStops: [
+                  {offset: 0, color: '#0e1b2c'},
+                  {offset: 1, color: COLOR_PALETTE [ p.dataIndex % COLOR_PALETTE.length]}
+                ]
+              };
             }
           },
           label:{

@@ -1,0 +1,8 @@
+<div class="title-div"><span>{{labelTimeText}}</span></div>
+<div class="title-div"><span>{{labelMileText}}</span></div>
+<div echarts [loading]="!mapLoaded"  [options]="options" [merge]="mergeOptions" (chartInit)="chartsInit($event)" class="average-no-fault-chart"></div>
+<app-rolling-number [value]="timePieNumber" [title]="''" class="rotation-switch-time"></app-rolling-number>
+<app-rotation-data-switch [value]="currEquip" [rotationAxis]="axis.Y" class="rotation-switch-time"></app-rotation-data-switch>
+<app-rolling-number [value]="milePieNumber" [title]="''" class="rotation-switch-mile">></app-rolling-number>
+<app-rotation-data-switch [value]="currEquip" [rotationAxis]="axis.Y" class="rotation-switch-mile"></app-rotation-data-switch>
+

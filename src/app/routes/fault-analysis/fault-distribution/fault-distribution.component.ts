@@ -120,9 +120,9 @@ export class FaultDistributionComponent implements OnInit, OnChanges {
           {
             name:'模拟数据',
             type:'line',
-            smooth:false,
             symbol: 'circle',
             symbolSize: 12,
+            smooth: true,
             label:{
               show:true,
               formatter: '{c}',

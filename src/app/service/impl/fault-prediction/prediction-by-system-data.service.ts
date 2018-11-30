@@ -34,10 +34,25 @@ export class PredictionBySystemDataService{
           this.addData(_response.data.result);
 
         }else{
+
           this._dataSubject.error(_response.msg)
         }
       },
       error1 => {
+
+        /*
+        this.addData([
+          {sysName: 'A', lvl: 'A', count:12},
+          {sysName: 'B', lvl: 'A', count:31},
+          {sysName: 'C', lvl: 'A', count:2},
+          {sysName: 'A', lvl: 'B', count:5},
+          {sysName: 'B', lvl: 'B', count:10},
+          {sysName: 'C', lvl: 'B', count:11},
+          {sysName: 'A', lvl: 'C', count:15},
+          {sysName: 'B', lvl: 'C', count:12},
+          {sysName: 'C', lvl: 'C', count:24}
+        ]);
+        */
         this._dataSubject.error(error1);
       }
     );

@@ -10,8 +10,10 @@
     <app-fault-distribution></app-fault-distribution>
   </div>
   <div [outerFrame]="frames.FRAME1" style="display: flex;">
-    <app-average-no-fault [labelText]="averageNoFaultTimeLabel" [data]="averageNoFaultByTime"></app-average-no-fault>
-    <app-average-no-fault [labelText]="averageNoFaultKilometerLabel" [data]="averageNoFaultByKilometer"></app-average-no-fault>
+    <!--<app-average-no-fault [labelText]="averageNoFaultTimeLabel" [data]="averageNoFaultByTime"></app-average-no-fault>-->
+    <!--<app-average-no-fault [labelText]="averageNoFaultKilometerLabel" [data]="averageNoFaultByKilometer"></app-average-no-fault>-->
+    <app-average-no-fault-join [labelMileText]="averageNoFaultKilometerLabel" [labelTimeText]="averageNoFaultTimeLabel"
+      [dataMile]="averageNoFaultByKilometer" [dataTime]="averageNoFaultByTime"></app-average-no-fault-join>
   </div>
   <div [outerFrame]="frames.FRAME1">
     <app-fault-summary></app-fault-summary>

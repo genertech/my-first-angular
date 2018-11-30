@@ -127,16 +127,6 @@ export class FaultPredictionComponent implements OnInit {
           labelIndex = series.length-1;
         }
 
-        series = series.sort((a, b) =>{
-
-          if(a.lvl > b.lvl){
-            return -1;
-          }else{
-            return 1;
-          }
-
-        });
-
         if(xAxisIndex === -1){
 
           xAxisData.push(ele[xAxisLb]);
@@ -144,6 +134,16 @@ export class FaultPredictionComponent implements OnInit {
         }
 
         series[labelIndex].data[xAxisIndex] = ele.count;
+
+      });
+
+      series = series.sort((a, b) =>{
+
+        if(a.lvl > b.lvl){
+          return -1;
+        }else{
+          return 1;
+        }
 
       });
 

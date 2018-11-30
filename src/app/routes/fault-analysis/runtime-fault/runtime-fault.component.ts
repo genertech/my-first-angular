@@ -116,6 +116,7 @@ export class RuntimeFaultComponent implements OnInit, OnChanges {
           type:'bar',
           barWidth : 40,
           stack: 'train',
+
           label:{
             show:false,
             position:'inside',

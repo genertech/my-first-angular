@@ -31,7 +31,7 @@ export class WarnForecastInfoDataService implements IDataService {
         {title: '车辆', key: 'areaName', style: {width: '10%'}},
         {title: '部件', key: 'partName', style: {width: '20%'}},
         {title: '类型', key: 'type', keyTranslate: {warn: '预警', prognos: '预测'}, style: {width: '10%'}},
-        {title: '详情', key: 'warnName', style: {width: '40%'}}
+        {title: '详情', key: 'warnName', style: {width: '40%', 'align-items': 'baseline'}}
       ]
     };
   }

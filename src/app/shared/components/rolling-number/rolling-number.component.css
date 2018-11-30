@@ -2,6 +2,7 @@
   font-weight: lighter;
   font-size: 30px;
   color: #14f2f5;
+  transform: scaleX(1);
 }
 
 .suji > label > span{

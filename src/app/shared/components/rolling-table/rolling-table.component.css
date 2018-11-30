@@ -19,7 +19,9 @@
 
 .rolling-table-ul > li.title-li{
   height: 50px;
-  color: #ffffff;
+  color: #fff;
+  background-color: #00678f;
+
   font-size: 24px;
   z-index: 2;
 }
@@ -30,8 +32,8 @@
   height: 100%;
 }
 
-.rolling-table-ul > li.title-li {
-  background-color: #00678f;
+.rolling-table-ul > li.data-li{
+  overflow: hidden;
 }
 
 .rolling-table-ul > li.data-li-odd {
