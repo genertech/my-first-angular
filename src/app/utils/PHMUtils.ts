@@ -5,13 +5,13 @@ import {Injectable} from "@angular/core";
 })
 export class PHMUtils {
 
+  private _useRelativeUrl: boolean;
   private _serverIp: string;
   private _serverPort: string;
   private _ctx: string;
 
   public createPHMServerURL(uri: string):string {
-    return `http://${this._serverIp}:${this._serverPort}/${this._ctx}/${uri}`;
-
+    return ( !this._useRelativeUrl ? `http://${this._serverIp}:${this._serverPort}` : '' ) + `/${this._ctx}/${uri}`;
   }
 
   public setServerIp(value: string) {
@@ -26,5 +26,9 @@ export class PHMUtils {
 
   public setCtx(value: string) {
     this._ctx = value;
+  }
+
+  setUseRelativeUrl(value: boolean) {
+    this._useRelativeUrl = value;
   }
 }

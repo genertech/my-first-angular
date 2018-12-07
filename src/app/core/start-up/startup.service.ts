@@ -24,11 +24,13 @@ export class StartupService {
             const res: any = appData;
 
             // application data
+            this.portletUtils.setUseRelativeUrl(res.remotePortletProperties.useRelativeUrl);
             this.portletUtils.setServerIp(res.remotePortletProperties.serverIp);
             this.portletUtils.setServerPort(res.remotePortletProperties.serverPort);
             this.portletUtils.setPortletLayoutId(res.remotePortletProperties.portletLayoutId);
             this.portletUtils.setPluginPortletName(res.remotePortletProperties.pluginPortletName);
 
+            this.phmUtils.setUseRelativeUrl(res.remotePHMProperties.useRelativeUrl);
             this.phmUtils.setServerIp(res.remotePHMProperties.serverIp);
             this.phmUtils.setServerPort(res.remotePHMProperties.serverPort);
             this.phmUtils.setCtx(res.remotePHMProperties.ctx);
