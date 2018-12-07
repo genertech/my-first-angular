@@ -1,19 +1,32 @@
 import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {RuntimeFaultDataService} from "../../../service/impl/fault-analysis/runtime-fault-data.service";
 
-const COLOR_PALETTE = ["#f98446","#f94646","#f946c4","#c046f9","#4689f9","#46f9e2","#4ef946","#def946","#f9d546","#f5a57e" ];
+const COLOR_PALETTE = [
+  "#4ef946",
+  "#def946",
+  "#f9d546",
+  "#f5a57e",
+  "#f98446",
+  "#f94646",
+  "#c046f9",
+  "#f946c4",
+  "#4689f9",
+  "#46f9e2"];
 
 @Component({
-  selector: 'app-runtime-fault',
-  templateUrl: './runtime-fault.component.html',
-  styleUrls: ['./runtime-fault.component.css']
+  selector: 'app-runtime-fault-summary',
+  templateUrl: './runtime-fault-summary.component.html',
+  styleUrls: ['./runtime-fault-summary.component.css']
 })
-export class RuntimeFaultComponent implements OnInit, OnChanges {
+export class RuntimeFaultSummaryComponent implements OnInit, OnChanges {
 
   labelText: string = '运营故障';
   mapLoaded: boolean = false;
   options: any;
   marqueeText: any = "";
+  marqueeTextStyle = {
+    'font-size': '20px'
+  };
 
   constructor(private dataService: RuntimeFaultDataService) {
 
@@ -55,23 +68,23 @@ export class RuntimeFaultComponent implements OnInit, OnChanges {
     this.marqueeText = `${lastDateSplit[0]}年${lastDateSplit[1]}月长客股份各型动车组总计发生故障${lastData}件`; //，其中造成运行影响故障0件（安监报0件 ）;
 
     this.options = {
-      color: COLOR_PALETTE,
+      //color: COLOR_PALETTE,
       textStyle: {
         color: 'white',
-        fontSize: 15
+        fontSize: 12
       },
       legend: {
         data: data.legendData, //['CRH5A','CRH5G','CRH3A','CRH380B', 'CR400BF'],
-        bottom: '7%',
+        bottom: '15%',
         textStyle: {
-          fontSize: 17,
+          fontSize: 10,
           color: 'white',
         }
       },
       grid: {
-        left: '5%',
-        right: '5%',
-        bottom: '15%',
+        left: '2%',
+        right: '2%',
+        bottom: '25%',
         containLabel: true
       },
       xAxis : [
@@ -86,7 +99,7 @@ export class RuntimeFaultComponent implements OnInit, OnChanges {
           axisTick: {show: false},
           axisLabel:{
             interval:0,
-            fontSize: 17
+            fontSize: 12
           },
           splitLine: {show: false}
 
@@ -103,7 +116,7 @@ export class RuntimeFaultComponent implements OnInit, OnChanges {
           axisTick: {show: false},
           axisLabel:{
             interval:0,
-            fontSize: 17
+            fontSize: 12
           },
           splitLine: {show: false},
 
@@ -114,13 +127,32 @@ export class RuntimeFaultComponent implements OnInit, OnChanges {
         return {
           name: d,
           type:'bar',
-          barWidth : 40,
+          barWidth : 30,
           stack: 'train',
 
           label:{
             show:false,
             position:'inside',
             formatter: '{c}'
+          },
+          color: {
+            type: 'linear',
+            x: 0,
+            y: 0,
+            x2: 1,
+            y2: 0,
+            colorStops: [
+              {
+                offset: 0, color: COLOR_PALETTE[i % COLOR_PALETTE.length] // 0% 处的颜色
+              },
+              {
+                offset: 0.5, color: '#bbb' // 50% 处的颜色
+              },
+              {
+                offset: 1, color: COLOR_PALETTE[i % COLOR_PALETTE.length] // 100% 处的颜色
+              }
+            ],
+            globalCoord: false // 缺省为 false
           },
           data: data.seriesData[i]
         }

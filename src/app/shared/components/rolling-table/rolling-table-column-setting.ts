@@ -1,7 +1,10 @@
 export interface RollingTableColumnSetting {
   needIdx: boolean;
-  idxOccupancyRate?: number
+  idxOccupancyRate?: number;
+  overallStyle?: any;
+  columnHeight?: string;
   columns: RollingTableColumn[];
+
 }
 
 export interface RollingTableColumn {

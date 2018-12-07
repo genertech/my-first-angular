@@ -8,6 +8,7 @@ import {FaultDiagnosisComponent} from "./fault-diagnosis/fault-diagnosis.compone
 import {FaultPredictionComponent} from "./fault-prediction/fault-prediction.component";
 import {MaintenanceDecisionComponent} from "./maintenance-decision/maintenance-decision.component";
 import {HealthEvaluationComponent} from "./health-evaluation/health-evaluation.component";
+import {SummaryComponent} from "./summary/summary.component";
 
 const APP_ROUTES: Route[] = [
   {path: 'dashboard', component: DashboardComponent},
@@ -18,7 +19,8 @@ const APP_ROUTES: Route[] = [
   {path: 'fault-diagnosis', component: FaultDiagnosisComponent},
   {path: 'fault-prediction', component: FaultPredictionComponent},
   {path: 'maintenance-decision', component: MaintenanceDecisionComponent},
-  {path: 'health-evaluation', component: HealthEvaluationComponent}
+  {path: 'health-evaluation', component: HealthEvaluationComponent},
+  {path: 'summary', component: SummaryComponent}
 ];
 
 const routes: Routes = [

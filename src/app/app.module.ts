@@ -49,6 +49,8 @@ import { HealthEvaluationComponent } from './routes/health-evaluation/health-eva
 import { EquipHealthStateDiagramComponent } from './routes/health-evaluation/equip-health-state-diagram/equip-health-state-diagram.component';
 import {DatePipe, HashLocationStrategy, LocationStrategy} from "@angular/common";
 import { AverageNoFaultJoinComponent } from './routes/fault-analysis/average-no-fault-join/average-no-fault-join.component';
+import { SummaryComponent } from './routes/summary/summary.component';
+import { RuntimeFaultSummaryComponent } from './routes/summary/runtime-fault-summary/runtime-fault-summary.component';
 
 const MOCKMODULE = !environment.production ? [ DelonMockModule.forRoot({ data: MOCKDATA }) ] : [];
 
@@ -80,6 +82,15 @@ const COMPONENTS = [
   PrecisePositioningSummaryComponent,
   ReasonInvestigationSummaryComponent,
   FaultPredictionComponent,
+  SingleBarChartFragmentComponent,
+  GlassDisplayFrameComponent,
+  SimpleRollingTableFragmentComponent,
+  MaintenanceDecisionComponent,
+  HealthEvaluationComponent,
+  EquipHealthStateDiagramComponent,
+  AverageNoFaultJoinComponent,
+  SummaryComponent,
+  RuntimeFaultSummaryComponent,
 ];
 
 const DIRECTIVES = [
@@ -108,13 +119,6 @@ export function StartupServiceFactory(
     ...COMPONENTS,
     ...DIRECTIVES,
     ...PIPES,
-    SingleBarChartFragmentComponent,
-    GlassDisplayFrameComponent,
-    SimpleRollingTableFragmentComponent,
-    MaintenanceDecisionComponent,
-    HealthEvaluationComponent,
-    EquipHealthStateDiagramComponent,
-    AverageNoFaultJoinComponent,
   ],
   imports: [
     ...MOCKMODULE,

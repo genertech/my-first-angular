@@ -21,6 +21,7 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
 export class MarqueeComponent implements OnInit, OnChanges {
 
   @Input() displayData: string | Array<String>;
+  @Input() marqueeTextStyle: any;
 
   aniStatus: string = 'inactive';
   marqueeText: string = 'marquee marquee marquee marquee marquee';

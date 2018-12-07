@@ -1,3 +1,8 @@
-<div class="title-div" [ngStyle]="config.labelStyle"><span>{{config.labelText}}</span></div>
-<div class="section-div"><label>{{config.sectionLabelText}}</label><span [@equipTypeStatus]="aniStatus" (@equipTypeStatus.done)="switchCallback($event)">{{section}}</span></div>
+<div class="title-div" [ngStyle]="config.labelStyle">
+  <span [ngStyle]="config.labelTextStyle">{{config.labelText}}</span>
+</div>
+<div class="section-div" [ngStyle]="config.sectionLabelStyle">
+  <label [ngStyle]="config.sectionLabelTextStyle">{{config.sectionLabelText}}</label>
+  <span [ngStyle]="config.sectionLabelKeyStyle" [@equipTypeStatus]="aniStatus" (@equipTypeStatus.done)="switchCallback($event)">{{section}}</span>
+</div>
 <app-rolling-table [rawData]="rollingTableData" [columnSetting]="columnInfo" (onChildClick)="tableElementClick($event)"></app-rolling-table>

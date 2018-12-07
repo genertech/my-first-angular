@@ -1,0 +1,14 @@
+.summary-datav-container{
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 3fr 2fr 2fr;
+  grid-gap: 5px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.summary-datav-container > div{
+  padding: 10px;
+  overflow: hidden;
+}

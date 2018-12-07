@@ -1,9 +1,9 @@
 <div class="data-marquee">
   <div class="marquee-text" [@marqueeAnimation]="aniStatus" (@marqueeAnimation.done)="animationCallBack($event)">
-    <span class="marquee-text-span">
+    <span class="marquee-text-span" [ngStyle]="marqueeTextStyle">
       {{marqueeText}}
     </span>
-    <span class="marquee-text-span">
+    <span class="marquee-text-span" [ngStyle]="marqueeTextStyle">
       {{marqueeText}}
     </span>
   </div>

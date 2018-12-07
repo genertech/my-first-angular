@@ -20,7 +20,7 @@
 .rolling-table-ul > li.title-li{
   height: 50px;
   color: #fff;
-  background-color: #00678f;
+  background-color: rgba(48,100,115,0.3);
 
   font-size: 24px;
   z-index: 2;

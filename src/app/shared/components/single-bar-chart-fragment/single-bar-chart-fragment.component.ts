@@ -1,5 +1,6 @@
 import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {SingleBarChartData} from "./single-bar-chart-data";
+import {SingleBarChartStyle} from "./single-bar-chart-style";
 
 @Component({
   selector: 'app-single-bar-chart-fragment',
@@ -21,6 +22,7 @@ export class SingleBarChartFragmentComponent implements OnInit, OnChanges {
   @Input() colorPalette: Array<string> = ['#27f30c', '#f3de0c'];
 
   @Input() data: SingleBarChartData;
+  @Input() chartStyle: SingleBarChartStyle;
 
   @Input() barCustomStyle = {
     type:'bar',
@@ -54,18 +56,21 @@ export class SingleBarChartFragmentComponent implements OnInit, OnChanges {
 
       this.mapLoaded = true;
 
-      this.updateOptions = {
+       let tempOption = {
         legend: {
           data: this.data.series.map((ele) => (ele.name))
         },
         xAxis: {
-          data: this.data.xAxisData,
+          data: this.data.xAxisData
         },
         series: this.data.series.map( ele => {
           return Object.assign(ele, this.barCustomStyle);
         })
       };
 
+       this.data.axisLabel ? tempOption.xAxis['axisLabel'] = this.data.axisLabel : undefined;
+
+       this.updateOptions = tempOption;
     }
 
   }

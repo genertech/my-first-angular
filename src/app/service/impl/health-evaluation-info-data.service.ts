@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {IDataService} from "../interface/idata-service";
 import {Subject} from "rxjs/internal/Subject";
 import {Observable} from "rxjs/internal/Observable";
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {PortletUtils} from "../../utils/PortletUtils";
 import {RollingTableColumnSetting} from "../../shared/components/rolling-table/rolling-table-column-setting";
 
@@ -46,6 +46,7 @@ export class HealthEvaluationInfoDataService implements IDataService {
       }
     });
 
+    /*
     this.http.jsonp(`${basePortletURL}&${params.toString()}`, "callback").subscribe(
       data => {
 
@@ -62,9 +63,9 @@ export class HealthEvaluationInfoDataService implements IDataService {
         this._dataSubject.error(error1);
       }
     );
+    */
 
     //设置超时，确保请求时间在interval周期内
-    /*
     this.http.get('/blueScreen/healthEvaluationInfo', { headers: new HttpHeaders({ timeout: `${FETCH_CYCLE- 50}` })}).subscribe(
       data => {
         this.addData(data);
@@ -72,7 +73,6 @@ export class HealthEvaluationInfoDataService implements IDataService {
       error1 => {
         this._dataSubject.error(error1);
       });
-    */
 
   }
 
@@ -88,8 +88,8 @@ export class HealthEvaluationInfoDataService implements IDataService {
   }
 
   private addData(subjectData: any): void {
-    //console.log("health evaluation info data");
-    //console.log(subjectData);
+    console.log("health evaluation info data");
+    console.log(subjectData);
 
     this._dataSubject.next(subjectData);
 

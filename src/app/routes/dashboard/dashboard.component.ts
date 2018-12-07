@@ -50,6 +50,10 @@ export class DashboardComponent implements OnInit {
         name: '运维决策',
         routerLink: '/maintenance-decision'
       },
+      {
+        name: '蓝屏统计',
+        routerLink: '/summary'
+      },
     ];
   }
 

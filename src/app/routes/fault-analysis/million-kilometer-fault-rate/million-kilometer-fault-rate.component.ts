@@ -27,9 +27,10 @@ export class MillionKilometerFaultRateComponent implements OnInit, OnChanges {
 
     this.dataService.getDataObservable().subscribe(next => {
 
-      //console.log(next);
+
       if(next.status.toLowerCase() === "success"){
 
+        //console.log(next);
         this.dataProcess(next.data);
       }
 
