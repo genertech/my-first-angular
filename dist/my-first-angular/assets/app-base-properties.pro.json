@@ -11,7 +11,7 @@
     "portletLayoutId": "21990"
   },
   "remotePHMProperties": {
-    "useRelativeUrl": true,
+    "useRelativeUrl": false,
     "serverIp": "172.22.172.201",
     "serverPort": "8080",
     "ctx": "PHM"

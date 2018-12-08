@@ -1,6 +1,7 @@
 import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {SingleBarChartData} from "./single-bar-chart-data";
 import {SingleBarChartStyle} from "./single-bar-chart-style";
+import {isArray} from "util";
 
 @Component({
   selector: 'app-single-bar-chart-fragment',
@@ -63,8 +64,12 @@ export class SingleBarChartFragmentComponent implements OnInit, OnChanges {
         xAxis: {
           data: this.data.xAxisData
         },
-        series: this.data.series.map( ele => {
-          return Object.assign(ele, this.barCustomStyle);
+        series: this.data.series.map( (ele, i) => {
+          if( isArray(this.barCustomStyle)){
+            return Object.assign(ele, this.barCustomStyle[i]);
+          }else{
+            return Object.assign(ele, this.barCustomStyle);
+          }
         })
       };
 

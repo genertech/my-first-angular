@@ -87,8 +87,8 @@ export class HealthEvaluationInfoDataService implements IDataService {
   }
 
   private addData(subjectData: any): void {
-    console.log("health evaluation info data");
-    console.log(subjectData);
+    //console.log("health evaluation info data");
+    //console.log(subjectData);
 
     this._dataSubject.next(subjectData);
 
