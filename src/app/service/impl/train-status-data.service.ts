@@ -84,8 +84,8 @@ export class TrainStatusDataService implements IDataService{
 
 
   private addData(subjectData: any): void {
-    //console.log("train status data");
-    //console.log(subjectData);
+    console.log("train status data");
+    console.log(subjectData);
 
     this._dataSubject.next(subjectData);
 

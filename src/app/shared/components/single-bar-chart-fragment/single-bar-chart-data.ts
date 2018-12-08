@@ -1,6 +1,6 @@
 export interface SingleBarChartData {
   xAxisData: string[];
-  axisLabel?: any;
+  chartOptions?: any;
   series: SingleBarChartDataSerie[];
 }
 

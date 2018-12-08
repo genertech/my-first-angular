@@ -68,9 +68,12 @@ export class SingleBarChartFragmentComponent implements OnInit, OnChanges {
         })
       };
 
-       this.data.axisLabel ? tempOption.xAxis['axisLabel'] = this.data.axisLabel : undefined;
+       if(this.data.chartOptions){
+         this.updateOptions = {...tempOption, ...this.data.chartOptions};
+       }else{
 
-       this.updateOptions = tempOption;
+         this.updateOptions = tempOption;
+       }
     }
 
   }

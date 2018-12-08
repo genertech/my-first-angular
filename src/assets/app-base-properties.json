@@ -4,7 +4,7 @@
     "description": "蓝屏前端"
   },
   "remotePortletProperties": {
-    "useRelativeUrl": false,
+    "useRelativeUrl": true,
     "serverIp": "172.22.172.180",
     "serverPort": "8080",
     "pluginPortletName":"jetsphmportlet",

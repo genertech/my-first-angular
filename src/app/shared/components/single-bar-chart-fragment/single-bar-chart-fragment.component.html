@@ -1,2 +1,2 @@
-<div class="title-div" [ngStyle]="chartStyle.labelStyle"><span [ngStyle]="chartStyle.labelTextStyle">{{labelText}}</span></div>
+<div class="title-div" [ngStyle]="chartStyle ? chartStyle.labelStyle: null"><span [ngStyle]="chartStyle ? chartStyle.labelTextStyle: null">{{labelText}}</span></div>
 <div echarts [loading]="!mapLoaded" [loadingOpts]="loadingOpts" [options]="options" [merge]="updateOptions" class="bar-chart"></div>

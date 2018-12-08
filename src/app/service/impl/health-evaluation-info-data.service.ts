@@ -46,7 +46,6 @@ export class HealthEvaluationInfoDataService implements IDataService {
       }
     });
 
-    /*
     this.http.jsonp(`${basePortletURL}&${params.toString()}`, "callback").subscribe(
       data => {
 
@@ -63,9 +62,9 @@ export class HealthEvaluationInfoDataService implements IDataService {
         this._dataSubject.error(error1);
       }
     );
-    */
 
     //设置超时，确保请求时间在interval周期内
+    /*
     this.http.get('/blueScreen/healthEvaluationInfo', { headers: new HttpHeaders({ timeout: `${FETCH_CYCLE- 50}` })}).subscribe(
       data => {
         this.addData(data);
@@ -73,7 +72,7 @@ export class HealthEvaluationInfoDataService implements IDataService {
       error1 => {
         this._dataSubject.error(error1);
       });
-
+      */
   }
 
   public startTimer() {

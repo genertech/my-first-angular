@@ -25,7 +25,8 @@ export class RuntimeFaultSummaryComponent implements OnInit, OnChanges {
   options: any;
   marqueeText: any = "";
   marqueeTextStyle = {
-    'font-size': '20px'
+    'font-size': '20px',
+    color: '#266da9'
   };
 
   constructor(private dataService: RuntimeFaultDataService) {

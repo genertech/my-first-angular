@@ -9,13 +9,16 @@
   <div [outerFrame]="frames.FRAME1" style="grid-row: 1 / 2; grid-column:  4 / 7;">
     <app-single-bar-chart-fragment [labelText]="'百万公里故障数'" [colorPalette]="COLOR_PALETTE"
                                    [chartStyle]="millionKilometerFaultCountCS"
-                                   [barCustomStyle]="barCustomStyle"
+                                   [barCustomStyle]="MKFCBarCustomStyle"
                                    [data]="millionKilometerFaultCount"></app-single-bar-chart-fragment>
   </div>
 
   <!--车组状态-->
   <div [outerFrame]="frames.FRAME1" style="grid-row: 2 / 5; grid-column: 1 / 3; ">
-    <app-train-status></app-train-status>
+    <app-single-bar-chart-fragment [labelText]="'车组状态'" [colorPalette]="COLOR_PALETTE"
+                                   [chartStyle]="trainStatusDataCS"
+                                   [barCustomStyle]="TSBarCustomStyle"
+                                   [data]="trainStatusData"></app-single-bar-chart-fragment>
   </div>
 
 
