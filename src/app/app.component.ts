@@ -1,4 +1,5 @@
-import {Component, HostListener, OnInit, Renderer2} from '@angular/core';
+///<reference path="../../node_modules/@angular/core/src/metadata/lifecycle_hooks.d.ts"/>
+import {Component, HostListener, OnChanges, OnInit, Renderer2} from '@angular/core';
 import {Router} from "@angular/router";
 
 const DEFAULT_CLIENT_HEIGHT: number = 1080;
@@ -46,10 +47,14 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit() {
+    //console.log(window.location.hash);
+    let hashNow = window.location.hash;
+    if(hashNow === '#/summary'){
+      this.renderer.setStyle(document.body, "background", `url(assets/img/body-bg.jpg) no-repeat`);
+      this.renderer.setStyle(document.body, "background-size", `100% 100%`);
 
-
+    }
   }
-
 
   goHome() {
     this.router.navigateByUrl('/main-page')

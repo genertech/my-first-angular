@@ -2,6 +2,7 @@ import {RollingTableColumnSetting} from "../rolling-table/rolling-table-column-s
 
 export interface SimpleRollingTableConfig {
   switchLoop: number;
+  labelIcon?: any;
   labelText: string;
   labelTextStyle?: any;
   labelStyle?: any;

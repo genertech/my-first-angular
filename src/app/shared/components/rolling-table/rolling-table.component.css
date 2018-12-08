@@ -13,12 +13,10 @@
 }
 
 .rolling-table-ul > li{
-  height: 80px;
   position: relative;
 }
 
 .rolling-table-ul > li.title-li{
-  height: 50px;
   color: #fff;
   background-color: rgba(48,100,115,0.3);
 
@@ -29,7 +27,7 @@
 .rolling-table-row-wrapper{
   width: 100%;
   display: inline-flex;
-  height: 100%;
+  height: 80px;
 }
 
 .rolling-table-ul > li.data-li{

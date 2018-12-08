@@ -9,6 +9,10 @@
 }
 
 .summary-datav-container > div{
-  padding: 10px;
+  padding: 10px 1px 1px;
   overflow: hidden;
+}
+
+app-simple-rolling-table-fragment {
+  padding: 0;
 }

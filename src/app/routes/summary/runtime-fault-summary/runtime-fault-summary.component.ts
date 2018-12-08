@@ -25,8 +25,16 @@ export class RuntimeFaultSummaryComponent implements OnInit, OnChanges {
   options: any;
   marqueeText: any = "";
   marqueeTextStyle = {
-    'font-size': '20px',
+    'font-size': '16px',
     color: '#266da9'
+  };
+
+  iconStyle = {
+    'background': 'url(./assets/img/icon/icon01.png) no-repeat',
+    'background-size': '100%',
+    height: '25px', width: '25px',
+    display: 'block', float: 'left',
+    'margin-right': '5px'
   };
 
   constructor(private dataService: RuntimeFaultDataService) {
@@ -83,8 +91,8 @@ export class RuntimeFaultSummaryComponent implements OnInit, OnChanges {
         }
       },
       grid: {
-        left: '2%',
-        right: '2%',
+        left: '4%',
+        right: '4%',
         bottom: '25%',
         containLabel: true
       },

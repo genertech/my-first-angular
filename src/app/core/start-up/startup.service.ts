@@ -4,6 +4,7 @@ import { zip } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import {PortletUtils} from "../../utils/PortletUtils";
 import {PHMUtils} from "../../utils/PHMUtils";
+import {environment} from '../../../environments/environment'
 
 /**
  * 用于应用启动时
@@ -18,29 +19,33 @@ export class StartupService {
     // https://github.com/angular/angular/issues/15088
     return new Promise((resolve, reject) => {
 
-        this.httpClient.get('assets/app-base-properties.json').subscribe(
-          (appData) => {
+      //根据环境加载不同配置
+      let propertiesJsonFile =  !environment.production ? 'assets/app-base-properties.json':'assets/app-base-properties.pro.json';
+      console.log(`useing properties file: ${propertiesJsonFile}` );
 
-            const res: any = appData;
+      this.httpClient.get(propertiesJsonFile).subscribe(
+        (appData) => {
 
-            // application data
-            this.portletUtils.setUseRelativeUrl(res.remotePortletProperties.useRelativeUrl);
-            this.portletUtils.setServerIp(res.remotePortletProperties.serverIp);
-            this.portletUtils.setServerPort(res.remotePortletProperties.serverPort);
-            this.portletUtils.setPortletLayoutId(res.remotePortletProperties.portletLayoutId);
-            this.portletUtils.setPluginPortletName(res.remotePortletProperties.pluginPortletName);
+          const res: any = appData;
 
-            this.phmUtils.setUseRelativeUrl(res.remotePHMProperties.useRelativeUrl);
-            this.phmUtils.setServerIp(res.remotePHMProperties.serverIp);
-            this.phmUtils.setServerPort(res.remotePHMProperties.serverPort);
-            this.phmUtils.setCtx(res.remotePHMProperties.ctx);
+          // application data
+          this.portletUtils.setUseRelativeUrl(res.remotePortletProperties.useRelativeUrl);
+          this.portletUtils.setServerIp(res.remotePortletProperties.serverIp);
+          this.portletUtils.setServerPort(res.remotePortletProperties.serverPort);
+          this.portletUtils.setPortletLayoutId(res.remotePortletProperties.portletLayoutId);
+          this.portletUtils.setPluginPortletName(res.remotePortletProperties.pluginPortletName);
 
-          },
-          () => {},
-          () => {
-            resolve(null);
-          },
-        );
+          this.phmUtils.setUseRelativeUrl(res.remotePHMProperties.useRelativeUrl);
+          this.phmUtils.setServerIp(res.remotePHMProperties.serverIp);
+          this.phmUtils.setServerPort(res.remotePHMProperties.serverPort);
+          this.phmUtils.setCtx(res.remotePHMProperties.ctx);
+
+        },
+        () => {},
+        () => {
+          resolve(null);
+        },
+      );
     });
   }
 }

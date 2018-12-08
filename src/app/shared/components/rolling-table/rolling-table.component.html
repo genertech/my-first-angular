@@ -1,16 +1,17 @@
 <ul class="rolling-table-ul" [ngStyle]="columnSetting.overallStyle">
-  <li #title class="title-li" [ngStyle]="{height: columnSetting.columnHeight}">
-    <div class="rolling-table-row-wrapper">
+  <li #title class="title-li" [ngStyle]="columnSetting.titleRowStyle">
+    <div class="rolling-table-row-wrapper" [ngStyle]="{height: columnSetting.columnHeight}">
       <div *ngIf="columnSetting.needIdx" [ngStyle]="{'width': columnSetting.idxOccupancyRate + '%'}"></div>
       <ng-container *ngFor="let column of columnSetting.columns">
-        <div [ngStyle]="column.style">{{column.title}}</div>
+        <div [ngStyle]="column.titleStyle ? column.titleStyle : column.style">{{column.title}}</div>
       </ng-container>
     </div>
   </li>
   <ng-container *ngFor="let item of items">
-    <li #dataRow class="data-li" [@flyInOut]="'in'" (click)="onClick($event,item)" [ngStyle]="{height: columnSetting.columnHeight}"
-        [ngClass]="item.idx % 2 === 1 ? 'data-li-odd' : 'data-li-even'">
-      <div class="rolling-table-row-wrapper">
+    <li #dataRow class="data-li" [@flyInOut]="'in'" (click)="onClick($event,item)"
+        [ngClass]="item.idx % 2 === 1 ? 'data-li-odd' : 'data-li-even'"
+        [ngStyle]="item.idx % 2 === 1 ? columnSetting.oddRowStyle : columnSetting.evenRowStyle">
+      <div class="rolling-table-row-wrapper" [ngStyle]="{height: columnSetting.columnHeight}">
         <div *ngIf="columnSetting.needIdx" [ngStyle]="{'width': columnSetting.idxOccupancyRate + '%'}">
           <circle-element [content]="item.idx"></circle-element>
         </div>

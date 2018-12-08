@@ -115,6 +115,13 @@ export class SummaryComponent implements OnInit {
   private rollingTableInit() {
 
     this.repairSuggestionRTConfig = {
+      labelIcon: {
+        'background': 'url(./assets/img/icon/icon05.png) no-repeat',
+        'background-size': '100%',
+        height: '25px', width: '25px',
+        display: 'block', float: 'left',
+        'margin-right': '5px'
+      },
       labelText: '运用修建议',
       labelTextStyle: {'font-size': '20px', color: '#12dce6'},
       labelStyle: {width: '200px', background: 'unset', height: '30px'},
@@ -127,15 +134,36 @@ export class SummaryComponent implements OnInit {
       columnSetting: {
         needIdx: false,
         columnHeight: '40px',
+        overallStyle: {'border-top': '2px solid #193c6a'},
+        titleRowStyle: {'background-color':'unset'},
+        oddRowStyle: {'background-color':'#1c4380'},
+        evenRowStyle: {'background-color':'unset'},
         columns: [
-          {title: '车型', key: 'equipTypeName', style: {width: '15%', 'font-size': '16px'}},
-          {title: '车组号', key: 'equipName', style: {width: '15%', 'font-size': '16px'}},
-          {title: '处理建议', key: 'adviceContent', style: {width: '40%', 'font-size': '16px'}},
-          {title: '建议修程', key: 'repairClassName', style: {width: '15%', 'font-size': '16px'}},
+          {
+            title: '车型', key: 'equipTypeName',
+            style: {width: '15%', 'font-size': '16px'},
+            titleStyle: { width: '15%', 'font-size': '16px', color: '#41b4f7' }
+          },
+          {
+            title: '车组号', key: 'equipName',
+            style: {width: '15%', 'font-size': '16px'},
+            titleStyle: { width: '15%', 'font-size': '16px', color: '#41b4f7' }
+          },
+          {
+            title: '处理建议', key: 'adviceContent',
+            style: {width: '40%', 'font-size': '16px'},
+            titleStyle: { width: '40%', 'font-size': '16px', color: '#41b4f7' }
+          },
+          {
+            title: '建议修程', key: 'repairClassName',
+            style: {width: '15%', 'font-size': '16px'},
+            titleStyle: { width: '15%', 'font-size': '16px', color: '#41b4f7' }
+          },
           {
             title: '状态',
             key: 'status',
             style: {width: '15%', 'font-size': '16px'},
+            titleStyle: { width: '15%', 'font-size': '16px', color: '#41b4f7' },
             keyTranslate: {'10': '未处理', '20': '已推送', '30': '已完成'}
           }
         ]
@@ -143,6 +171,13 @@ export class SummaryComponent implements OnInit {
     };
 
     this.adRepairSuggestionRTConfig = {
+      labelIcon: {
+        'background': 'url(./assets/img/icon/icon07.png) no-repeat',
+        'background-size': '100%',
+        height: '25px', width: '25px',
+        display: 'block', float: 'left',
+        'margin-right': '5px'
+      },
       labelText: '高级修建议',
       labelTextStyle: {'font-size': '20px', color: '#12dce6'},
       labelStyle: {width: '200px', background: 'unset', height: '30px'},
@@ -155,15 +190,36 @@ export class SummaryComponent implements OnInit {
       columnSetting: {
         needIdx: false,
         columnHeight: '40px',
+        overallStyle: {'border-top': '2px solid #193c6a'},
+        titleRowStyle: {'background-color':'unset'},
+        oddRowStyle: {'background-color':'#1c4380'},
+        evenRowStyle: {'background-color':'unset'},
         columns: [
-          {title: '车型', key: 'equipTypeName', style: {width: '15%', 'font-size': '16px'}},
-          {title: '车组号', key: 'equipName', style: {width: '15%', 'font-size': '16px'}},
-          {title: '处理建议', key: 'adviceContent', style: {width: '40%', 'font-size': '16px'}},
-          {title: '建议修程', key: 'repairClassName', style: {width: '15%', 'font-size': '16px'}},
+          {
+            title: '车型', key: 'equipTypeName',
+            style: { width: '15%', 'font-size': '16px'},
+            titleStyle: { width: '15%', 'font-size': '16px', color: '#41b4f7' }
+          },
+          {
+            title: '车组号', key: 'equipName',
+            style: { width: '15%', 'font-size': '16px'},
+            titleStyle: { width: '15%', 'font-size': '16px', color: '#41b4f7' }
+          },
+          {
+            title: '处理建议', key: 'adviceContent',
+            style: { width: '40%', 'font-size': '16px'},
+            titleStyle: { width: '40%', 'font-size': '16px', color: '#41b4f7' }
+          },
+          {
+            title: '建议修程', key: 'repairClassName',
+            style: { width: '15%', 'font-size': '16px'},
+            titleStyle: { width: '15%', 'font-size': '16px', color: '#41b4f7' }
+          },
           {
             title: '状态',
             key: 'status',
             style: {width: '15%', 'font-size': '16px'},
+            titleStyle: { width: '15%', 'font-size': '16px', color: '#41b4f7' },
             keyTranslate: {'10': '未处理', '20': '已推送', '30': '已完成'}
           }
         ]
@@ -171,6 +227,13 @@ export class SummaryComponent implements OnInit {
     };
 
     this.healthEvaluationRTConfig = {
+      labelIcon: {
+        'background': 'url(./assets/img/icon/icon06.png) no-repeat',
+        'background-size': '100%',
+        height: '30px', width: '25px',
+        display: 'block', float: 'left',
+        'margin-right': '5px'
+      },
       labelText: '健康评估信息',
       labelTextStyle: {'font-size': '20px', color: '#12dce6'},
       labelStyle: {width: '200px', background: 'unset', height: '30px'},
@@ -183,16 +246,43 @@ export class SummaryComponent implements OnInit {
       columnSetting: {
         needIdx: false,
         columnHeight: '40px',
+        overallStyle: {'border-top': '2px solid #193c6a'},
+        titleRowStyle: {'background-color':'unset'},
+        oddRowStyle: {'background-color':'#1c4380'},
+        evenRowStyle: {'background-color':'unset'},
         columns: [
-          {title: '车组号', key: 'equipName', style: {width: '20%', 'font-size': '16px'}},
-          {title: '车辆号', key: 'areaName', style: {width: '20%', 'font-size': '16px'}},
-          {title: '等级', key: 'healthLevel', style: {width: '20%', 'font-size': '16px'}},
-          {title: '系统/部件', key: 'partName|sysName', matchPatten: "first", style: {width: '30%', 'font-size': '16px'}}
+          {
+            title: '车组号', key: 'equipName',
+            style: { width: '20%', 'font-size': '16px'},
+            titleStyle: { width: '20%', 'font-size': '16px', color: '#41b4f7' }
+           },
+          {
+            title: '车辆号', key: 'areaName',
+            style: { width: '20%', 'font-size': '16px'},
+            titleStyle: { width: '20%', 'font-size': '16px', color: '#41b4f7' }
+          },
+          {
+            title: '等级', key: 'healthLevel',
+            style: { width: '20%', 'font-size': '16px'},
+            titleStyle: { width: '20%', 'font-size': '16px', color: '#41b4f7' }
+          },
+          {
+            title: '系统/部件', key: 'partName|sysName', matchPatten: "first",
+            style: { width: '30%', 'font-size': '16px'},
+            titleStyle: { width: '30%', 'font-size': '16px', color: '#41b4f7' }
+          }
         ]
       }
     };
 
     this.warnForecastRTConfig = {
+      labelIcon: {
+        'background': 'url(./assets/img/icon/icon04.png) no-repeat',
+        'background-size': '100%',
+        height: '25px', width: '25px',
+        display: 'block', float: 'left',
+        'margin-right': '5px'
+      },
       labelText: '预警/预测信息',
       labelTextStyle: {'font-size': '20px', color: '#12dce6'},
       labelStyle: {width: '200px', background: 'unset', height: '30px'},
@@ -205,15 +295,32 @@ export class SummaryComponent implements OnInit {
       columnSetting: {
         needIdx: false,
         columnHeight: '40px',
+        overallStyle: {'border-top': '2px solid #193c6a'},
+        titleRowStyle: {'background-color':'unset'},
+        oddRowStyle: {'background-color':'#1c4380'},
+        evenRowStyle: {'background-color':'unset'},
         columns: [
-          {title: '车组', key: 'equipName', style: {width: '10%', 'font-size': '16px', 'align-items': 'unset'}},
-          {title: '车辆', key: 'areaName', style: {width: '10%', 'font-size': '16px', 'align-items': 'unset'}},
-          {title: '部件', key: 'partName', style: {width: '20%', 'font-size': '16px', 'align-items': 'unset'}},
+          {
+            title: '车组', key: 'equipName',
+            style: {width: '10%', 'font-size': '16px', 'align-items': 'unset'},
+            titleStyle: { width: '10%', 'font-size': '16px', color: '#41b4f7' }
+          },
+          {
+            title: '车辆', key: 'areaName',
+            style: {width: '10%', 'font-size': '16px', 'align-items': 'unset'},
+            titleStyle: { width: '10%', 'font-size': '16px', color: '#41b4f7' }
+          },
+          {
+            title: '部件', key: 'partName',
+            style: {width: '20%', 'font-size': '16px', 'align-items': 'unset'},
+            titleStyle: { width: '20%', 'font-size': '16px', color: '#41b4f7' }
+          },
           {
             title: '类型',
             key: 'type',
             keyTranslate: {warn: '预警', prognos: '预测'},
-            style: {width: '10%', 'font-size': '16px','align-items': 'unset'}
+            style: {width: '10%', 'font-size': '16px','align-items': 'unset'},
+            titleStyle: { width: '10%', 'font-size': '16px', color: '#41b4f7' }
           },
           {
             title: '详情', key: 'warnName',
@@ -223,20 +330,35 @@ export class SummaryComponent implements OnInit {
               'text-overflow': 'ellipsis',
               'white-space': 'nowrap',
               'font-size': '16px'
-            }
+            },
+            titleStyle: { width: '40%', 'font-size': '16px', color: '#41b4f7' }
           }
         ]
       }
     };
 
     this.millionKilometerFaultCountCS = {
-      labelStyle: {background: 'unset'},
+      labelIcon: {
+        'background': 'url(./assets/img/icon/icon02.png) no-repeat',
+        'background-size': '100%',
+        height: '25px', width: '25px',
+        display: 'block', float: 'left',
+        'margin-right': '5px'
+      },
+      labelStyle: {background: 'unset',padding: '10px 30px', height:'20px'},
       labelTextStyle: {'font-size': '20px', color: '#12dce6'}
 
     };
 
     this.trainStatusDataCS = {
-      labelStyle: {background: 'unset'},
+      labelIcon: {
+        'background': 'url(./assets/img/icon/icon03.png) no-repeat',
+        'background-size': '100%',
+        height: '25px', width: '22px',
+        display: 'block', float: 'left',
+        'margin-right': '5px'
+      },
+      labelStyle: {background: 'unset',padding: '10px 30px'},
       labelTextStyle: {'font-size': '20px', color: '#12dce6'}
     };
 
@@ -297,7 +419,7 @@ export class SummaryComponent implements OnInit {
       },
       label: {
         show: true,
-        fontSize: 12,
+        fontSize: 14,
         position: 'top',
         rotate: 0,
         formatter: '{c}'

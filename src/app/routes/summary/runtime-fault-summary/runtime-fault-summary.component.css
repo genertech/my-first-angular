@@ -5,7 +5,8 @@
 }
 
 .title-div {
-  padding-left: 40px;
+  padding-left: 30px;
+  padding-top: 10px;
 }
 
 .title-div > span{
@@ -20,8 +21,10 @@
 }
 
 ng-marquee{
-  justify-content: flex-end;
-  width: 500px;
+  width: 360px;
+  position: absolute;
+  left: 190px;
+  padding-top: 5px;
 }
 
 .runtime-fault-chart{
