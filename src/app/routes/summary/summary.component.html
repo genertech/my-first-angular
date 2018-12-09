@@ -24,22 +24,22 @@
 
   <!--高级修建议-->
   <div [outerFrame]="frames.FRAMEBG2" style="grid-row: 2 / 3; grid-column: 3 / 5;">
-    <app-simple-rolling-table-fragment [config]="adRepairSuggestionRTConfig" [data]="adRepairSuggestionData"></app-simple-rolling-table-fragment>
+    <app-simple-rolling-table-fragment [config]="healthEvaluationRTConfig" [data]="healthEvaluationData"></app-simple-rolling-table-fragment>
   </div>
 
   <!--健康评估结果-->
   <div [outerFrame]="frames.FRAMEBG2" style="grid-row: 2 / 3; grid-column: 5 / 7; ">
-    <app-simple-rolling-table-fragment [config]="healthEvaluationRTConfig" [data]="healthEvaluationData"></app-simple-rolling-table-fragment>
+    <app-simple-rolling-table-fragment [config]="adRepairSuggestionRTConfig" [data]="adRepairSuggestionData"></app-simple-rolling-table-fragment>
   </div>
 
   <!--运用修建议-->
   <div [outerFrame]="frames.FRAMEBG2" style="grid-row: 3 / 4; grid-column: 3 / 5; ">
-    <app-simple-rolling-table-fragment [config]="repairSuggestionRTConfig" [data]="repairSuggestionData"></app-simple-rolling-table-fragment>
+    <app-simple-rolling-table-fragment [config]="warnForecastRTConfig" [data]="warnForecastData"></app-simple-rolling-table-fragment>
   </div>
 
   <!--预警/预测信息-->
   <div [outerFrame]="frames.FRAMEBG2" style="grid-row: 3 / 4; grid-column: 5 / 7; ">
-    <app-simple-rolling-table-fragment [config]="warnForecastRTConfig" [data]="warnForecastData"></app-simple-rolling-table-fragment>
+    <app-simple-rolling-table-fragment [config]="repairSuggestionRTConfig" [data]="repairSuggestionData"></app-simple-rolling-table-fragment>
   </div>
 
 

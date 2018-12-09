@@ -85,6 +85,7 @@ export class RuntimeFaultSummaryComponent implements OnInit, OnChanges {
       legend: {
         data: data.legendData, //['CRH5A','CRH5G','CRH3A','CRH380B', 'CR400BF'],
         bottom: '15%',
+        itemWidth: 20,
         textStyle: {
           fontSize: 10,
           color: 'white',
@@ -131,6 +132,9 @@ export class RuntimeFaultSummaryComponent implements OnInit, OnChanges {
 
         }
       ],
+      tooltip: {
+        show:true,
+      },
       series : data.legendData.map( ( d, i) => {
 
         return {
