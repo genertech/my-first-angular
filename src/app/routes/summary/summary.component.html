@@ -1,12 +1,12 @@
 <div class="summary-datav-container">
 
   <!--运营故障-->
-  <div [outerFrame]="frames.FRAMEBG1" style="grid-row: 1 / 2; grid-column: 1 / 4;">
+  <div [outerFrame]="frames.FRAMEBG2" style="grid-row: 1 / 2; grid-column: 1 / 4;">
     <app-runtime-fault-summary></app-runtime-fault-summary>
   </div>
 
   <!--百万公里故障数-->
-  <div [outerFrame]="frames.FRAMEBG1" style="grid-row: 1 / 2; grid-column:  4 / 7;">
+  <div [outerFrame]="frames.FRAMEBG2" style="grid-row: 1 / 2; grid-column:  4 / 7;">
     <app-single-bar-chart-fragment [labelText]="'百万公里故障数'" [colorPalette]="COLOR_PALETTE"
                                    [chartStyle]="millionKilometerFaultCountCS"
                                    [barCustomStyle]="MKFCBarCustomStyle"
@@ -22,26 +22,19 @@
   </div>
 
 
-  <!--高级修建议-->
-  <div [outerFrame]="frames.FRAMEBG2" style="grid-row: 2 / 3; grid-column: 3 / 5;">
+  <!--健康评估结果-->
+  <div [outerFrame]="frames.MODELBG2" style="grid-row: 2 / 3; grid-column: 3 / 5;">
     <app-simple-rolling-table-fragment [config]="healthEvaluationRTConfig" [data]="healthEvaluationData"></app-simple-rolling-table-fragment>
   </div>
 
-  <!--健康评估结果-->
-  <div [outerFrame]="frames.FRAMEBG2" style="grid-row: 2 / 3; grid-column: 5 / 7; ">
-    <app-simple-rolling-table-fragment [config]="adRepairSuggestionRTConfig" [data]="adRepairSuggestionData"></app-simple-rolling-table-fragment>
-  </div>
-
-  <!--运用修建议-->
-  <div [outerFrame]="frames.FRAMEBG2" style="grid-row: 3 / 4; grid-column: 3 / 5; ">
+  <!--预警/预测信息-->
+  <div [outerFrame]="frames.MODELBG2" style="grid-row: 3 / 4; grid-column: 3 / 5; ">
     <app-simple-rolling-table-fragment [config]="warnForecastRTConfig" [data]="warnForecastData"></app-simple-rolling-table-fragment>
   </div>
 
-  <!--预警/预测信息-->
-  <div [outerFrame]="frames.FRAMEBG2" style="grid-row: 3 / 4; grid-column: 5 / 7; ">
+  <!--维修建议-->
+  <div [outerFrame]="frames.MODELBG3" style="grid-row: 2 / 4; grid-column: 5 / 7; ">
     <app-simple-rolling-table-fragment [config]="repairSuggestionRTConfig" [data]="repairSuggestionData"></app-simple-rolling-table-fragment>
   </div>
-
-
 
 </div>

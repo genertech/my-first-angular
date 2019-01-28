@@ -22,12 +22,10 @@ export class SummaryComponent implements OnInit {
 
   frames = FRAMES;
   repairSuggestionRTConfig: SimpleRollingTableConfig;
-  adRepairSuggestionRTConfig: SimpleRollingTableConfig;
   healthEvaluationRTConfig: SimpleRollingTableConfig;
   warnForecastRTConfig: SimpleRollingTableConfig;
 
   repairSuggestionData: Array<any>;
-  adRepairSuggestionData: Array<any>;
   healthEvaluationData: Array<any>;
   warnForecastData: Array<any>;
 
@@ -42,7 +40,6 @@ export class SummaryComponent implements OnInit {
   TSBarCustomStyle: any;
 
   constructor(private repairSuggestionDS: RepairSuggestionDataService,
-              private adRepairSuggestionDS: AdvanceRepairSuggestionDataService,
               private healthEvaluationDS: HealthEvaluationInfoDataService,
               private warnForecastInfoDS: WarnForecastInfoDataService,
               private millionKilometerFaultDS: MillionKilometerFaultRateDataService,
@@ -55,14 +52,6 @@ export class SummaryComponent implements OnInit {
     this.repairSuggestionDS.currentSubject().subscribe(next=>{
 
       this.repairSuggestionData = next;
-
-    }, error1 => {
-      console.log("error", error1);
-    });
-
-    this.adRepairSuggestionDS.currentSubject().subscribe(next=>{
-
-      this.adRepairSuggestionData = next;
 
     }, error1 => {
       console.log("error", error1);
@@ -107,7 +96,6 @@ export class SummaryComponent implements OnInit {
     this.trainStatusDS.startTimer();
 
     this.repairSuggestionDS.startTimer();
-    this.adRepairSuggestionDS.startTimer();
     this.healthEvaluationDS.startTimer();
     this.warnForecastInfoDS.startTimer();
   }
@@ -122,21 +110,22 @@ export class SummaryComponent implements OnInit {
         display: 'block', float: 'left',
         'margin-right': '5px'
       },
-      labelText: '运用修建议',
+      labelText: '维修建议',
       labelTextStyle: {'font-size': '20px', color: '#12dce6'},
       labelStyle: {width: '200px', background: 'unset', height: '30px'},
       switchLoop: 60 * 1000,
       sectionLabelStyle: {'padding': 0},
-      sectionLabelText: '日期',
+      sectionLabelText: '',
       sectionLabelTextStyle: {'font-size': '20px', color: '#266da9'},
       sectionLabelKeyStyle: {'font-size': '20px', color: '#266da9'},
       sectionKey: "date",
       columnSetting: {
         needIdx: false,
-        columnHeight: '40px',
-        overallStyle: {'border-top': '2px solid #193c6a'},
+        columnHeight: 'auto',
+        columnMinHeight: '40px',
+        overallStyle: {'border-top': '2px solid #1756aa'},
         titleRowStyle: {'background-color':'unset'},
-        oddRowStyle: {'background-color':'#1c4380'},
+        oddRowStyle: {'background-color':'rgba(2, 47, 136, 0.72)'},
         evenRowStyle: {'background-color':'unset'},
         columns: [
           {
@@ -170,62 +159,6 @@ export class SummaryComponent implements OnInit {
       }
     };
 
-    this.adRepairSuggestionRTConfig = {
-      labelIcon: {
-        'background': 'url(./assets/img/icon/icon07.png) no-repeat',
-        'background-size': '100%',
-        height: '25px', width: '25px',
-        display: 'block', float: 'left',
-        'margin-right': '5px'
-      },
-      labelText: '高级修建议',
-      labelTextStyle: {'font-size': '20px', color: '#12dce6'},
-      labelStyle: {width: '200px', background: 'unset', height: '30px'},
-      switchLoop: 60 * 1000,
-      sectionLabelStyle: {'padding': 0},
-      sectionLabelText: '日期',
-      sectionLabelTextStyle: {'font-size': '20px', color: '#266da9'},
-      sectionLabelKeyStyle: {'font-size': '20px', color: '#266da9'},
-      sectionKey: "date",
-      columnSetting: {
-        needIdx: false,
-        columnHeight: '40px',
-        overallStyle: {'border-top': '2px solid #193c6a'},
-        titleRowStyle: {'background-color':'unset'},
-        oddRowStyle: {'background-color':'#1c4380'},
-        evenRowStyle: {'background-color':'unset'},
-        columns: [
-          {
-            title: '车型', key: 'equipTypeName',
-            style: { width: '15%', 'font-size': '16px'},
-            titleStyle: { width: '15%', 'font-size': '16px', color: '#41b4f7' }
-          },
-          {
-            title: '车组号', key: 'equipName',
-            style: { width: '15%', 'font-size': '16px'},
-            titleStyle: { width: '15%', 'font-size': '16px', color: '#41b4f7' }
-          },
-          {
-            title: '处理建议', key: 'adviceContent',
-            style: { width: '40%', 'font-size': '16px'},
-            titleStyle: { width: '40%', 'font-size': '16px', color: '#41b4f7' }
-          },
-          {
-            title: '建议修程', key: 'repairClassName',
-            style: { width: '15%', 'font-size': '16px'},
-            titleStyle: { width: '15%', 'font-size': '16px', color: '#41b4f7' }
-          },
-          {
-            title: '状态',
-            key: 'status',
-            style: {width: '15%', 'font-size': '16px'},
-            titleStyle: { width: '15%', 'font-size': '16px', color: '#41b4f7' },
-            keyTranslate: {'10': '未处理', '20': '已推送', '30': '已完成'}
-          }
-        ]
-      }
-    };
-
     this.healthEvaluationRTConfig = {
       labelIcon: {
         'background': 'url(./assets/img/icon/icon06.png) no-repeat',
@@ -246,9 +179,9 @@ export class SummaryComponent implements OnInit {
       columnSetting: {
         needIdx: false,
         columnHeight: '40px',
-        overallStyle: {'border-top': '2px solid #193c6a'},
+        overallStyle: {'border-top': '2px solid #1756aa'},
         titleRowStyle: {'background-color':'unset'},
-        oddRowStyle: {'background-color':'#1c4380'},
+        oddRowStyle: {'background-color':'rgba(2, 47, 136, 0.72)'},
         evenRowStyle: {'background-color':'unset'},
         columns: [
           {
@@ -294,11 +227,12 @@ export class SummaryComponent implements OnInit {
       sectionKey: "equipTypeName",
       columnSetting: {
         needIdx: false,
-        columnHeight: '40px',
-        overallStyle: {'border-top': '2px solid #193c6a'},
+        overallStyle: {'border-top': '2px solid #1756aa'},
         titleRowStyle: {'background-color':'unset'},
-        oddRowStyle: {'background-color':'#1c4380'},
+        oddRowStyle: {'background-color':'rgba(2, 47, 136, 0.72)'},
         evenRowStyle: {'background-color':'unset'},
+        columnHeight: 'auto',
+        columnMinHeight: '40px',
         columns: [
           {
             title: '车组', key: 'equipName',
@@ -325,11 +259,7 @@ export class SummaryComponent implements OnInit {
           {
             title: '详情', key: 'warnName',
             style: {
-              'align-items': 'unset',
-              width: '40%', 'overflow': 'hidden',
-              'text-overflow': 'ellipsis',
-              'white-space': 'nowrap',
-              'font-size': '16px'
+              'align-items': 'unset', width: '40%', 'font-size': '16px'
             },
             titleStyle: { width: '40%', 'font-size': '16px', color: '#41b4f7' }
           }

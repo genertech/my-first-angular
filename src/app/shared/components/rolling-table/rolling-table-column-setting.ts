@@ -3,6 +3,7 @@ export interface RollingTableColumnSetting {
   idxOccupancyRate?: number;
   overallStyle?: any;
   columnHeight?: string;
+  columnMinHeight?: string;
   titleRowStyle?: any;
   oddRowStyle?: any;
   evenRowStyle?: any;

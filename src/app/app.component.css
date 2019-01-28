@@ -10,11 +10,11 @@
 
 .app-logo{
 
-  width: 425px;
-  height: 45px;
+  height: 40px;
+  width: 340px;
 
   position: absolute;
-  margin-left: 125px;
+  margin-left: 225px;
   margin-top: 15px;
 
   background: url(../assets/img/logo.png) no-repeat;

@@ -11,6 +11,8 @@ const FRAMES = {
   FRAME7: 'FRAME7' as 'FRAME7',
   FRAMEBG1: 'FRAMEBG1' as 'FRAMEBG1',
   FRAMEBG2: 'FRAMEBG2' as 'FRAMEBG2',
+  MODELBG2: 'MODELBG2' as 'MODELBG2',
+  MODELBG3: 'MODELBG3' as 'MODELBG3',
   TITLEBG1: 'TITLEBG1' as 'TITLEBG1',
 };
 
@@ -66,11 +68,19 @@ export class OuterFrameDirective implements OnInit{
         break;
       }
       case FRAMES.FRAMEBG1: {
-        frameImgPath = "assets/img/model-bg-01.png";
+        frameImgPath = "assets/img/frame-bg-01.png";
         break;
       }
       case FRAMES.FRAMEBG2: {
+        frameImgPath = "assets/img/frame-bg-02.png";
+        break;
+      }
+      case FRAMES.MODELBG2: {
         frameImgPath = "assets/img/model-bg-02.png";
+        break;
+      }
+      case FRAMES.MODELBG3: {
+        frameImgPath = "assets/img/model-bg-03.png";
         break;
       }
       default: {
