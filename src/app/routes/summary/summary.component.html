@@ -29,6 +29,7 @@
 
   <!--预警/预测信息-->
   <div [outerFrame]="frames.MODELBG2" style="grid-row: 3 / 4; grid-column: 3 / 5; ">
+     <div  *ngIf="!flag"style="position:relative;top:150px;left:250px;color: white;">加载中...</div>
     <app-simple-rolling-table-fragment [config]="warnForecastRTConfig" [data]="warnForecastData"></app-simple-rolling-table-fragment>
   </div>
 
